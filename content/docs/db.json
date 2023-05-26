@@ -1,0 +1,146 @@
+[
+  {
+    "permalink": "introduction",
+    "title": "Introduction",
+    "contentPath": "./guides/introduction.md",
+    "category": "Guides"
+  },
+  {
+    "permalink": "getting_started",
+    "title": "Getting started",
+    "contentPath": "./guides/getting_started.md",
+    "category": "Guides"
+  },
+  {
+    "permalink": "schema_101",
+    "title": "Schema 101",
+    "contentPath": "./guides/schema_101.md",
+    "category": "Guides"
+  },
+  {
+    "permalink": "html_forms_and_surprises",
+    "title": "HTML forms and surprises",
+    "contentPath": "./guides/html_forms_and_surprises.md",
+    "category": "Guides"
+  },
+  {
+    "permalink": "field_context",
+    "title": "Field context",
+    "contentPath": "./guides/field_context.md",
+    "category": "Guides"
+  },
+  {
+    "permalink": "custom_error_messages",
+    "title": "Custom messages",
+    "contentPath": "./guides/custom_error_messages.md",
+    "category": "Guides"
+  },
+  {
+    "permalink": "error_reporter",
+    "title": "Error reporter",
+    "contentPath": "./guides/error_reporter.md",
+    "category": "Guides"
+  },
+  {
+    "permalink": "pre_compiling",
+    "title": "Pre compiling",
+    "contentPath": "./guides/pre_compiling.md",
+    "category": "Guides"
+  },
+  {
+    "permalink": "type_checking_helpers",
+    "title": "Type-checking helpers",
+    "contentPath": "./guides/type_checking_helpers.md",
+    "category": "Guides"
+  },
+  {
+    "permalink": "types/string",
+    "title": "String",
+    "contentPath": "./types/string.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/boolean",
+    "title": "Boolean",
+    "contentPath": "./types/boolean.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/number",
+    "title": "Number",
+    "contentPath": "./types/number.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/date",
+    "title": "Date",
+    "contentPath": "./types/date.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/accepted",
+    "title": "Accepted",
+    "contentPath": "./types/accepted.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/enum",
+    "title": "Enum",
+    "contentPath": "./types/enum.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/literal",
+    "title": "Literal",
+    "contentPath": "./types/literal.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/object",
+    "title": "Object",
+    "contentPath": "./types/object.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/record",
+    "title": "Record",
+    "contentPath": "./types/record.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/array",
+    "title": "Array",
+    "contentPath": "./types/array.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/tuple",
+    "title": "Tuple",
+    "contentPath": "./types/tuple.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/union",
+    "title": "Union",
+    "contentPath": "./types/union.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "types/any",
+    "title": "Any",
+    "contentPath": "./types/any.md",
+    "category": "Schema types"
+  },
+  {
+    "permalink": "extend/custom_rules",
+    "title": "Creating custom rules",
+    "contentPath": "./extend/custom_rules.md",
+    "category": "Extend"
+  },
+  {
+    "permalink": "extend/custom_schema_types",
+    "title": "Creating custom schema types",
+    "contentPath": "./extend/custom_schema_types.md",
+    "category": "Extend"
+  }
+]
