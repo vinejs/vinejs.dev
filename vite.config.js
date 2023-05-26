@@ -3,7 +3,7 @@ import Adonis from '@adonisjs/vite/plugin'
 
 export default defineConfig({
   plugins: [Adonis({
-    entrypoints: ['./src/assets/app.js', './src/assets/app.css'],
+    entrypoints: ['./assets/app.js', './assets/app.css'],
     reload: ['content/**/*', 'templates/**/*.edge'],
     publicDirectory: 'dist'
   })],
