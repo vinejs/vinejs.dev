@@ -1,19 +1,16 @@
 {
   "links": {
     "home": {
-      "title": "Your project name",
+      "title": "VineJS",
       "href": "/"
     },
     "github": {
-      "title": "Your project on Github",
-      "href": "https://github.com/dimerapp"
+      "title": "VineJS on Github",
+      "href": "https://github.com/vinejs/vine"
     }
   },
   "search": {
-    "appId": "foo",
-    "indexName": "bar",
-    "apiKey": "baz"
   },
-  "fileEditBaseUrl": "https://github.com/dimerapp/docs-boilerplate/blob/develop",
-  "copyright": "Your project legal name"
+  "fileEditBaseUrl": "https://github.com/vinejs/vinejs.dev/blob/main",
+  "copyright": "VineJS"
 }
