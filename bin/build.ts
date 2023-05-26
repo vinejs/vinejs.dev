@@ -10,6 +10,7 @@
 */
 
 import 'reflect-metadata'
+import { cp } from 'node:fs/promises'
 import { Ignitor } from '@adonisjs/core'
 
 /**
@@ -47,10 +48,12 @@ async function exportHTML() {
       }
     }
   }
+
+  await cp(app.makePath('_redirects'), app.makePath('dist/_redirects'))
 }
 
 const app = new Ignitor(APP_ROOT, { importer: IMPORTER })
-  .tap(app => {
+  .tap((app) => {
     app.initiating(() => {
       app.useConfig({
         app: {
@@ -61,13 +64,13 @@ const app = new Ignitor(APP_ROOT, { importer: IMPORTER })
           default: 'app',
           loggers: {
             app: {
-              enabled: true
+              enabled: true,
             },
           },
         },
         views: {
           cache: false,
-        }
+        },
       })
     })
   })
