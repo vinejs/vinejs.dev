@@ -6,8 +6,5 @@ export default defineConfig({
     entrypoints: ['./assets/app.js', './assets/app.css'],
     reload: ['content/**/*', 'templates/**/*.edge'],
     publicDirectory: 'dist'
-  })],
-  build: {
-    target: 'esnext',
-  }
+  })]
 })
