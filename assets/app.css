@@ -3,32 +3,12 @@
 @import '@dimerapp/docs-theme/styles';
 
 :root {
-  --font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
   --logo-width: 105px;
   --sidebar-width: 280px;
   --sidebar-anchor-padding-left: 25px;
   --sidebar-anchor-padding-right: 25px;
   --sidebar-title-padding-left: 25px;
   --sidebar-title-padding-right: 25px;
-  --prose-h1-font-weight: 600;
-  --prose-h2-font-weight: 600;
-  --prose-h3-font-weight: 600;
-  --prose-h4-font-weight: 600;
-  --sidebar-title-font-weight: 600;
-}
-
-.toc_container h3, .markdown dt {
-  font-weight: 600;
-}
-
-.markdown strong {
-  font-weight: 600;
-}
-
-.markdown :not(pre) > code {
-  overflow-wrap: initial;
-  word-wrap: initial;
-  hyphens: initial;
 }
 
 :root {
@@ -45,12 +25,12 @@
   --purple11: hsl(272, 50.0%, 45.8%);
   --purple12: hsl(272, 66.0%, 16.0%);
 
-  --code-bg-color: var(--mauve5);
   --code-text-color: var(--purple11);
   --aside-active-link-text-color: var(--purple11);
   --sidebar-active-link-bg-color: var(--purple5);
   --sidebar-active-link-text-color: var(--purple11);
   --pre-tabs-active-border-color: var(--purple8);
+  --code-highlight-border-color: var(--purple9);
   --sidebar-loading-link-bg-color: hsl(275deg 70.8% 91.8% / 51%);
 }
 
@@ -68,13 +48,13 @@ html.dark {
   --purple11: hsl(275, 80.0%, 71.0%);
   --purple12: hsl(279, 75.0%, 95.7%);
 
-  --code-bg-color: var(--mauve5);
   --code-text-color: var(--purple11);
   --sidebar-active-link-bg-color: var(--purple5);
   --aside-active-link-text-color: var(--purple11);
   --sidebar-active-link-text-color: var(--purple12);
   --pre-tabs-active-border-color: var(--purple10);
-  --sidebar-loading-link-bg-color: hsl(279deg 43.8% 23.3% / 31%)
+  --code-highlight-border-color: var(--purple9);
+  --sidebar-loading-link-bg-color: hsl(279deg 43.8% 23.3% / 31%);
 }
 
 .header_container {

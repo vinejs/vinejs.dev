@@ -1,3 +1,7 @@
+---
+summary: VineJS is a form data validation library for Node.js. You may use it to validate the HTTP request body in your backend applications
+---
+
 # Introduction
 
 VineJS is a form data validation library for Node.js. You may use it to validate the HTTP request body in your backend applications.
@@ -17,7 +21,6 @@ VineJS is a form data validation library for Node.js. You may use it to validate
 // title: Basic example
 import vine from '@vinejs/vine'
 
-// highlight-start
 const schema = vine.schema({
   email: vine.string().email(),
   password: vine
@@ -26,7 +29,6 @@ const schema = vine.schema({
     .maxLength(32)
     .confirmed()
 })
-// highlight-end
 
 const data = getDataToValidate()
 await vine.validate({ schema, data })
@@ -36,7 +38,6 @@ await vine.validate({ schema, data })
 // title: Arrays and Objects
 import vine from '@vinejs/vine'
 
-// highlight-start
 const schema = vine.schema({
   sku: vine.string(),
   price: vine.number().positive(),
@@ -48,7 +49,6 @@ const schema = vine.schema({
     })
   )
 })
-// highlight-end
 
 const data = getDataToValidate()
 await vine.validate({ schema, data })
@@ -58,7 +58,6 @@ await vine.validate({ schema, data })
 // title: Unions
 import vine from '@vinejs/vine'
 
-// highlight-start
 const schema = vine
   .schema({
     health_check: vine.unionOfTypes([
@@ -66,7 +65,6 @@ const schema = vine
       vine.string().url().activeUrl()
     ])
   })
-// highlight-end
 
 const data = getDataToValidate()
 await vine.validate({ schema, data })
@@ -77,20 +75,25 @@ await vine.validate({ schema, data })
 import vine from '@vinejs/vine'
 
 // highlight-start
-const hiringGuide = vine.group.if(
-  (value) => vine.helpers.isTrue(value.hiring_guide),
-  {
-    hiring_guide: vine.literal(true),
-    guide_name: vine.string(),
-    fees: vine.number(),
-  }
-)
-// highlight-end
-
-// highlight-start
-const notHiringGuide = vine.group.else({
-  hiring_guide: vine.literal(false),
-})
+/**
+ * Conditional schema when hiring or not hiring
+ * a guide
+ */
+const guideSchema = vine.group([
+  vine.group.if(
+    (data) => vine.helpers.isTrue(data.is_hiring_guide),
+    {
+      is_hiring_guide: vine.literal(true),
+      guide_id: vine.string(),
+      amount: vine.number(),
+      started_at: vine.date(),
+      ended_at: vine.date(),
+    }
+  ),
+  vine.group.else({
+    is_hiring_guide: vine.literal(false),
+  }),
+])
 // highlight-end
 
 const schema = vine
@@ -98,9 +101,7 @@ const schema = vine
     visitor_name: vine.string(),
   })
   // highlight-start
-  .merge(
-    vine.group([hiringGuide, notHiringGuide])
-  )
+  .merge(guideSchema)
   // highlight-end
 
 const data = getDataToValidate()
