@@ -76,8 +76,10 @@ const schema = vine.schema({
   password: vine.string().min(8).max(32).confirmed()
 })
 
+// highlight-start
 const validate = vine.compile(schema)
 await validate({
+// highlight-end
   data: {
     username: 'virk',
     email: 'virk@example.com',

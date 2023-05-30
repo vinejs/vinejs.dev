@@ -31,6 +31,7 @@
   --sidebar-active-link-text-color: var(--purple11);
   --pre-tabs-active-border-color: var(--purple8);
   --code-highlight-border-color: var(--purple9);
+  --code-comment-color: var(--mauve10);
   --sidebar-loading-link-bg-color: hsl(275deg 70.8% 91.8% / 51%);
 }
 
@@ -54,6 +55,7 @@ html.dark {
   --sidebar-active-link-text-color: var(--purple12);
   --pre-tabs-active-border-color: var(--purple10);
   --code-highlight-border-color: var(--purple9);
+  --code-comment-color: var(--mauve10);
   --sidebar-loading-link-bg-color: hsl(279deg 43.8% 23.3% / 31%);
 }
 
@@ -79,4 +81,8 @@ html.dark {
   display: flex;
   align-items: center;
   border-left: 1px solid var(--header-border-color);
+}
+
+.markdown pre span[style="color: #546E7A;"] {
+  color: var(--code-comment-color) !important;
 }

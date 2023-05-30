@@ -105,13 +105,13 @@ async function unique(
 
 // insert-start
 /**
- * Converting function to a VineJS rule
+ * Converting a function to a VineJS rule
  */
 export const uniqueRule = vine.createRule(unique)
 // insert-end
 ```
 
-Let's use this rule inside inside a schema.
+Let's use this rule inside a schema.
 
 ```ts
 import vine from '@vinejs/vine'
@@ -194,7 +194,7 @@ Like `VineString`, you may add macros to the following classes.
 
 VineJS stops the validations pipeline after a rule reports an error. For example, if a field fails the `string` validation rule, VineJS will not run the `unique` validation rule.
 
-However, this behavior can be changed by disabling the [bail mode](../guides/schema_101.md#bail-mode). With bail mode disabled, the `unique` rule will be executed, even when the value is not a string.
+However, this behavior can be changed by turning off the [bail mode](../guides/schema_101.md#bail-mode). With bail mode disabled, the `unique` rule will be executed, even when the value is not a string.
 
 However, you can find if the field has failed a validation using the `ctx.isValid` property and do not perform the SQL query.
 
@@ -251,5 +251,98 @@ Therefore, if you are creating an async function without the `async` keyword, ma
 export const uniqueRule = vine.createRule(unique, {
   implicit: true,
   async: true,
+})
+```
+
+## Testing rules
+You may use the `validator` test factory to write unit tests for your custom validation rules. 
+
+The `validator.executeAsync` method accepts the validation rule and the value to validate. The output is an instance of [ValidationResult]() you can use to write assertions.
+
+```ts
+import { validator } from '@vinejs/vine/factories'
+import { uniqueRule } from '../src/rules/unique.js'
+
+const value = 'foo@bar.com'
+const unique = uniqueRule({ table: 'users', column: 'email' })
+
+const validated = await validator.executeAsync(unique, value)
+
+/**
+ * Assert the validation succeeded.
+ */
+validated.assertSucceeded()
+```
+
+You may use the `assertErrorsCount` and `assertError` methods to ensure the validation fails with a given error message.
+
+```ts
+const value = 'foo@example.com'
+const unique = uniqueRule({ table: 'users', column: 'email' })
+
+const validated = await validator.executeAsync(unique, value, {
+  fieldName: 'email'
+})
+
+validated.assertErrorsCount(1)
+validated.assertError('The email field is not unique')
+```
+
+### Available assertions
+Following is the list of available assertion methods
+
+```ts
+/**
+ * Assert the validation succeeded
+ */
+validated.assertSucceeded()
+
+/**
+ * Assert the value output after validation. You may
+ * use this assertion if the rule mutates the field's
+ * value.
+ */
+validated.assertOutput(expectedOutput)
+
+/**
+ * Assert the validation failed
+ */
+validated.assertFailed()
+
+/**
+ * Assert expected errors count
+ */
+validated.assertErrorsCount(1)
+
+/**
+ * Assert an error with the expected text is reported
+ * during validation
+ */
+validated.assertError('The email field is not unique')
+```
+
+### Executing a chain of validations
+Suppose your validation rule relies on other validation rules. In that case, you may pass an array of validations to the `executeAsync` method, and all the validations will be executed in the defined sequence.
+
+```ts
+import { VineString } from '@vinejs/vine'
+import { uniqueRule } from '../src/rules/unique.js'
+
+const email = VineString.rules.email()
+const unique = uniqueRule({ table: 'users', column: 'email' })
+
+const validated = await validator.executeAsync([
+  email,
+  unique,
+], value)
+```
+
+### Defining custom field context
+You may pass a custom [field context](../guides/field_context.md) as the third argument to the `validator.executeAsync` method. The context object will be merged with the default context created by the test factory.
+
+```ts
+await validator.executeAsync(unique, value, {
+  fieldName: 'email',
+  wildCardPath: 'profile.email'
 })
 ```
