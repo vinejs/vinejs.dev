@@ -36,6 +36,6 @@ You may define the custom error message using the `literal` rule name.
 
 ```ts
 const messages = {
-  literal: 'The {{ field }} field must be {{ value }}'
+  literal: 'The {{ field }} field must be {{ expectedValue }}'
 }
 ```

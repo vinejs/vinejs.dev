@@ -42,15 +42,9 @@
     "category": "Guides"
   },
   {
-    "permalink": "pre_compiling",
-    "title": "Pre compiling",
-    "contentPath": "./guides/pre_compiling.md",
-    "category": "Guides"
-  },
-  {
-    "permalink": "type_checking_helpers",
-    "title": "Type-checking helpers",
-    "contentPath": "./guides/type_checking_helpers.md",
+    "permalink": "helpers",
+    "title": "Helpers",
+    "contentPath": "./guides/helpers.md",
     "category": "Guides"
   },
   {

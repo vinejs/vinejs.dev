@@ -2,17 +2,18 @@
 
 HTML forms have particular serializing behavior attached to them that you need to understand and address to work with normalized data in your applications.
 
-I see a few talking about it because we stopped using HTML forms with the rise of front-end frameworks. However, they are returning to HTML forms, so I expect more developers to encounter these surprises.
+In this guide, we will learn how you can use the VineJS APIs to normalize the data at the time of validating it.
 
 ## Empty fields lead to empty strings
 
-When you submit an HTML form leaving an optional field empty, the backend receives an empty string.
+The backend receives an empty string when you submit an HTML form with a blank field. At some stage, you must convert these empty strings to `null` to keep your database state normalized. For example:
 
-For example, if you have a database column `country` set to nullable, you would want to store `null` as a value inside this column when the user does not select a country.
+- You have a user profile page with an optional dropdown for country selection.
+- Since selecting a country is optional, you may have marked the `country` column inside the database as `nullable`.
+- During profile update, the backend will receive an empty string if the user does not select a country.
+- However, you should convert this empty string value to `null`. Otherwise, your database will have un-normalized data with empty string values.
 
-However, with HTML forms, the backend receives an empty string, and you might insert an empty string (unless you carefully check each input field) into the database instead of leaving the column as `null`.
-
-VineJS allows you to convert empty strings to `null` globally using the `vine.configure` method. 
+With VineJS, you can perform this normalization globally using the `convertEmptyStringsToNull` flag.
 
 ```ts
 import vine from '@vinejs/vine'
@@ -22,7 +23,7 @@ vine.configure({
 })
 ```
 
-Now, you can define the schema for the `country` field as follows.
+Continuing with the previous example, you may define the `country` field schema as follows.
 
 ```ts
 const schema = vine.schema({
@@ -33,7 +34,9 @@ const data = {
   country: ''
 }
 
-// output { country: null }
+const validate = vine.compile(schema)
+const output = await validate({ data })
+// { country: null }
 ```
 
 ## Number input results in a string value
@@ -53,7 +56,9 @@ const data = {
   age: '32'
 }
 
-// output { age: 32 }
+const validate = vine.compile(schema)
+const output = await validate({ data })
+// { age: 32 }
 ```
 
 The same holds true for boolean values as well. The `true` and `false` values for the input fields will result in a string representation of a boolean. However, the `vine.boolean` schema type can handle the normalization for you.
@@ -80,11 +85,13 @@ const data = {
   terms: 'on'
 }
 
-// output { terms: true }
+const validate = vine.compile(schema)
+const output = await validate({ data })
+// { terms: true }
 ```
 
 ## Everything together
 
-Here's a small demo of what we have covered so far. https://jsbin.com/detixawaxa/edit?html,js,console,output
+Here's a demo showcasing serialized form data of what we have covered so far. https://jsbin.com/detixawaxa/edit?html,js,console,output
 
 ![](./form-data-behavior.png)

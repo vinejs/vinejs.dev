@@ -56,21 +56,37 @@ An array can also accept a union type. In the following example, each contact ca
 See also: [Union type](./union.md)
 
 ```ts
+/**
+ * Re-usable helper to check if the field value
+ * is an object and has a matching type
+ */
+function hasType(value: unknown, type: string) {
+  return vine.helpers.isObject<string>(value) && value.type === type
+}
+
+/**
+ * Schema type for email contact
+ */
+const emailContact = vine.object({
+  type: vine.literal('email'),
+  email: vine.string().email()
+})
+
+/**
+ * Schema type for phone contact
+ */
+const phoneContact = vine.object({
+  type: vine.literal('phone'),
+  phone: vine.string().phone()
+})
+
+/**
+ * Define a contact union with conditionals and
+ * their associated schema
+ */ 
 const contact = vine.union([
-  vine.union.if(
-    (value) => value.type === 'email',
-    vine.object({
-      type: vine.literal('email'),
-      email: vine.string().email()
-    })
-  ),
-  vine.union.if(
-    (value) => value.type === 'phone',
-    vine.object({
-      type: vine.literal('phone'),
-      phone: vine.string().phone()
-    })
-  ),
+  vine.union.if((value) => hasType(value, 'email'), emailContact),
+  vine.union.if((value) => hasType(value, 'phone'), phoneContact)
 ])
 
 const schema = vine.schema({
@@ -87,20 +103,8 @@ However, the validation will pass if the `type` property is missing or has a dif
 
 ```ts
 const contact = vine.union([
-  vine.union.if(
-    (value) => value.type === 'email',
-    vine.object({
-      type: vine.literal('email'),
-      email: vine.string().email()
-    })
-  ),
-  vine.union.if(
-    (value) => value.type === 'phone',
-    vine.object({
-      type: vine.literal('phone'),
-      phone: vine.string().phone()
-    })
-  ),
+  vine.union.if((value) => hasType(value, 'email'), emailContact),
+  vine.union.if((value) => hasType(value, 'phone'), phoneContact)
 ])
 // highlight-start
 .otherwise((_, ctx) => {
@@ -121,14 +125,14 @@ The `ctx.report` method marks the field under validation as invalid and reports 
 
 ## Defining error messages
 
-You may define custom error messages for the following array based rules.
+You may define custom error messages for the following array-based rules.
 
 ```ts
 const messages = {
   array: 'The {{ field }} field must be an array',
-  minLength: 'The {{ field }} field must have at least {{ value }} items',
-  maxLength: 'The {{ field }} field must not have more than {{ value }} items',
-  fixedLength: 'The {{ field }} field must contain {{ value }} items',
+  minLength: 'The {{ field }} field must have at least {{ min }} items',
+  maxLength: 'The {{ field }} field must not have more than {{ max }} items',
+  fixedLength: 'The {{ field }} field must contain {{ size }} items',
   notEmpty: 'The {{ field }} field must not be empty',
   distinct: 'The {{ field }} field has duplicate values',
 }
@@ -241,10 +245,12 @@ const schema = vine.schema({
 
 #### Treatment of `null` and `undefined` items
 
-Array items with `null` and `undefined` values will be skipped during the uniqueness check.  For example, the following array will pass the `distinct` validation.
+Array items with `null` and `undefined` values will be skipped during the uniqueness check. So, for example, the following array will pass the `distinct` validation.
 
 ```ts
-// Nulls will be ignored
+/**
+ * Null values will be ignored
+ */
 const categories = [1, 8, null, 12, null, 2]
 ```
 
@@ -254,11 +260,15 @@ Similarly, in the case of an array of objects, the object item will be skipped i
 ```ts
 const fields = ['email', 'company_id']
 const users = [
-  // Skipped because object is missing company_id
+  /**
+   * Skipped because the object is missing the company_id
+   */
   {
     email: 'foo@bar.com',
   },
-  // Skipped because object is missing company_id
+  /**
+   * Skipped because the object is missing the company_id
+   */
   {
     email: 'foo@bar.com',
   },

@@ -53,22 +53,50 @@ console.log(output)
 ```
 
 - The `vine.schema` method defines the validation schema.
-- The validation is performed using the `vine.validate` method. The `validate` method accepts the `schema` and the `data` object to perform the validation.
+
+- The validation is performed using the `validate` method. The validate method accepts the `schema` and the `data` object to perform the validation.
+
 - If validation passes, the return value will be a new object with validated properties.
+
 - If validation fails, an exception will be raised.
+
+## Pre-compiling schema
+<!-- The performance benefits of VineJS kick in when you pre-compile your schemas and use the output to perform the validations. Read our dedicated guide on [pre-compiling](./pre_compiling.md) to learn more about the API. -->
+
+The performance benefits of using VineJS kick in when you pre-compile a schema. During the pre-compile phase, VineJS will convert your schema into an optimized JavaScript function that you can reuse to perform validations.
+
+You may pre-compile a schema using the `vine.compile` method. The compile method returns a `validate` function you must use to perform validations. The data to validate, custom error messages, and the validator options are provided directly to the `validate` method.
+
+```ts
+import vine from '@vinejs/vine'
+
+const schema = vine.schema({
+  username: vine.string(),
+  email: vine.string().email(),
+  password: vine.string().min(8).max(32).confirmed()
+})
+
+const validate = vine.compile(schema)
+await validate({
+  data: {
+    username: 'virk',
+    email: 'virk@example.com',
+    password: 'secret',
+    password_confirmation: 'secret',
+  }
+})
+```
 
 ## Handling errors
 
-In case of an error, VineJS will throw a [ValidationError]() exception. You may access the detailed error messages using the `messages` property.
+In case of an error, VineJS will throw a [ValidationError]() exception. You may access the detailed error messages using the `error.messages` property.
 
 ```ts
 import vine, { errors } from '@vinejs/vine'
 
 try {
-  const output = await vine.validate({
-    schema,
-    data
-  })
+  const validate = vine.compile(schema)
+  const output = await validate({ data })
 } catch (error) {
   if (error instanceof errors.E_VALIDATION_ERROR) {
     console.log(error.messages)
@@ -76,7 +104,7 @@ try {
 }
 ```
 
-The `messages` property is an array of error objects with the following properties.
+The `error.messages` property is an array of error objects with the following properties.
 
 - `field` - The name of the field under validation. Nested fields are represented with a dot notation. For example: `contact.email`.
 - `message` - Error message.
@@ -85,7 +113,7 @@ The `messages` property is an array of error objects with the following properti
 
 ## Custom error messages
 
-When calling the `vine.validate` method, you may define custom error messages. Messages can be defined for rules or a `field + rule` combination.
+You may define custom error messages when calling the `validate` method. Messages can be defined for rules or a `field + rule` combination.
 
 See also: [Guide on custom error messages](./custom_error_messages.md)
 
@@ -93,11 +121,11 @@ See also: [Guide on custom error messages](./custom_error_messages.md)
 const messages = {
   'required': 'The {{ field }} field is required',
   'email': 'Enter a valid email address',
-  'password.min': 'Password must be 8 characters long'
+  'password.minLength': 'Password must be 8 characters long'
 }
 
-const output = await vine.validate({
-  schema,
+const validate = vine.compile(schema)
+const output = await validate({
   data,
   messages
 })
@@ -105,11 +133,13 @@ const output = await vine.validate({
 
 ## Formatting errors
 
-VineJS uses [error reporters](./error_reporter.md) to change the formatting of error messages. For example, if you follow the [JSON API spec](https://jsonapi.org/format/#errors), you may create an error reporter that formats the errors per the spec.
+VineJS uses error reporters to change the formatting of error messages. For example, if you follow the [JSON API spec](https://jsonapi.org/format/#errors), you may create an error reporter that formats the errors per the spec.
+
+[Learn more about error reporters](./error_reporter.md).
 
 ## Inferring types from schema
 
-The output of the `vine.validate` method is fully typed; hence, you do not have to perform manual type inference. 
+The `validate` method output is fully typed; hence, you do not have to perform manual type inference. 
 
 However, if you want to infer types directly from the schema (without performing validation), you may use the `Infer` type helper. For example:
 
@@ -146,8 +176,12 @@ import vine from '@vinejs/vine'
 
 vine.configure({
   convertEmptyStringsToNull: true,
-  messagesProvider: () => new CustomMessageProvider(),
-  errorReporter: () => new CustomErrorReporter()
+  messagesProvider: (messages) => {
+    return new CustomMessageProvider(messages)
+  },
+  errorReporter: () => {
+    return new CustomErrorReporter()
+  }
 })
 ```
 
@@ -173,7 +207,7 @@ messagesProvider
 
 <dd>
 
-The messages provider is an object with the `getMessage` method. You may create a custom messages provider to build a workflow around validation error messages.
+The messages provider is an object with the `getMessage` method. You may create a messages provider to build a custom workflow around error messages.
 
 </dd>
 

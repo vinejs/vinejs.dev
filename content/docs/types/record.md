@@ -19,7 +19,8 @@ const data = {
   lime: '#99d52a'
 }
 
-const output = await vine.validate({ schema, data })
+const validate = vine.compile(schema)
+const output = await validate({ data })
 ```
 
 Using the following modifiers, you may mark the record as `optional` or `nullable`.
@@ -85,9 +86,9 @@ You may define custom error messages for the following record based rules.
 ```ts
 const messages = {
   record: 'The {{ field }} field must be an object',
-  minLength: 'The {{ field }} field must have at least {{ value }} items',
-  maxLength: 'The {{ field }} field must not have more than {{ value }} items',
-  fixedLength: 'The {{ field }} field must contain {{ value }} items'
+  minLength: 'The {{ field }} field must have at least {{ min }} items',
+  maxLength: 'The {{ field }} field must not have more than {{ max }} items',
+  fixedLength: 'The {{ field }} field must contain {{ size }} items'
 }
 ```
 

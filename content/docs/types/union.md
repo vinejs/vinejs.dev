@@ -2,10 +2,6 @@
 
 Unions in VineJS allow expressing conditional validations without losing type safety. You may define union types using the `vine.union`, `vine.unionOfTypes`, or `vine.group` methods. All methods serve different purposes.
 
-:::note
-The goal of Unions is to provide accurate type information when narrowing types post-validation.
-:::
-
 In this guide, we will look at some real-world examples to better understand different Union APIs.
 
 ## Login with phone or email
@@ -30,6 +26,7 @@ type LoginForm = {
 Let's reproduce the `LoginForm` type using the `vine.group` method.
 
 ```ts
+// highlight-start
 const emailOrPhone = vine.group([
   vine.group.if((data) => 'email' in data, {
     email: vine.string().email()
@@ -38,6 +35,7 @@ const emailOrPhone = vine.group([
     phone: vine.string().phone()
   }),
 ])
+// highlight-end
 
 const loginForm = vine.schema({
   password: vine
@@ -45,7 +43,9 @@ const loginForm = vine.schema({
     .minLength(6)
     .maxLength(32)
 })
+// highlight-start
 .merge(emailOrPhone)
+// highlight-end
 ```
 
 Currently, the validation will pass if the user does not provide both the `email` and the `phone` number fields. So, let's handle this case and report an error.
@@ -84,13 +84,13 @@ In the following example, the `type` property serves as a discriminant.
  */
 type FiscalHost = {
   type: 'stripe',
-  accountId: string
+  account_id: string
 } | {
   type: 'paypal',
   email: string
 } | {
   type: 'open_collective',
-  projectUrl: string
+  project_url: string
 }
 ```
 
@@ -98,7 +98,7 @@ type FiscalHost = {
 const fiscalHost = vine.group([
   vine.group.if((data) => data.type === 'stripe', {
     type: vine.literal('stripe'),
-    accountId: vine.string(),
+    account_id: vine.string(),
   }),
   vine.group.if((data) => data.type === 'paypal', {
     type: vine.literal('paypal'),
@@ -106,13 +106,15 @@ const fiscalHost = vine.group([
   }),
   vine.group.if((data) => data.type === 'open_collective', {
     type: vine.literal('open_collective'),
-    projectUrl: vine.string().url(),
+    project_url: vine.string().url(),
   })
 ])
 
-const schema = vine.schema({
-  type: vine.enum(['enum', 'paypal', 'open_collective'])
-}).merge(fiscalHost)
+const schema = vine
+  .schema({
+    type: vine.enum(['enum', 'paypal', 'open_collective'])
+  })
+  .merge(fiscalHost)
 ```
 
 In the above example, we do not need the `otherwise` method because we define an `enum` validation on the `type` property regardless of the union conditions.
@@ -174,7 +176,7 @@ Unions in VineJS are represented as a conditional (aka predicate) and a schema a
 
 If you are creating a union of distinct types, meaning the value of a field can either be a `string`, a `number`, a `boolean`, and so on. Then you may skip writing the conditionals yourself and instead use the `unionOfTypes` method.
 
-In the following example, we want the `healthCheck` field to be either a string (formatted as URL) or a boolean. There are two ways to write this schema.
+In the following example, we want the `health_check` field to be either a string (formatted as URL) or a boolean. There are two ways to write this schema.
 
 :::caption{for="error"}
 **Using vine.union (not recommended)**
@@ -192,7 +194,7 @@ const healthCheckSchema = vine.union([
 ])
 
 const schema = vine.schema({
-  healthCheck: healthCheckSchema
+  health_check: healthCheckSchema
 })
 ```
 
@@ -204,7 +206,7 @@ The `vine.unionOfTypes` method removes the need for conditionals. However, you c
 
 ```ts
 const schema = vine.schema({
-  healthCheck: vine.unionOfTypes([
+  health_check: vine.unionOfTypes([
     vine.boolean(),
     vine.string().url(),
   ])

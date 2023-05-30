@@ -2,7 +2,7 @@
 
 VineJS has first-class support for defining custom error messages. You may specify a generic error message for a validation rule or define a specific one for a `field + rule` combination.
 
-The error messages are supplied to the `vine.validate` method as an object or function.
+The error messages are supplied to the `validate` method as a key-value pair.
 
 ```ts
 import vine from '@vinejs/vine'
@@ -12,6 +12,8 @@ const schema = vine.schema({
   email: vine.string().email(),
 })
 
+const data = {}
+
 // highlight-start
 const messages = {
   required: 'The {{ field }} field is required',
@@ -20,10 +22,8 @@ const messages = {
 }
 // highlight-end
 
-const data = {}
-
-await vine.validate({
-  schema,
+const validate = vine.compile(schema)
+await validate({
   data,
   // highlight-start
   messages,
@@ -74,51 +74,121 @@ const messages = {
 }
 ```
 
-## Using a messages provider
-The messages provider allows you to build a custom workflow for defining validation error messages. For example, if you have a multi-lingual web-app, then you might want to create a messages provider that integrates with your translations workflow.
+## Interpolation
+You can use dynamic placeholders inside custom error messages, and they will be replaced with the runtime values. 
 
-:::note
+The `{{ field }}` placeholder is always available; the rest are specific to rules. You may reference the rules documentation to view available placeholders.
 
-Using a custom messages provider will disable the default messages provider, hence everything we covered so far in this guide will not be relevant anymore.
+```ts
+const messages = {
+  required: 'The {{ field }} field is required',
+  minLength: 'The {{ field }} field must be {{ min }} characters long',
+  date: 'The {{ field }} field must be formatted as {{ format }}'
+}
+
+// username: Will translate to following
+// The username field is required
+```
+
+## Field names substitution
+The `{{ field }}` placeholder inside error messages gets replaced with the input field name. However, you may define a human-readable name for the fields as a key-value pair and supply it to the `validate` method.
+
+```ts
+import vine from '@vinejs/vine'
+
+const schema = vine.schema({
+  first_name: vine.string(),
+  last_name: vine.string().email(),
+})
+
+const data = {}
+
+const messages = { 
+  required: 'The {{ field }} field is required',
+}
+
+// highlight-start
+const fields = {
+  first_name: 'first name',
+  last_name: 'last name',
+}
+// highlight-end
+
+const validate = vine.compile(schema)
+await validate({
+  data,
+  messages,
+  // highlight-start
+  fields
+  // highlight-end
+})
+```
+
+## Creating a messages provider
+The messages provider allows you to build a custom workflow for defining validation error messages. For example, if you have a multi-lingual web app, you might want to create a message provider that integrates with your translation workflow.
+
+:::warning
+
+Using a custom messages provider will disable the default messages provider. Hence, everything we covered in this guide will no longer be relevant.
 
 :::
 
+- A custom messages provider must implement the `MessagesProviderContact` interface.
+
+- The provider receives the user-defined error messages and fields as constructor arguments.
+
+- The `getMessage` method must return a string value.
 
 ```ts
 import vine from '@vinejs/vine'
 import { MessagesProviderContact } from '@vinejs/vine/types'
 
-class CustomMessagesProvider implements MessagesProviderContact {
-  #messages: Record<string, string> = {}
+export class CustomMessagesProvider implements MessagesProviderContact {
+  /**
+   * Reference to user defined messages and fields.
+   */
+  #messages: Record<string, string>
+  #fields: Record<string, string>
 
-  constructor(messages: Record<string, string>) {
+  constructor(
+    messages: Record<string, string>,
+    fields: Record<string, string>
+  ) {
     this.#messages = messages
+    this.#fields = fields
   }
   
-  getMessage(rawMessage: string, rule: string, ctx: FieldContext) {
-    // return message as a string
+  /**
+   * Returns the error messages for a given rule id and field.
+   */
+  getMessage(defaultMessage: string, rule: string, ctx: FieldContext) {
   }
 }
 ```
 
-You may define a custom messages provider to the `vine.validate` method, or configure it globally using the `vine.configure` method.
+### Registering messages provider
+
+You may register the custom messages provider globally using the `vine.configure` method or pass it to the `validate` method.
 
 ```ts
-const errorReporter = new CustomMessagesProvider(
-  vine.getMessagesProvider(messages)
-)
-
-await vine.validate({
-  schema,
-  data,
-  errorReporter
+// title: Configure globally
+vine.configure({
+  messagesProvider: (messages, fields) => {
+    return new CustomMessagesProvider(messages, fields)
+  }
 })
 ```
 
 ```ts
-vine.configure({
-  messagesProvider: (messages) => new CustomMessagesProvider(
-    messages
-  )
-})
+// title: Define during validation
+import { VineOptions } from '@vinejs/vine'
+
+const options: Partial<VineOptions> = {
+  messagesProvider: (messages, fields) => {
+    return new CustomMessagesProvider(messages, fields)
+  }
+}
+
+const validate = vine.compile(schema)
+await validate({ data }, options)
 ```

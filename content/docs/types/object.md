@@ -81,7 +81,8 @@ const data = {
   trackLogin: true,
 }
 
-const output = await vine.validate({ schema, data })
+const validate = vine.compile(schema)
+const output = await validate({ data })
 /**
 {
   username: 'virk',
@@ -110,7 +111,8 @@ const data = {
   trackLogin: true,
 }
 
-const output = await vine.validate({ schema, data })
+const validate = vine.compile(schema)
+const output = await validate({ data })
 /**
 {
   username: 'virk',
@@ -142,7 +144,7 @@ const schema = vine.schema({
 
 Object groups allow you to validate additional properties based on a condition. Each group can have multiple conditions, and each condition has an associated schema.
 
-In the following example, we validate a form to issue a monument ticket to a visitor. The visitor may optionally hire a guide, and if they do, we must validate the **guide id**, **hiring duration**, and the **paid amount**.
+In the following example, we validate a form to issue a monument ticket to a visitor. The visitor may optionally hire a guide, and if they do, we must validate the **guide id**, **started at/ended at dates**, and the **paid amount**.
 
 Before creating the validation schema, let's visualize the expected type we want for this schema.
 
@@ -152,81 +154,130 @@ Before creating the validation schema, let's visualize the expected type we want
  */
 type VisitorDetails = {
   name: string
-  groupSize: number
-  phoneNumber: string
+  group_size: number
+  phone_number: string
 } & ({
-  isHiringGuide: true,
-  guideId: string,
+  is_hiring_guide: true,
+  guide_id: string,
   amount: number,
-  startedAt: Date,
-  endedAt: Date,
+  started_at: Date,
+  ended_at: Date,
 } | {
-  isHiringGuide: false,
+  is_hiring_guide: false,
 })
 ```
 
-Instead of marking additional fields like `guideId` or `amount` optional, we create a union of types. **Unions provide great type safety when you perform type narrowing in TypeScript**. 
+Instead of marking additional fields like `guide_id` or `amount` optional, we create a union of types. **Unions provide great type safety when you perform type narrowing in TypeScript**. 
 
-Alright, let's reproduce the `VisitorDetails` type using the VineJS schema API.
+Let's reproduce the `VisitorDetails` type using the VineJS schema API.
 
 ```ts
 import vine from '@vinejs/vine'
 
+// highlight-start
 const guideSchema = vine.group([
   vine.group.if(
-    (data) => vine.helpers.isTrue(data.isHiringGuide),
+    (data) => vine.helpers.isTrue(data.is_hiring_guide),
     {
-      isHiringGuide: vine.literal(true),
-      guideId: vine.string(),
+      is_hiring_guide: vine.literal(true),
+      guide_id: vine.string(),
       amount: vine.number(),
-      startedAt: vine.date(),
-      endedAt: vine.date(),
+      started_at: vine.date(),
+      ended_at: vine.date(),
     }
   ),
   vine.group.else({
-    isHiringGuide: vine.literal(false),
+    is_hiring_guide: vine.literal(false),
   }),
 ])
+// highlight-end
 
 const schema = vine.schema({
   name: vine.string(),
-  groupSize: vine.number(),
-  phoneNumber: vine.string()
+  group_size: vine.number(),
+  phone_number: vine.string()
 })
+// highlight-start
 .merge(guideSchema)
+// highlight-end
 ```
-
-In the above example, we re-create the `VisitorDetails` type with a union of objects.
 
 The `vine.group` method accepts an array of conditions and the schema to use if the condition is `true` at runtime. In our example, we have the following two conditions.
 
-- We will use the first schema if the `data` has `isHiringGuide = true`.
+- We will use the first schema if the `data` has `is_hiring_guide = true`.
 - Otherwise, we will use the second schema inside the group array.
 
 Finally, we merge the group with the object using the `object.merge` method. You may call the `merge` method multiple times, and each call will result in an [intersection type of unions](https://ultimatecourses.com/blog/use-intersection-types-to-combine-types-in-typescript).
 
+### group.if
+The `vine.group.if` method accepts a callback as the first argument and the schema to use as the second argument. The schema will be used for the validation if the callback returns `true`. Otherwise, the group will move to the next condition.
 
+```ts
+vine.group.if((data, ctx) => {
+  return true
+}, {
+})
+```
+
+### group.else
+The `vine.group.else` method defines a fallback schema when none of the `if` conditions match. The `else` condition must last in the `vine.group` array.
+
+```ts
+vine.group.else({
+  // fallback schema
+})
+```
+
+### group.otherwise
+If you do not have a fallback schema, you must define an `otherwise` callback to report an error when none of the conditions are matched. For example:
+
+```ts
+vine.group([
+  vine.group.if((data) => 'username' in data, {
+    username: vine.string()
+  }),
+  vine.group.if((data) => 'email' in data, {
+    email: vine.string().email()
+  })
+])
+// highlight-start
+.otherwise((ctx) => {
+  ctx.report(
+    'You must provide username or email to login',
+    'email_or_username',
+    ctx
+  )
+})
+// highlight-end
+```
+
+<!--
 :::note
 
 It's okay if creating groups and merging them into the object initially feels complicated. You can learn more about them by [browsing examples]() (each example has an accompanying screencast with it).
 
 :::
 
+!-->
 
-## Merging static properties
 
-The `merge` method accepts only unions, and if you want to merge static properties inside an object, you may use the JavaScript spread syntax. For example:
+## Adding properties to the object
+You may add new properties to the object using the [JavaScript spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) or use the `extend` method.
+
+:::codegroup
 
 ```ts
+// title: Spread syntax
 const author = {
   name: vine.string(),
   email: vine.string().email()
 }
 
-const commentSchema = vine.object({
-  body: vine.string(),
-  ...author,
-})
+const commentSchema = vine
+  .object({
+    body: vine.string(),
+    ...author,
+  })
 
 /**
  {
@@ -236,6 +287,28 @@ const commentSchema = vine.object({
  }
  */
 ```
+
+```ts
+// title: Extend method
+const commentSchema = vine
+  .object({
+    body: vine.string(),
+  })
+  .extend({
+    name: vine.string(),
+    email: vine.string().email()
+  })
+
+/**
+ {
+   body: string,
+   name: string,
+   email: string,
+ }
+ */
+```
+
+:::
 
 ## Defining error message
 

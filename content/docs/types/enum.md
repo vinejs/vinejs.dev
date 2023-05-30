@@ -9,13 +9,35 @@ const schema = vine.schema({
   role: vine.enum(['admin', 'moderator', 'owner', 'user'])
 })
 
-const output = await vine.validate({
-  schema,
+const validate = vine.compile(schema)
+const output = await validate({
   data
 })
 
 output.role // 'admin' | 'moderator' | 'owner' | 'user'
 ```
+
+Using the following modifiers, you may mark the field as `optional` or `nullable`.
+
+See also: [Working with `undefined` and `null` values](../guides/schema_101.md#nullable-and-optional-modifiers)
+
+```ts
+{
+  role: vine
+    .enum(['admin', 'moderator', 'owner', 'user'])
+    .nullable()
+}
+```
+
+```ts
+{
+  role: vine
+    .enum(['admin', 'moderator', 'owner', 'user'])
+    .optional()
+}
+```
+
+## TypeScript enum data type
 
 You may use the `vine.enum` method with [TypeScript enums](https://www.typescriptlang.org/docs/handbook/enums.html)
 as well.
@@ -34,28 +56,30 @@ const schema = vine.schema({
   role: vine.enum(Roles)
 })
 
-const output = await vine.validate({
-  schema,
+const validate = vine.compile(schema)
+const output = await validate({
   data
 })
 
 output.role // Roles
 ```
 
-Using the following modifiers, you may mark the field as `optional` or `nullable`.
+## Defer computing enum options
 
-See also: [Working with `undefined` and `null` values](../guides/schema_101.md#nullable-and-optional-modifiers)
-
-```ts
-{
-  role: vine.enum(Roles).nullable()
-}
-```
+You may defer computing the enum options by registering a callback with the `enum` data type. This is usually helpful when the list of options needs access to the runtime data.
 
 ```ts
-{
-  role: vine.enum(Roles).optional()
-}
+const schema = vine.schema({
+  creative_device: vine.enum(['mobile', 'desktop']),
+
+  banner_width: vine.enum((ctx) => {
+    if (ctx.parent.creative_device === 'mobile') {
+      return ['320px', '640px'] as const
+    }
+
+    return ['1080px', '1280px'] as const
+  })
+})
 ```
 
 ## Defining error message

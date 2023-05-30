@@ -1,8 +1,6 @@
-# Type-checking helpers
+# Helpers
 
-Since VineJS is a form data validation library, it has to handle [HTML forms serialization quirks](./html_forms_and_surprises.md) gracefully. To handle these quirks, we have created helpers you can access using the `vine.helpers` property and use them inside union conditionals or custom validation rules.
-
-Following is the list of available helpers.
+Following is the list of helpers used internally by VineJS to perform type-checking or sometimes narrow down the types. You might want to use them inside your custom rules or unions conditionals.
 
 ## isTrue
 
@@ -105,3 +103,17 @@ const output = vine.helpers.asBoolean(value)
 if (output !== null) {
 }
 ```
+
+## isEmail
+
+## isUrl
+
+## isActiveUrl
+
+## isAlpha
+
+## isAlphaNumeric
+
+## isIpAddress
+
+## isUUID

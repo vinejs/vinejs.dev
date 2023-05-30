@@ -1,6 +1,6 @@
 # Creating custom rules
 
-VineJS enables you to create custom rules and use them as standalone functions or add them as rules to existing schema types.
+VineJS allows you to create custom rules and use them either as standalone functions or add them as methods to existing schema classes.
 
 A custom rule is a function that performs either validation or normalizes the value of a field. It receives the following parameters.
 

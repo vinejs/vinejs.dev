@@ -10,9 +10,9 @@ The validation will fail if the provided array has less than two properties or i
 import vine from '@vinejs/vine'
 
 const schema = vine.schema({
-  dateRange: vine.tuple([
+  date_range: vine.tuple([
     vine.date().inFuture('days'),
-    vine.date().afterField('dateRange.0', { diff: 'days' }),
+    vine.date().afterField('date_range.0', { diff: 'days' }),
   ])
 })
 ```
@@ -23,9 +23,9 @@ See also: [Working with `undefined` and `null` values](../guides/schema_101.md#n
 
 ```ts
 {
-  dateRange: vine.tuple([
+  date_range: vine.tuple([
     vine.date().inFuture('days'),
-    vine.date().afterField('dateRange.0', { diff: 'days' }),
+    vine.date().afterField('date_range.0', { diff: 'days' }),
   ])
   .nullable()
 }
@@ -33,9 +33,9 @@ See also: [Working with `undefined` and `null` values](../guides/schema_101.md#n
 
 ```ts
 {
-  dateRange: vine.tuple([
+  date_range: vine.tuple([
     vine.date().inFuture('days'),
-    vine.date().afterField('dateRange.0', { diff: 'days' }),
+    vine.date().afterField('date_range.0', { diff: 'days' }),
   ])
   .optional()
 }
@@ -54,7 +54,7 @@ By default, the tuple keeps only the validated properties in the output, and the
 import vine from '@vinejs/vine'
 
 const schema = vine.schema({
-  topScores: vine.tuple([
+  top_scores: vine.tuple([
     vine.number(),
     vine.number(),
     vine.number(),
@@ -62,7 +62,7 @@ const schema = vine.schema({
 })
 
 const data = {
-  topScores: [
+  top_scores: [
     98,
     96,
     92,
@@ -71,13 +71,15 @@ const data = {
   ]
 }
 
-const output = await vine.validate({ schema, data })
-/**
+const validate = vine.compile(schema)
+const output = await validate({ data })
+
+/*
 const data = {
   topScores: [
     98,
     96,
-    92
+    92,
   ]
 }
 */
@@ -89,7 +91,7 @@ const data = {
 import vine from '@vinejs/vine'
 
 const schema = vine.schema({
-  topScores: vine.tuple([
+  top_scores: vine.tuple([
     vine.number(),
     vine.number(),
     vine.number(),
@@ -100,7 +102,7 @@ const schema = vine.schema({
 })
 
 const data = {
-  topScores: [
+  top_scores: [
     98,
     96,
     92,
@@ -109,8 +111,10 @@ const data = {
   ]
 }
 
-const output = await vine.validate({ schema, data })
-/**
+const validate = vine.compile(schema)
+const output = await validate({ data })
+
+/*
 const data = {
   topScores: [
     98,
@@ -122,7 +126,7 @@ const data = {
     // insert-end
   ]
 }
-*/
+ */
 ```
 
 :::
