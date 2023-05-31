@@ -1,10 +1,10 @@
 # Literal type
 
-Ensure the field's value matches exactly the given literal value. When the literal value is a `number` or a `boolean`, we will perform following type normalizations on the input value before validating it.
+Ensure the field's value matches exactly the expected literal value. In certain cases, VineJS will perform the following normalizations on the input value.
 
-- Input value `[true, 1, "1", "true", "on"]` will be converted to `true`.
-- Input value `[false, 0, "0", "false"]` will be converted to `false`.
-- A string representation of a number value will be converted to a number.
+- **When expected value is a boolean** - The input value `[true, 1, "1", "true", "on"]` will be converted to `true`.
+- **When expected value is a boolean** - The input value `[false, 0, "0", "false"]` will be converted to `false`.
+- **When expected value is a number** - The string representation of a number value will be converted to a number.
 
 ```ts
 import vine from '@vinejs/vine'

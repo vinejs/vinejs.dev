@@ -73,20 +73,26 @@ import vine from '@vinejs/vine'
 const schema = vine.schema({
   username: vine.string(),
   email: vine.string().email(),
-  password: vine.string().min(8).max(32).confirmed()
+  password: vine
+    .string()
+    .minLength(8)
+    .maxLength(32)
+    .confirmed()
 })
+
+const data = {
+  username: 'virk',
+  email: 'virk@example.com',
+  password: 'secret',
+  password_confirmation: 'secret',
+}
 
 // highlight-start
 const validate = vine.compile(schema)
-await validate({
+const output = await validate({ data })
 // highlight-end
-  data: {
-    username: 'virk',
-    email: 'virk@example.com',
-    password: 'secret',
-    password_confirmation: 'secret',
-  }
-})
+
+console.log(output)
 ```
 
 ## Handling errors

@@ -249,12 +249,6 @@ const schema = vine.schema({
 
 VineJS allows you to transform all field names to `camelCase` using the `toCamelCase` method. The helper is added since the HTML input names are usually in `snake_case`, but we JavaScript developers define variables in `camelCase`.
 
-:::note
-
-Applying the `toCamelCase` transformation at runtime is relatively simple. However, converting the types simultaneously takes a lot of work. Therefore, we will not add more transforms like `toConstantCase` or `toUpperCase`. 
-
-:::
-
 :::codegroup
 
 ```ts

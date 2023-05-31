@@ -36,7 +36,7 @@ You may define the custom error message using the `boolean` rule name.
 
 ```ts
 const messages = {
-  boolean: 'The value must be true or false'
+  boolean: 'The value must be a boolean'
 }
 ```
 

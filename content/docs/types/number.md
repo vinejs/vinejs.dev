@@ -33,8 +33,8 @@ You may define custom error messages for the following number based rules.
 ```ts
 const messages = {
   number: 'The {{ field }} field must be a number',
-  min: 'The {{ field }} field must be at least {{ value }}',
-  max: 'The {{ field }} field must not be greater than {{ value }}',
+  min: 'The {{ field }} field must be at least {{ min }}',
+  max: 'The {{ field }} field must not be greater than {{ max }}',
   range: 'The {{ field }} field must be between {{ min }} and {{ max }}',
   positive: 'The {{ field }} field must be positive',
   negative: 'The {{ field }} field must be negative',

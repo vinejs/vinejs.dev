@@ -55,6 +55,16 @@ The nested path to the field is under validation. The value is represented using
 
 A function to `mutate` the value of the field. This function must be used by validation rules, not union conditionals or the `transform` method.
 
+```ts
+vine.createRule((value, options, ctx) => {
+  /**
+   * Mutate output value. Next validation rule will receive
+   * the updated value
+   */
+  ctx.mutate(value.toUpperCase(), ctx)
+})
+```
+
 ## report
 
 A method to report error messages for a specific field. The method accepts the following arguments.
@@ -63,6 +73,14 @@ A method to report error messages for a specific field. The method accepts the f
 - The name of the validation rule for which the validation failed.
 - Reference to the current `ctx` object.
 - Optional metadata to share with the [error reporter](./error_reporter.md). 
+
+```ts
+vine.createRule((value, options, ctx) => {
+  ctx.report('error message', 'error_id', ctx, {
+    key: 'value'
+  })
+})
+```
 
 ## isValid
 
@@ -78,8 +96,17 @@ Reference to the parent object or array (if the field is nested). Otherwise, the
 
 ## fieldName
 
-The name of the filed under validation. In the case of an array element, it will be an array index.
+The name of the field under validation. In the case of an array element, it will be the array index.
 
 ## isArrayMember
 
 A boolean to know if the field is an array element. When set to `true`, the value of `fieldName` will be the array index, and the `parent` property will be an array (otherwise object).
+
+```ts
+vine.createRule((value, options, ctx) => {
+  if (ctx.isArrayMember) {
+    ctx.parent // any[]
+    ctx.fieldName // number
+  }
+})
+```

@@ -1,6 +1,12 @@
 # Helpers
 
-Following is the list of helpers used internally by VineJS to perform type-checking or sometimes narrow down the types. You might want to use them inside your custom rules or unions conditionals.
+Following is the list of helpers used internally by VineJS to perform type-checking or sometimes narrow down the types. You might want to use them inside your custom rules or union conditionals.
+
+:::note
+
+Helpers are created by keeping the [HTML forms serialization](./html_forms_and_surprises.md) behavior in mind.
+
+:::
 
 ## isTrue
 
@@ -74,6 +80,17 @@ vine.helpers.isNumeric('121.09') // true
 vine.helpers.isNumeric('49.00') // true
 ```
 
+## hasDecimals
+
+Check if a number value has a fixed or a range of decimal places. The `hasDecimals` method accepts a `number` data type for the value input.
+
+```ts
+vine.helpers.hasDecimals(32.12, [0, 2]) // true
+vine.helpers.hasDecimals(32, [0, 2]) // true
+vine.helpers.hasDecimals(32, [2]) // false
+vine.helpers.hasDecimals(32.101, [2]) // false
+```
+
 ## asNumber
 
 Casts the value to a number using the `Number` method. Returns `NaN` when unable to cast.
@@ -104,16 +121,20 @@ if (output !== null) {
 }
 ```
 
-## isEmail
+## Validator.js validators
+Alongside the VineJS helpers, you may also use the `vine.helpers` object to access all the validators exported by the [validator.js](https://github.com/validatorjs/validator.js/) library. For example:
 
-## isUrl
+```ts
+vine.helpers.isEmail('foo@bar.com', {
+  allow_ip_domain: false,
+})
 
-## isActiveUrl
+vine.helpers.isURL('https://foo.com', {
+  require_protocol: true,
+  allow_query_components: false,
+})
 
-## isAlpha
-
-## isAlphaNumeric
-
-## isIpAddress
-
-## isUUID
+vine.helpers.isPassportNumber('passport-number', {
+  countryCode: 'IN'
+})
+```

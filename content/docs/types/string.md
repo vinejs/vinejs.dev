@@ -343,13 +343,193 @@ vine.schema({
 
 ### uuid
 
-Enforce the field's value under validation is a valid `uuid`. You may optionally enforce a specific uuid version.
+Ensure the field's value to be a valid `uuid`. You may optionally enforce a specific uuid version.
 
 ```ts
 vine.schema({
   id: vine
     .string()
     .uuid({ version: 'v4' })
+})
+```
+
+### ascii
+Ensure the value contains ASCII characters only.
+
+```ts
+vine.schema({
+  greeting: vine
+    .string()
+    .ascii()
+})
+```
+
+### ccNumber
+Ensure the field's value is a valid credit card number. Optionally, you can define an array of providers from the following list.
+
+- amex
+- dinersclub
+- discover
+- jcb
+- mastercard
+- unionpay
+- visa
+
+```ts
+vine.schema({
+  credit_card: vine
+    .string()
+    .ccNumber()
+})
+
+// Only allow mastercard credit cards
+vine.schema({
+  credit_card: vine
+    .string()
+    .ccNumber({ provider: ['mastercard'] })
+})
+```
+
+You may define a callback function to compute the credit card options at runtime lazily. 
+
+```ts
+vine.schema({
+  credit_card: vine
+    .string()
+    .ccNumber((ctx) => {
+      if (ctx.parent.country_code === 'IN') {
+        return { provider: ['mastercard', 'amex', 'visa'] }
+      }
+    })
+})
+```
+
+### hexCode
+Ensure the value is a valid hex code for a color.
+
+```ts
+vine.schema({
+  primary_color: vine.string().hexCode()
+})
+```
+
+### iban
+Ensure the value is a valid IBAN (International Bank Account Number).
+
+```ts
+vine.schema({
+  iban: vine.string().iban()
+})
+```
+
+### jwt
+Ensure the value is formatted as a valid JWT (JSON Web Token).
+
+```ts
+vine.schema({
+  authorization: vine.string().jwt()
+})
+```
+
+### coordinates
+Ensure the value is a string with latitude and longitude coordinates.
+
+```ts
+vine.schema({
+  delivery_location: vine
+    .string()
+    .coordinates()
+})
+```
+
+### mobile
+Ensure the field's value is a valid mobile number.  The validation is performed using the [validator.js](https://github.com/validatorjs/validator.js/) library, and you may pass all the options accepted by the [validator.isMobilePhone](https://github.com/validatorjs/validator.js/#:~:text=MIME%20type%20format.-,isMobilePhone(str,-%5B%2C%20locale%20%5B%2C%20options%5D%5D)) method.
+
+```ts
+vine.schema({
+  contact_number: vine
+    .string()
+    .mobile()
+})
+```
+
+You may define a callback function to compute the options at runtime lazily. 
+
+```ts
+vine.schema({
+  contact_number: vine
+    .string()
+    .mobile((ctx) => {
+      const countryCode = ctx.parent.country_code
+      if (vine.helpers.mobileLocales.includes(countryCode)) {
+        return {
+          locales: [countryCode],
+          strictMode: true,
+        }
+      }
+    })
+})
+```
+
+### passportNumber
+Ensure the field's value is formatted as a valid passport number. Optionally, you can define an array of country codes as well.
+
+```ts
+vine.schema({
+  passport: vine
+    .string()
+    .passportNumber()
+})
+
+vine.schema({
+  passport: vine
+    .string()
+    .passportNumber({
+      countryCodes: ['IN', 'US', 'GB']
+    })
+})
+```
+
+You may define a callback function to compute the options at runtime lazily. 
+
+```ts
+vine.schema({
+  passport: vine
+    .string()
+    .passportNumber((ctx) => {
+      if (ctx.parent.country_code) {
+        return {
+          countryCodes: [ctx.parent.country_code]
+        }
+      }
+    })
+})
+```
+
+### postalCode
+Ensure the field's value is formatted as a valid postal code. Optionally, you can define an array of country codes as well.
+
+```ts
+vine.schema({
+  postal_code: vine
+    .string()
+    .postalCode({ countryCodes: ['IN'] })
+})
+```
+
+You may define a callback function to compute the options at runtime lazily.
+
+```ts
+vine.schema({
+  postal_code: vine
+    .string()
+    .postalCode((ctx) => {
+      if (ctx.parent.country_code) {
+        return {
+          countryCodes: [ctx.parent.country_code]
+        }
+      }
+    })
 })
 ```
 

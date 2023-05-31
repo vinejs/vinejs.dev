@@ -47,6 +47,6 @@ You may define the custom error message using the `accepted` rule name.
 
 ```ts
 const messages = {
-  accepted: 'The {{ field }} field must be checked'
+  accepted: 'The {{ field }} field must be accepted'
 }
 ```
