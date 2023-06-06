@@ -5,7 +5,7 @@ Mark the field under validation to be anything. In other words, do not perform a
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   secretMessage: vine.any()
 })
 ```

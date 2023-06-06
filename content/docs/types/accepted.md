@@ -14,7 +14,7 @@ If validation passes, the value will be normalized to `true`.
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   terms: vine.accepted()
 })
 

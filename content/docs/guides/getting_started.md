@@ -27,7 +27,7 @@ Once installed, you can import and use VineJS as follows.
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   username: vine.string(),
   email: vine.string().email(),
   password: vine
@@ -52,7 +52,7 @@ const output = await vine.validate({
 console.log(output)
 ```
 
-- The `vine.schema` method defines the validation schema.
+- The `vine.object` method defines the top-level object for the validation schema.
 
 - The validation is performed using the `validate` method. The validate method accepts the `schema` and the `data` object to perform the validation.
 
@@ -70,7 +70,7 @@ You may pre-compile a schema using the `vine.compile` method. The compile method
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   username: vine.string(),
   email: vine.string().email(),
   password: vine
@@ -97,7 +97,7 @@ console.log(output)
 
 ## Handling errors
 
-In case of an error, VineJS will throw a [ValidationError]() exception. You may access the detailed error messages using the `error.messages` property.
+In case of an error, VineJS will throw a [ValidationError](https://github.com/vinejs/vine/blob/main/src/errors/validation_error.ts) exception. You may access the detailed error messages using the `error.messages` property.
 
 ```ts
 import vine, { errors } from '@vinejs/vine'
@@ -117,7 +117,8 @@ The `error.messages` property is an array of error objects with the following pr
 - `field` - The name of the field under validation. Nested fields are represented with a dot notation. For example: `contact.email`.
 - `message` - Error message.
 - `rule` - The rule that reported the error.
-- `index` - Array element index for which the validation failed.
+- `index?` - Array element index for which the validation failed.
+- `meta?` - Optional meta-data set by the validation rule at the time of reporting the error.
 
 ## Custom error messages
 
@@ -155,7 +156,7 @@ However, if you want to infer types directly from the schema (without performing
 import vine from '@vinejs/vine'
 import { Infer } from '@vinejs/vine/types'
 
-const schema = vine.schema({
+const schema = vine.object({
   username: vine.string(),
   email: vine.string().email(),
   password: vine

@@ -1,34 +1,12 @@
 # Object type
-
 Ensure the value of a field is a valid JavaScript object literal. You may define a collection of properties you want to validate within the object.
-
-
-:::note
-
-The `vine.schema` is a superset of the `vine.object`  schema type. It defines a top-level object and exposes additional methods like [`toCamelCase`](../guides/schema_101.md#converting-the-output-to-camelcase).
-
-
-:::
 
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   username: vine.string(),
   password: vine.string(),
-})
-```
-
-## Nested objects
-
-The nested objects are defined using the `vine.object` method. Like `vine.schema`, you may pass a collection of properties you want to validate within the object.
-
-```ts
-const schema = vine.schema({
-  profile: vine.object({
-    twitter_handle: vine.string(),
-    github_username: vine.string(),
-  })
 })
 ```
 
@@ -69,7 +47,7 @@ However, you may allow unknown properties using the `allowUnknownProperties` met
 // title: Without unknown properties
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   username: vine.string(),
   password: vine.string(),
 })
@@ -96,7 +74,7 @@ const output = await validate({ data })
 // title: Allow unknown properties
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   username: vine.string(),
   password: vine.string(),
 })
@@ -130,7 +108,7 @@ const output = await validate({ data })
 You can use the `allowUnknownProperties` with nested objects as well.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   profile: vine
     .object({
       twitter_handle: vine.string(),
@@ -192,7 +170,7 @@ const guideSchema = vine.group([
 ])
 // highlight-end
 
-const schema = vine.schema({
+const schema = vine.object({
   name: vine.string(),
   group_size: vine.number(),
   phone_number: vine.string()

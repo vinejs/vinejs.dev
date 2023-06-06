@@ -5,7 +5,7 @@ Ensure the field's value is a valid `string`. Empty strings are allowed, and you
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   username: vine.string()
 })
 ```
@@ -71,7 +71,7 @@ Validate the field's value to be a valid email address. The validation is perfor
 See also: [normalizeEmail](#normalizeemail)
 
 ```ts
-vine.schema({
+vine.object({
   email: vine
     .string()
     .email(optionsGoesHere)
@@ -83,13 +83,13 @@ vine.schema({
 Validate the field's value against a pre-defined regular expression.
 
 ```ts
-vine.schema({
+vine.object({
   username: vine
     .string()
     .regex(/^[a-zA-Z0-9]+$/)
 })
 
-vine.schema({
+vine.object({
   username: vine
     .string()
     .regex(new RegExp('^[a-zA-Z0-9]+$'))
@@ -102,7 +102,7 @@ Validate the field's value to be a valid URL. The validation is performed using 
 
 
 ```ts
-vine.schema({
+vine.object({
   health_checks_url: vine
     .string()
     .url({
@@ -117,7 +117,7 @@ vine.schema({
 Ensure the URL value of a field has valid `A` or `AAAA` DNS records. The DNS lookup is performed using the [dnsPromises.resolve](https://nodejs.org/api/dns.html#dnspromisesresolvehostname-rrtype) method.
 
 ```ts
-vine.schema({
+vine.object({
   health_checks_url: vine
     .string()
     .activeUrl()
@@ -129,7 +129,7 @@ vine.schema({
 Validate the field's value only to contain letters, i.e.: `[a-z]` and `[A-Z]`. Optionally allow spaces, underscore, and dashes as well.
 
 ```ts
-vine.schema({
+vine.object({
   username: vine
     .string()
     .alpha({
@@ -145,7 +145,7 @@ vine.schema({
 Validate the field's value only to contain letters and numbers, i.e.: `[a-z]`, `[A-Z]`, and `[0-9]`. Optionally allow spaces, underscore, and dashes as well.
 
 ```ts
-vine.schema({
+vine.object({
   username: vine
     .string()
     .alphaNumeric({
@@ -161,7 +161,7 @@ vine.schema({
 Enforce the string to have the minimum pre-defined length.
 
 ```ts
-vine.schema({
+vine.object({
   password: vine
     .string()
     .minLength(8)
@@ -174,7 +174,7 @@ vine.schema({
 Enforce the string to have the maximum pre-defined length.
 
 ```ts
-vine.schema({
+vine.object({
   password: vine
     .string()
     .maxLength(32)
@@ -186,7 +186,7 @@ vine.schema({
 Enforce the string to have a fixed length.
 
 ```ts
-vine.schema({
+vine.object({
   pan_number: vine
     .string()
     .fixedLength(10)
@@ -200,7 +200,7 @@ Ensure the field under validation is confirmed by having another field with the 
 For example, You may use this rule to ensure the user confirms their password by typing it twice. If the field name is `password`, the confirmation field name must be `password_confirmation`.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   password: vine
     .string()
     .confirmed()
@@ -218,7 +218,7 @@ await validate({ data })
 You may modify the confirmation field name as follows.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   password: vine
     .string()
     .confirmed({
@@ -232,7 +232,7 @@ const schema = vine.schema({
 Ensure the field's value ends with the pre-defined substring.
 
 ```ts
-vine.schema({
+vine.object({
   email: vine
     .string()
     .endsWith('client_app.com')
@@ -244,7 +244,7 @@ vine.schema({
 Ensure the field's value starts with the pre-defined substring.
 
 ```ts
-vine.schema({
+vine.object({
   email: vine
     .string()
     .startsWith('+91')
@@ -256,7 +256,7 @@ vine.schema({
 Ensure the field's value under validation is the same as the other field's value.
 
 ```ts
-vine.schema({
+vine.object({
   password: vine.string(),
   password_confirmation: vine
     .string()
@@ -269,7 +269,7 @@ vine.schema({
 Ensure the field's value under validation is different from another field's value.
 
 ```ts
-vine.schema({
+vine.object({
   old_email: vine.string().email(),
   email: vine
     .string()
@@ -285,7 +285,7 @@ Ensure the field's value under validation is a subset of the pre-defined list.
 See also: [Enum data type for better type inference](./enum.md)
 
 ```ts
-vine.schema({
+vine.object({
   role: vine
     .string()
     .in(['admin', 'moderator', 'writer'])
@@ -295,7 +295,7 @@ vine.schema({
 You may defer computing the list values by registering a callback. The callback must return an array of values.
 
 ```ts
-vine.schema({
+vine.object({
   state: vine.string().in(statesList()),
   city: vine
     .string()
@@ -310,7 +310,7 @@ vine.schema({
 Ensure the field's value under validation is not inside the pre-defined list.
 
 ```ts
-vine.schema({
+vine.object({
   username: vine
     .string()
     .notIn(['admin', 'root', 'superuser'])
@@ -320,7 +320,7 @@ vine.schema({
 Like the `in` validation, you may defer computing the list values by registering a callback.
 
 ```ts
-vine.schema({
+vine.object({
   username: vine
     .string()
     .notIn(() => {
@@ -334,7 +334,7 @@ vine.schema({
 Validate the field's value to be a valid IP Address. Optionally, you may enforce the IP version as `v4` or `v6`.  Both `ipv4` and `ipv6` values are allowed by default.
 
 ```ts
-vine.schema({
+vine.object({
   ip: vine
     .string()
     .ipAddress({ version: 'v4' })
@@ -346,7 +346,7 @@ vine.schema({
 Ensure the field's value to be a valid `uuid`. You may optionally enforce a specific uuid version.
 
 ```ts
-vine.schema({
+vine.object({
   id: vine
     .string()
     .uuid({ version: 'v4' })
@@ -357,7 +357,7 @@ vine.schema({
 Ensure the value contains ASCII characters only.
 
 ```ts
-vine.schema({
+vine.object({
   greeting: vine
     .string()
     .ascii()
@@ -376,14 +376,14 @@ Ensure the field's value is a valid credit card number. Optionally, you can defi
 - visa
 
 ```ts
-vine.schema({
+vine.object({
   credit_card: vine
     .string()
     .ccNumber()
 })
 
 // Only allow mastercard credit cards
-vine.schema({
+vine.object({
   credit_card: vine
     .string()
     .ccNumber({ provider: ['mastercard'] })
@@ -393,7 +393,7 @@ vine.schema({
 You may define a callback function to compute the credit card options at runtime lazily. 
 
 ```ts
-vine.schema({
+vine.object({
   credit_card: vine
     .string()
     .ccNumber((ctx) => {
@@ -408,7 +408,7 @@ vine.schema({
 Ensure the value is a valid hex code for a color.
 
 ```ts
-vine.schema({
+vine.object({
   primary_color: vine.string().hexCode()
 })
 ```
@@ -417,7 +417,7 @@ vine.schema({
 Ensure the value is a valid IBAN (International Bank Account Number).
 
 ```ts
-vine.schema({
+vine.object({
   iban: vine.string().iban()
 })
 ```
@@ -426,7 +426,7 @@ vine.schema({
 Ensure the value is formatted as a valid JWT (JSON Web Token).
 
 ```ts
-vine.schema({
+vine.object({
   authorization: vine.string().jwt()
 })
 ```
@@ -435,7 +435,7 @@ vine.schema({
 Ensure the value is a string with latitude and longitude coordinates.
 
 ```ts
-vine.schema({
+vine.object({
   delivery_location: vine
     .string()
     .coordinates()
@@ -446,7 +446,7 @@ vine.schema({
 Ensure the field's value is a valid mobile number.  The validation is performed using the [validator.js](https://github.com/validatorjs/validator.js/) library, and you may pass all the options accepted by the [validator.isMobilePhone](https://github.com/validatorjs/validator.js/#:~:text=MIME%20type%20format.-,isMobilePhone(str,-%5B%2C%20locale%20%5B%2C%20options%5D%5D)) method.
 
 ```ts
-vine.schema({
+vine.object({
   contact_number: vine
     .string()
     .mobile()
@@ -456,7 +456,7 @@ vine.schema({
 You may define a callback function to compute the options at runtime lazily. 
 
 ```ts
-vine.schema({
+vine.object({
   contact_number: vine
     .string()
     .mobile((ctx) => {
@@ -475,13 +475,13 @@ vine.schema({
 Ensure the field's value is formatted as a valid passport number. Optionally, you can define an array of country codes as well.
 
 ```ts
-vine.schema({
+vine.object({
   passport: vine
     .string()
     .passportNumber()
 })
 
-vine.schema({
+vine.object({
   passport: vine
     .string()
     .passportNumber({
@@ -493,7 +493,7 @@ vine.schema({
 You may define a callback function to compute the options at runtime lazily. 
 
 ```ts
-vine.schema({
+vine.object({
   passport: vine
     .string()
     .passportNumber((ctx) => {
@@ -510,7 +510,7 @@ vine.schema({
 Ensure the field's value is formatted as a valid postal code. Optionally, you can define an array of country codes as well.
 
 ```ts
-vine.schema({
+vine.object({
   postal_code: vine
     .string()
     .postalCode({ countryCodes: ['IN'] })
@@ -520,7 +520,7 @@ vine.schema({
 You may define a callback function to compute the options at runtime lazily.
 
 ```ts
-vine.schema({
+vine.object({
   postal_code: vine
     .string()
     .postalCode((ctx) => {
@@ -542,7 +542,7 @@ Following is the list of mutations you can apply to a string value.  As the name
 Trim whitespaces from the value.
 
 ```ts
-vine.schema({
+vine.object({
   email: vine
     .string()
     .trim()
@@ -555,7 +555,7 @@ vine.schema({
 The `normalizeEmail` method normalizes the email address. The normalization is performed using the [validator.js](https://github.com/validatorjs/validator.js/) library, and you may pass all the options accepted by the [validator.normalizeEmail](https://github.com/validatorjs/validator.js/#:~:text=normalizeEmail(email%20%5B%2C%20options%5D)) method.
 
 ```ts
-vine.schema({
+vine.object({
   email: vine
     .string()
     .normalizeEmail({
@@ -570,7 +570,7 @@ vine.schema({
 The `normalizeUrl` method normalizes a URL value. The normalization is performed using the [normalize-url](https://github.com/sindresorhus/normalize-url#options) package, and you may pass all the options accepted by the package.
 
 ```ts
-vine.schema({
+vine.object({
   health_checks_url: vine
     .string()
     .normalizeUrl({
@@ -586,7 +586,7 @@ vine.schema({
 The `escape` method escapes HTML entities inside the string value. Under the hood, we use the [he](https://www.npmjs.com/package/he) package, and you may go through its README to learn more about the escaping process.
 
 ```ts
-vine.schema({
+vine.object({
   about: vine
     .string()
     .escape()
@@ -596,7 +596,7 @@ vine.schema({
 You may use the `encode` method to [encode non-ASCII symbols](https://www.npmjs.com/package/he#heescapetext).
 
 ```ts
-vine.schema({
+vine.object({
   about: vine
     .string()
     .encode({
@@ -611,7 +611,7 @@ vine.schema({
 Convert the field value to all uppercase.
 
 ```ts
-vine.schema({
+vine.object({
   role: vine
     .string()
     .toUpperCase()
@@ -623,7 +623,7 @@ vine.schema({
 Convert the field value to snake case.
 
 ```ts
-vine.schema({
+vine.object({
   role: vine
     .string()
     .toSnakeCase()
@@ -635,7 +635,7 @@ vine.schema({
 Convert the field value to camel case.
 
 ```ts
-vine.schema({
+vine.object({
   role: vine
     .string()
     .toCamelCase()
@@ -647,7 +647,7 @@ vine.schema({
 Convert the field value to lowercase.
 
 ```ts
-vine.schema({
+vine.object({
   username: vine
     .string()
     .toLowerCase()

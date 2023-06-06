@@ -37,7 +37,7 @@ const emailOrPhone = vine.group([
 ])
 // highlight-end
 
-const loginForm = vine.schema({
+const loginForm = vine.object({
   password: vine
     .string()
     .minLength(6)
@@ -165,7 +165,7 @@ const contact = vine.union([
   vine.report('Invalid contact type', 'invalid_contact', ctx)
 })
 
-const schema = vine.schema({
+const schema = vine.object({
   contacts: vine.array(contact)
 })
 ```
@@ -193,7 +193,7 @@ const healthCheckSchema = vine.union([
   vine.union.else(vine.boolean())
 ])
 
-const schema = vine.schema({
+const schema = vine.object({
   health_check: healthCheckSchema
 })
 ```
@@ -205,7 +205,7 @@ The `vine.unionOfTypes` method removes the need for conditionals. However, you c
 :::
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   health_check: vine.unionOfTypes([
     vine.boolean(),
     vine.string().url(),

@@ -7,7 +7,7 @@ In the following example, we want to accept an object of colors. The object keys
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   colors: vine.record(
     vine.string().hexCode()
   )
@@ -85,10 +85,10 @@ You may define custom error messages for the following record based rules.
 
 ```ts
 const messages = {
-  record: 'The {{ field }} field must be an object',
-  minLength: 'The {{ field }} field must have at least {{ min }} items',
-  maxLength: 'The {{ field }} field must not have more than {{ max }} items',
-  fixedLength: 'The {{ field }} field must contain {{ size }} items'
+  'record': 'The {{ field }} field must be an object',
+  'record.minLength': 'The {{ field }} field must have at least {{ min }} items',
+  'record.maxLength': 'The {{ field }} field must not have more than {{ max }} items',
+  'record.fixedLength': 'The {{ field }} field must contain {{ size }} items'
 }
 ```
 

@@ -13,7 +13,7 @@ Once installed, you may use the date schema type as follows.
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   dob: vine.date(),
 })
 
@@ -59,7 +59,7 @@ Following is the list of validation rules you may apply on a date.
 Ensure the value of date is same as the pre-defined value. The expected value must be an instance of the Luxon DateTime class.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   enrollment_date: vine
     .date()
     .equals(DateTime.fromISO('2023-05-25'))
@@ -70,7 +70,7 @@ const schema = vine.schema({
 Ensure the value of date is not same as the pre-defined value. The expected value must be an instance of the Luxon DateTime class.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   enrollment_date: vine
     .date()
     .notEquals(DateTime.fromISO('2023-05-25'))
@@ -86,7 +86,7 @@ const schema = vine.schema({
 Ensure the date is after a given interval. The `after` and `afterOrEqual` methods accepts the interval as the `first` argument and the unit as the `second` argument.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   checkin_date: vine
     .date()
     .after(2, 'days')
@@ -118,7 +118,7 @@ The `afterField` and `afterOrSameAsField` methods enforce the date to be after t
 The `afterField` validation is skipped when the other field's value is not a valid date.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   checkin_date: vine.date().inFuture({ unit: 'days' }),
   checkout_date: vine
     .date()
@@ -129,7 +129,7 @@ const schema = vine.schema({
 By default, the diff between two dates is calculated in minutes. However, you may define a custom diff unit via the options object.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   checkin_date: vine.date().inFuture({ unit: 'days' }),
   checkout_date: vine
     .date()
@@ -143,7 +143,7 @@ const schema = vine.schema({
 Ensure the date is before a given interval. The `before` and `beforeOrEqual` methods accept the interval as the `first` argument and the unit as the `second` argument.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   dob: vine
     .date()
     .before(10, 'years')
@@ -175,7 +175,7 @@ The `beforeField` and `beforeOrSameAsField` methods enforce the date to be befor
 The `beforeField` validation is skipped when the other field's value is not a valid date.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   checkin_date: vine.date(),
   documents_approved_at: vine
     .date()
@@ -186,7 +186,7 @@ const schema = vine.schema({
 By default, the diff between two dates is calculated in minutes. However, you may define a custom diff unit via the options object.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   checkin_date: vine.date(),
   documents_approved_at: vine
     .date()

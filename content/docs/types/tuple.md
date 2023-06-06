@@ -9,7 +9,7 @@ The validation will fail if the provided array has less than two properties or i
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   date_range: vine.tuple([
     vine.date().inFuture('days'),
     vine.date().afterField('date_range.0', { diff: 'days' }),
@@ -53,7 +53,7 @@ By default, the tuple keeps only the validated properties in the output, and the
 // title: Without unknown properties
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   top_scores: vine.tuple([
     vine.number(),
     vine.number(),
@@ -90,7 +90,7 @@ const data = {
 // title: Allow unknown properties
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   top_scores: vine.tuple([
     vine.number(),
     vine.number(),

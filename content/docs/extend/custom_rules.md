@@ -117,7 +117,7 @@ Let's use this rule inside a schema.
 import vine from '@vinejs/vine'
 import { uniqueRule } from './rules/unique.js'
 
-const schema = vine.schema({
+const schema = vine.object({
   email: vine
     .string()
     // highlight-start
@@ -165,7 +165,7 @@ That's all. Now, we can use the `unique` method as follows.
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   email: vine
     .string()
     .unique({
@@ -177,18 +177,17 @@ const schema = vine.schema({
 
 Like `VineString`, you may add macros to the following classes.
 
-- [VineBoolean]()
-- [VineNumber]()
-- [VineAccepted]()
-- [VineEnum]()
-- [VineObject]()
-- [VineArray]()
-- [VineRoot]()
-- [VineRecord]()
-- [VineTuple]()
-- [VineDate]()
-- [VineAny]()
-- [VineLiteral]()
+- [VineBoolean](https://github.com/vinejs/vine/blob/main/src/schema/boolean/main.ts)
+- [VineNumber](https://github.com/vinejs/vine/blob/main/src/schema/number/main.ts)
+- [VineAccepted](https://github.com/vinejs/vine/blob/main/src/schema/accepted/main.ts)
+- [VineEnum](https://github.com/vinejs/vine/blob/main/src/schema/enum/main.ts)
+- [VineObject](https://github.com/vinejs/vine/blob/main/src/schema/object/main.ts)
+- [VineArray](https://github.com/vinejs/vine/blob/main/src/schema/array/main.ts)
+- [VineRecord](https://github.com/vinejs/vine/blob/main/src/schema/record/main.ts)
+- [VineTuple](https://github.com/vinejs/vine/blob/main/src/schema/tuple/main.ts)
+- [VineDate](https://github.com/vinejs/vine/blob/main/src/schema/date/main.ts)
+- [VineAny](https://github.com/vinejs/vine/blob/main/src/schema/any/main.ts)
+- [VineLiteral](https://github.com/vinejs/vine/blob/main/src/schema/literal/main.ts)
 
 ## Guarding against invalid values
 
@@ -257,7 +256,7 @@ export const uniqueRule = vine.createRule(unique, {
 ## Testing rules
 You may use the `validator` test factory to write unit tests for your custom validation rules. 
 
-The `validator.executeAsync` method accepts the validation rule and the value to validate. The output is an instance of [ValidationResult]() you can use to write assertions.
+The `validator.executeAsync` method accepts the validation rule and the value to validate. The output is an instance of [ValidationResult](https://github.com/vinejs/vine/blob/main/factories/validator.ts#L19) you can use to write assertions.
 
 ```ts
 import { validator } from '@vinejs/vine/factories'

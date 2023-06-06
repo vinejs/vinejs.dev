@@ -7,7 +7,7 @@ The error messages are supplied to the `validate` method as a key-value pair.
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   username: vine.string(),
   email: vine.string().email(),
 })
@@ -47,7 +47,7 @@ const messages = {
 You may define custom error messages for nested fields using the dot-separator `(.)`. For example:
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   profile: vine.object({
     social: vine.object({
       twitter: vine.string()
@@ -63,7 +63,7 @@ const messages = {
 For fields inside arrays, you must use the wildcard `(*)` expression to target array children elements.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   contacts: vine.array(vine.object({
     email: vine.string().email()
   }))
@@ -96,7 +96,7 @@ The `{{ field }}` placeholder inside error messages gets replaced with the input
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   first_name: vine.string(),
   last_name: vine.string().email(),
 })

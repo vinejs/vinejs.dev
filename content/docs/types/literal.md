@@ -9,7 +9,7 @@ Ensure the field's value matches exactly the expected literal value. In certain 
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   isHiringGuide: vine.literal(true)
 })
 ```

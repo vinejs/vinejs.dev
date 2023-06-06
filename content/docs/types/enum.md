@@ -5,7 +5,7 @@ The `enum` data type ensures the value of a field is from the pre-defined list. 
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   role: vine.enum(['admin', 'moderator', 'owner', 'user'])
 })
 
@@ -52,7 +52,7 @@ enum Roles {
   USER = 'user'
 }
 
-const schema = vine.schema({
+const schema = vine.object({
   role: vine.enum(Roles)
 })
 
@@ -69,7 +69,7 @@ output.role // Roles
 You may defer computing the enum options by registering a callback with the `enum` data type. This is usually helpful when the list of options needs access to the runtime data.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   creative_device: vine.enum(['mobile', 'desktop']),
 
   banner_width: vine.enum((ctx) => {

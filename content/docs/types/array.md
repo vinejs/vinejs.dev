@@ -7,7 +7,7 @@ In the following example, we expect the value of `categories` to be an array of 
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   categories: vine.array(vine.number())
 })
 ```
@@ -39,7 +39,7 @@ Since the `vine.array` method accepts any valid VineJS type, you may create an a
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   contacts: vine.array(
     vine.object({
       id: schema.string(),
@@ -89,7 +89,7 @@ const contact = vine.union([
   vine.union.if((value) => hasType(value, 'phone'), phoneContact)
 ])
 
-const schema = vine.schema({
+const schema = vine.object({
   contacts: vine.array(contact)
 })
 ```
@@ -129,12 +129,12 @@ You may define custom error messages for the following array-based rules.
 
 ```ts
 const messages = {
-  array: 'The {{ field }} field must be an array',
-  minLength: 'The {{ field }} field must have at least {{ min }} items',
-  maxLength: 'The {{ field }} field must not have more than {{ max }} items',
-  fixedLength: 'The {{ field }} field must contain {{ size }} items',
-  notEmpty: 'The {{ field }} field must not be empty',
-  distinct: 'The {{ field }} field has duplicate values',
+  'array': 'The {{ field }} field must be an array',
+  'array.minLength': 'The {{ field }} field must have at least {{ min }} items',
+  'array.maxLength': 'The {{ field }} field must not have more than {{ max }} items',
+  'array.fixedLength': 'The {{ field }} field must contain {{ size }} items',
+  'notEmpty': 'The {{ field }} field must not be empty',
+  'distinct': 'The {{ field }} field has duplicate values',
 }
 ```
 
@@ -147,7 +147,7 @@ Following is the list of validation rules you can apply on an array.
 Enforce the array to have the expected minimum length.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   categories: vine.array(
     vine.number()
   ).minLength(1)
@@ -159,7 +159,7 @@ const schema = vine.schema({
 Enforce the array to have the expected maximum length.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   categories: vine.array(
     vine.number()
   ).maxLength(10)
@@ -171,7 +171,7 @@ const schema = vine.schema({
 Enforce the array to have a fixed length.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   categories: vine.array(
     vine.number()
   ).fixedLength(4)
@@ -183,7 +183,7 @@ const schema = vine.schema({
 Ensure the array has one or more values.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   categories: vine.array(
     vine.number()
   ).notEmpty()
@@ -197,7 +197,7 @@ Validate array children to have distinct/unique values. In the case of an array 
 In the following example, we expect the `categories` array to have unique category ids.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   categories: vine
     .array(
       vine.number()
@@ -211,7 +211,7 @@ const schema = vine.schema({
 In the following example, we expect users inside the array to have unique emails.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   users: vine
     .array(
       vine.object({
@@ -228,7 +228,7 @@ const schema = vine.schema({
 Finally, you may define composite keys to check for unique elements.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   users: vine
     .array(
       vine.object({
@@ -284,7 +284,7 @@ Following is the list of mutations you can perform on an array. As the name sugg
 Remove `empty strings`, `null`, and `undefined` values from the array. Applying the `compact` mutation before the validation rules is recommended.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   categories: vine
     .array(
       vine.number()

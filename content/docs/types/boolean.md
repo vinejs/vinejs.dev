@@ -9,7 +9,7 @@ Ensure the field's value is a valid `boolean` or a string representation of a bo
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   is_admin: vine.boolean()
 })
 ```

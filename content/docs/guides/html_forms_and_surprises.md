@@ -26,7 +26,7 @@ vine.configure({
 Continuing with the previous example, you may define the `country` field schema as follows.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   country: vine.string().nullable()
 })
 
@@ -48,7 +48,7 @@ Therefore, you will have to normalize the HTML form fields and work with specifi
 VineJS performs this normalization alongside validations. For example, the `string.number` type will attempt to convert the string-based numeric values to a JavaScript number data type before performing additional validations.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   age: vine.number().min(18)
 })
 
@@ -77,7 +77,7 @@ In VineJS, we have a dedicated schema type called `schema.accepted`, which ensur
 If validation passes, the value will be normalized to `true`.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   terms: vine.accepted()
 })
 

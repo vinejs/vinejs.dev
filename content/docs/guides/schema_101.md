@@ -2,7 +2,7 @@
 
 The validation schema defines the shape and the format of the data you expect during validation. We have divided the validation schema into three parts, i.e.
 
-- **The shape of the data** is defined using the `vine.schema` method.
+- **The shape of the top-level object** is defined using the `vine.object` method.
 - **The data type for fields** is defined using the schema methods like `vine.string`, `vine.boolean`, and so on.
 - **Additional validations and mutations** are applied using the rules available on a given schema type.
 
@@ -10,17 +10,11 @@ The validation schema defines the shape and the format of the data you expect du
 
 ## Creating schemas
 
-The validation schema is created using the `vine.schema` method. The method accepts a key-value pair, where the key is the field name, and the value is another schema type.
+The validation schema is created using the `vine.object` method. The method accepts a key-value pair, where the key is the field name, and the value is another schema type.
 
-
-:::note
-
-The `vine.schema` is a superset of the `vine.object`  schema type. It defines a top-level object and exposes additional methods like [`toCamelCase`](#converting-the-output-to-camelcase).
-
-:::
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   username: vine.string()
 })
 ```
@@ -31,7 +25,7 @@ The API for re-using schema types to compose new schemas is **intentionally unde
 We believe, [writing some duplicate code](https://overreacted.io/the-wet-codebase/) to produce simple code can be beneficial over using complex APIs to split, extend, pick, and omit properties that are harder to reason about. You might hold different views, but this is how we want to build and maintain VineJS.
 
 ### Cloning schema types
-VineJS schema APIs mutate the same underlying object. Therefore, you may call the `clone` method on a schema type to create a fresh instance of the same type and configure it separately. For example:
+VineJS schema APIs mutate the same underlying schema instance. Therefore, you may call the `clone` method to create a fresh instance of the same type and configure it separately. For example:
 
 ```ts
 const userSchema = vine.object({
@@ -46,8 +40,8 @@ const postSchema = vine.object({
 })
 ```
 
-### Extending object properties
-You may call the `extend` method on an object schema type to add additional properties to an existing object. The `extend` method performs a shallow merge.
+### Using existing object properties
+You can create a new object and copy properties from an existing object using the `object.getProperties` method. The `getProperties` method clones existing properties and returns them as a new object.
 
 ```ts
 const userSchema = vine.object({
@@ -57,30 +51,12 @@ const userSchema = vine.object({
 const postSchema = vine.object({
   title: vine.string(),
   // highlight-start
-  author: userSchema
-    .clone()
-    .extend({ id: vine.number() })
+  author: vine.object({
+    ...userSchema.getProperties(),
+    id: vine.number(),
+  })
   // highlight-end
 })
-```
-
-### Creating root schema from an object schema
-You may pass the `vine.object` output to the `vine.schema` method. It is usually helpful when you already have an object schema type and want to construct a root schema.
-
-```ts
-const userSchema = vine.object({
-  username: vine.string()
-})
-
-const postSchema = vine.object({
-  title: vine.string(),
-  author: userSchema.clone()
-})
-
-// highlight-start
-vine.schema(userSchema)
-vine.schema(postSchema)
-// highlight-start
 ```
 
 ## Nullable and optional modifiers
@@ -170,7 +146,7 @@ const myRule = vine.createRule(async (value, options, ctx) => {
   // Implementation goes here
 })
 
-const schema = vine.schema({
+const schema = vine.object({
   username: vine.string().use(
     myRule()
   ),
@@ -187,7 +163,7 @@ VineJS stops the validation chain when any validation fails for a given field. W
 In the following example, if the field's value is not a `string`, VineJS will not perform the `email` and the `unique` validations. This is the behavior you would want most of the time.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   email: vine.string().email().use(
     unique({ table: 'users', column: 'email' })
   )
@@ -197,7 +173,7 @@ const schema = vine.schema({
 However, you may turn off the `bail` mode for a given field using the `bail` method (if needed).
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   email: vine.string().email().use(
     unique({ table: 'users', column: 'email' })
   )
@@ -222,7 +198,7 @@ function assignDefaultRole(value: unknown) {
   return value
 }
 
-const schema = vine.schema({
+const schema = vine.object({
   role: vine.string().parse(assignDefaultRole)
 })
 ```
@@ -238,7 +214,7 @@ You may use the `transform` method on available schema types to mutate the outpu
 The `transform` method receives the `value` as the first argument and the [field context](./field_context.md) as the second argument. You may return a completely different data type from the `transform` method.
 
 ```ts
-const schema = vine.schema({
+const schema = vine.object({
   amount: vine.number().decimal([2, 4]).transform((value) => {
     return new Amount(value)
   })
@@ -247,13 +223,19 @@ const schema = vine.schema({
 
 ## Converting the output to camelCase
 
-VineJS allows you to transform all field names to `camelCase` using the `toCamelCase` method. The helper is added since the HTML input names are usually in `snake_case`, but we JavaScript developers define variables in `camelCase`.
+VineJS allows you to transform all field names from `snake_case` or `dash-case` to `camelCase` using the `object.toCamelCase` modifier. 
+
+:::note
+
+Considering the complexity around generating accurate static types, we will not add support for other modifiers.
+
+:::
 
 :::codegroup
 
 ```ts
 // title: Without camelCase helper
-const schema = vine.schema({
+const schema = vine.object({
   first_name: vine.string(),
   last_name: vine.string(),
   referral_code: vine.string().optional()
@@ -270,7 +252,7 @@ const {
 
 ```ts
 // title: With camelCase helper
-const schema = vine.schema({
+const schema = vine.object({
   first_name: vine.string(),
   last_name: vine.string(),
   referral_code: vine.string().optional()

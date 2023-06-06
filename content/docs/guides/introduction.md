@@ -26,7 +26,7 @@ VineJS is a form data validation library for Node.js. You may use it to validate
 // title: Basic example
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   email: vine.string().email(),
   password: vine
     .string()
@@ -43,7 +43,7 @@ await vine.validate({ schema, data })
 // title: Arrays and Objects
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   sku: vine.string(),
   price: vine.number().positive(),
   // highlight-start
@@ -66,7 +66,7 @@ await vine.validate({ schema, data })
 import vine from '@vinejs/vine'
 
 const schema = vine
-  .schema({
+  .object({
     // highlight-start
     health_check: vine.unionOfTypes([
       vine.literal(false),
@@ -106,7 +106,7 @@ const guideSchema = vine.group([
 // highlight-end
 
 const schema = vine
-  .schema({
+  .object({
     visitor_name: vine.string(),
   })
   // highlight-start

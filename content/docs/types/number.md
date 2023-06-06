@@ -5,7 +5,7 @@ Ensure the field's value is a valid `number` or a string representation of a num
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.schema({
+const schema = vine.object({
   age: vine.number().withoutDecimals()
 })
 ```
@@ -61,7 +61,7 @@ Following is the list of validation rules you can apply on a string.
 Enforce the value to be greater than the pre-defined minimum value.
 
 ```ts
-vine.schema({
+vine.object({
   age: vine.number().min(18)
 })
 ```
@@ -71,7 +71,7 @@ vine.schema({
 Enforce the value to be less than the pre-defined minimum value.
 
 ```ts
-vine.schema({
+vine.object({
   age: vine
     .number()
     .min(18)
@@ -84,7 +84,7 @@ vine.schema({
 Enforce the value to be under the range of minimum and maximum values.
 
 ```ts
-vine.schema({
+vine.object({
   age: vine
     .number()
     .range([18, 60])
@@ -96,7 +96,7 @@ vine.schema({
 Enforce the value to be a positive number.
 
 ```ts
-vine.schema({
+vine.object({
   marks: vine
     .number()
     .positive()
@@ -108,7 +108,7 @@ vine.schema({
 Enforce the value to be a negative number.
 
 ```ts
-vine.schema({
+vine.object({
   freezing_tempature: vine
     .number()
     .negative()
@@ -120,7 +120,7 @@ vine.schema({
 Enforce the value to be a number with decimal values. You can define fixed decimal places or give a minimum and maximum range.
 
 ```ts
-vine.schema({
+vine.object({
   price: vine
     .number()
     .decimal([0, 2]) // 9.99 or 9
