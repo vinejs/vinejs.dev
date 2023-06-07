@@ -10,7 +10,7 @@ Ensure the field's value matches exactly the expected literal value. In certain 
 import vine from '@vinejs/vine'
 
 const schema = vine.object({
-  isHiringGuide: vine.literal(true)
+  is_hiring_guide: vine.literal(true)
 })
 ```
 
@@ -20,13 +20,13 @@ See also: [Working with `undefined` and `null` values](../guides/schema_101.md#n
 
 ```ts
 {
-  isHiringGuide: vine.literal(true).nullable()
+  is_hiring_guide: vine.literal(true).nullable()
 }
 ```
 
 ```ts
 {
-  isHiringGuide: vine.literal(true).optional()
+  is_hiring_guide: vine.literal(true).optional()
 }
 ```
 

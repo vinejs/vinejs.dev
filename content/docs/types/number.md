@@ -2,6 +2,12 @@
 
 Ensure the field's value is a valid `number` or a string representation of a number. The string values are converted to a number using the [`Number` function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number).
 
+:::note
+
+The number validation will fail when the input value is either [Number.POSITIVE_INFINITY](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/POSITIVE_INFINITY) or [Number.NEGATIVE_INFINITY](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/NEGATIVE_INFINITY).
+
+:::
+
 ```ts
 import vine from '@vinejs/vine'
 
@@ -39,6 +45,7 @@ const messages = {
   positive: 'The {{ field }} field must be positive',
   negative: 'The {{ field }} field must be negative',
   decimal: 'The {{ field }} field must have {{ value }} decimal places',
+  withoutDecimals: 'The {{ field }} field must not have decimal places',
 }
 ```
 
@@ -123,6 +130,21 @@ Enforce the value to be a number with decimal values. You can define fixed decim
 vine.object({
   price: vine
     .number()
-    .decimal([0, 2]) // 9.99 or 9
+    .decimal(2) // fixed: 9.99
+})
+
+vine.object({
+  price: vine
+    .number()
+    .decimal([0, 2]) // range: 9.99 or 9
+})
+```
+
+### withoutDecimals
+Disallow numeric values with decimal places.
+
+```ts
+vine.object({
+  age: vine.number().withoutDecimals()
 })
 ```

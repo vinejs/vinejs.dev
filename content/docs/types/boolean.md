@@ -46,6 +46,6 @@ You may enable the strict mode to disallow the string representation of a boolea
 
 ```ts
 {
-  is_admin: vine.boolean().strict()
+  is_admin: vine.boolean({ strict: true })
 }
 ```

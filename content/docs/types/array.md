@@ -42,10 +42,10 @@ import vine from '@vinejs/vine'
 const schema = vine.object({
   contacts: vine.array(
     vine.object({
-      id: schema.string(),
-      is_primary: schema.boolean(),
+      id: vine.number(),
+      is_primary: vine.boolean(),
     })
-  )
+  ),
 })
 ```
 
@@ -61,7 +61,7 @@ See also: [Union type](./union.md)
  * is an object and has a matching type
  */
 function hasType(value: unknown, type: string) {
-  return vine.helpers.isObject<string>(value) && value.type === type
+  return vine.helpers.isObject(value) && value.type === type
 }
 
 /**
@@ -77,7 +77,7 @@ const emailContact = vine.object({
  */
 const phoneContact = vine.object({
   type: vine.literal('phone'),
-  phone: vine.string().phone()
+  phone: vine.string().mobile()
 })
 
 /**
