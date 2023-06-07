@@ -111,7 +111,7 @@ const fiscalHost = vine.group([
 ])
 
 const schema = vine
-  .schema({
+  .object({
     type: vine.enum(['enum', 'paypal', 'open_collective'])
   })
   .merge(fiscalHost)

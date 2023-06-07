@@ -14,9 +14,11 @@ const schema = vine.object({
 })
 
 const data = {
-  white: '#ffffff',
-  black: '#000000',
-  lime: '#99d52a'
+  colors: {
+    white: '#ffffff',
+    black: '#000000',
+    lime: '#99d52a'
+  }
 }
 
 const validate = vine.compile(schema)

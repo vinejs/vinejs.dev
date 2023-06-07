@@ -6,7 +6,7 @@ Mark the field under validation to be anything. In other words, do not perform a
 import vine from '@vinejs/vine'
 
 const schema = vine.object({
-  secretMessage: vine.any()
+  secret_message: vine.any()
 })
 ```
 
@@ -16,12 +16,12 @@ See also: [Working with `undefined` and `null` values](../guides/schema_101.md#n
 
 ```ts
 {
-  secretMessage: vine.any().nullable()
+  secret_message: vine.any().nullable()
 }
 ```
 
 ```ts
 {
-  secretMessage: vine.any().optional()
+  secret_message: vine.any().optional()
 }
 ```

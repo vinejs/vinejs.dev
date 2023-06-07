@@ -240,53 +240,28 @@ It's okay if creating groups and merging them into the object initially feels co
 
 
 ## Adding properties to the object
-You may add new properties to the object using the [JavaScript spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) or use the `extend` method.
-
-:::codegroup
+You may add new properties to the object using the [JavaScript spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax).
 
 ```ts
-// title: Spread syntax
-const author = {
+const author = vine.object({
   name: vine.string(),
   email: vine.string().email()
-}
+})
 
 const commentSchema = vine
   .object({
+    ...author.getProperties(),
     body: vine.string(),
-    ...author,
   })
 
 /**
  {
-   body: string,
    name: string,
    email: string,
+   body: string,
  }
  */
 ```
-
-```ts
-// title: Extend method
-const commentSchema = vine
-  .object({
-    body: vine.string(),
-  })
-  .extend({
-    name: vine.string(),
-    email: vine.string().email()
-  })
-
-/**
- {
-   body: string,
-   name: string,
-   email: string,
- }
- */
-```
-
-:::
 
 ## Defining error message
 
