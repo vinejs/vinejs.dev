@@ -67,7 +67,7 @@ export class JSONAPIErrorReporter implements ErrorReporterContract {
    * ValidationError class
    */
   createError() {
-    return new errors.E_VALIDATION_ERROR(this.errors)
+    return errors.E_VALIDATION_ERROR(this.errors)
   }
 }
 ```

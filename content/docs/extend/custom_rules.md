@@ -337,11 +337,22 @@ const validated = await validator.executeAsync([
 ```
 
 ### Defining custom field context
-You may pass a custom [field context](../guides/field_context.md) as the third argument to the `validator.executeAsync` method. The context object will be merged with the default context created by the test factory.
+You may pass a custom [field context](../guides/field_context.md) using the `withContext` method. The context object will be merged with the default context created by the test factory.
 
 ```ts
-await validator.executeAsync(unique, value, {
-  fieldName: 'email',
-  wildCardPath: 'profile.email'
-})
+await validator
+  .withContext({
+    fieldName: 'email',
+    wildCardPath: 'profile.email'
+  })
+  .executeAsync(unique, value)
+```
+
+### Disabling bail mode
+You may disable the [bail mode](../guides/schema_101.md#bail-mode) using the `bail` method.
+
+```ts
+await validator
+  .bail(false)
+  .executeAsync(unique, value)
 ```
