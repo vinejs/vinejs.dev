@@ -2,7 +2,7 @@
 
 VineJS uses error reporters to collect errors during the validation lifecycle. A reporter decides the formatting of errors you will get after the `validate` method call. 
 
-By default, VineJS uses the [SimpleErrorReporter]() and exposes an API to create and register custom error reporters.
+By default, VineJS uses the [SimpleErrorReporter](https://github.com/vinejs/vine/blob/main/src/reporters/simple_error_reporter.ts) and exposes an API to create and register custom error reporters.
 
 ## Creating an error reporter
 An error reporter is represented as a class and must implement the `ErrorReporterContract` interface.
@@ -16,7 +16,7 @@ An error reporter is represented as a class and must implement the `ErrorReporte
   - And an optional meta-data to associate with the error. The meta-data is passed by the validation rules at the time of reporting
   the error.
 
-- The `createError` method must return an instance of [ValidationError]() class and pass it the error messages.
+- The `createError` method must return an instance of [ValidationError](https://github.com/vinejs/vine/blob/main/src/errors/validation_error.ts) class and pass it the error messages.
 
 ```ts
 import { errors } from '@vinejs/vine'
