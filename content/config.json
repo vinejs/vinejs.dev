@@ -9,6 +9,9 @@
       "href": "https://github.com/vinejs/vine"
     }
   },
+  "sponsors_sources": [
+    "https://raw.githubusercontent.com/thetutlage/static/main/sponsorkit/sponsors.json"
+  ],
   "search": {
   },
   "fileEditBaseUrl": "https://github.com/vinejs/vinejs.dev/blob/main",

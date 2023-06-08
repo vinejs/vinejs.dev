@@ -86,3 +86,19 @@ html.dark {
 .markdown pre span[style="color: #546E7A;"] {
   color: var(--code-comment-color) !important;
 }
+
+.sponsors_list .sponsor_item.sponsor_platinum {
+  width: calc(50% - 12px);
+  height: auto;
+  margin-right: 12px;
+}
+
+.sponsors_list .sponsor_item.logo_cleavr {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.sponsors_list .sponsor_item.logo_cleavr img {
+  max-width: 65%;
+}
