@@ -279,9 +279,11 @@ You may use the `assertErrorsCount` and `assertError` methods to ensure the vali
 const value = 'foo@example.com'
 const unique = uniqueRule({ table: 'users', column: 'email' })
 
-const validated = await validator.executeAsync(unique, value, {
-  fieldName: 'email'
-})
+const validated = await validator
+  .withContext({
+    fieldName: 'email'
+  })
+  .executeAsync(unique, value)
 
 validated.assertErrorsCount(1)
 validated.assertError('The email field is not unique')
