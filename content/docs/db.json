@@ -66,12 +66,6 @@
     "category": "Schema types"
   },
   {
-    "permalink": "types/date",
-    "title": "Date",
-    "contentPath": "./types/date.md",
-    "category": "Schema types"
-  },
-  {
     "permalink": "types/accepted",
     "title": "Accepted",
     "contentPath": "./types/accepted.md",
