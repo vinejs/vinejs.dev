@@ -12,7 +12,7 @@ import {
   initSearchComponent,
 } from '@dimerapp/docs-theme/scripts'
 
-import.meta.glob(['../content/**/*.png', '../content/**/*.jpeg', '../content/**/*.jpg', './*.svg'])
+import.meta.glob(['../content/**/*.png', '../content/**/*.jpeg', '../content/**/*.jpg'])
 
 Alpine.plugin(tabs)
 Alpine.plugin(Persist)
