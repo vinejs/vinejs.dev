@@ -121,9 +121,16 @@ await vine.validate({ schema, data })
 
 ## Benchmarks
 
-VineJS is one of the fastest validation libraries in the Node.js ecosystem. Following are the benchmarks  comparing VineJS with other popular alternatives.
+VineJS is one of the fastest validation libraries in the Node.js ecosystem. Here are the results of validating a simple object with Yup, Zod, and VineJS.
 
-*The code for the benchmarks is on Github. Feel free to clone the repo and run them locally.*
+::include{template="partials/benchmarks"}
+
+Following is the complete list of various benchmarks on Github, along with their source code and results.
+
+- [Benchmarking against a flat object](https://github.com/vinejs/vine/blob/develop/benchmarks.md#benchmarking-against-flat-object)
+- [Benchmarking against a nested object](https://github.com/vinejs/vine/blob/develop/benchmarks.md#benchmarking-against-a-nested-object)
+- [Benchmarking arrays](https://github.com/vinejs/vine/blob/develop/benchmarks.md#benchmarking-arrays)
+- [Benchmarking unions](https://github.com/vinejs/vine/blob/develop/benchmarks.md#benchmarking-unions)
 
 ## Built for validating form data and JSON payloads
 
@@ -175,4 +182,4 @@ The project is funded through Github Sponsors. If you or your business benefit f
 
 ## Sponsors
 
-:::include{template="partials/sponsors"}
+::include{template="partials/sponsors"}
