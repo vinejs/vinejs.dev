@@ -1,3 +1,7 @@
+---
+summary: Learn how to format error messages using error reporters
+---
+
 # Error reporter
 
 VineJS uses error reporters to collect errors during the validation lifecycle. A reporter decides the formatting of errors you will get after the `validate` method call. 

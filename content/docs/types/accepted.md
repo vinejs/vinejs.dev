@@ -1,3 +1,7 @@
+---
+summary: A special data-type to validate HTML checkboxes
+---
+
 # Accepted type
 
 The `accepted` schema type is a special type you may use with HTML checkboxes. Please read the [HTML forms and surprises](../guides/html_forms_and_surprises.md#checkboxes-are-not-booleans) guide to learn about the serialization behavior of the `<input type="checkbox">` element.

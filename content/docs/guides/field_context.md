@@ -1,3 +1,7 @@
+---
+summary: Complete reference to the Field context
+---
+
 # Field context
 
 Field context refers to the `ctx` object you may access inside the validation functions, union conditionals, the `parse` method, or the `transform` method.
@@ -21,18 +25,10 @@ type FieldContext = {
     ctx: FieldContext,
     args?: Record<string, any>
   ): void
-} & (
-  | {
-      parent: Record<string, any>
-      fieldName: string
-      isArrayMember: false
-    }
-  | {
-      parent: any[]
-      fieldName: number
-      isArrayMember: true
-    }
-)
+  parent: any
+  fieldName: string | number
+  isArrayMember: boolean
+}
 ```
 
 ## value
@@ -105,8 +101,7 @@ A boolean to know if the field is an array element. When set to `true`, the valu
 ```ts
 vine.createRule((value, options, ctx) => {
   if (ctx.isArrayMember) {
-    ctx.parent // any[]
-    ctx.fieldName // number
+    console.log(ctx.parent[ctx.fieldName])
   }
 })
 ```

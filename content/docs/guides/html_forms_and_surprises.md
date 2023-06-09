@@ -1,3 +1,7 @@
+---
+summary: Learn how VineJS handles HTML forms serialization quirks
+---
+
 # HTML forms and surprises
 
 HTML forms have particular serializing behavior attached to them that you need to understand and address to work with normalized data in your applications.

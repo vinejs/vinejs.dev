@@ -1,3 +1,7 @@
+---
+summary: The Enum data type provides a type-safe API to ensure the field value is from a pre-defined list
+---
+
 # Enum type
 
 The `enum` data type ensures the value of a field is from the pre-defined list. The return value data type is a union of values of the pre-defined list.

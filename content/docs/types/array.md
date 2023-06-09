@@ -1,3 +1,7 @@
+---
+summary: The Array data type is used to validate an array and its elements
+---
+
 # Array type
 
 Ensure the value of a field is a valid JavaScript array. You must define the type of properties the array should contain. 

@@ -1,3 +1,7 @@
+---
+summary: Learn how to extend VineJS by creating custom rules and extending schema classes
+---
+
 # Creating custom rules
 
 VineJS allows you to create custom rules and use them either as standalone functions or add them as methods to existing schema classes.

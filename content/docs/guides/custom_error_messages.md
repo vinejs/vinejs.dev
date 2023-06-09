@@ -1,3 +1,7 @@
+---
+summary: Learn how you can define custom error messages
+---
+
 # Custom error messages
 
 VineJS has first-class support for defining custom error messages. You may specify a generic error message for a validation rule or define a specific one for a `field + rule` combination.

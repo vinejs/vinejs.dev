@@ -1,3 +1,7 @@
+---
+summary: The Any data type is allows the field value to be anything
+---
+
 # Any type
 
 Mark the field under validation to be anything. In other words, do not perform any type-checking validation on the value.

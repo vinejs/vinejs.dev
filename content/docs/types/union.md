@@ -1,3 +1,7 @@
+---
+summary: The Union data type provides a type-safe API for expressing conditional validations
+---
+
 # Union type
 
 Unions in VineJS allow expressing conditional validations without losing type safety. You may define union types using the `vine.union`, `vine.unionOfTypes`, or `vine.group` methods. All methods serve different purposes.

@@ -55,7 +55,9 @@ You may enable the strict mode to disallow the string representation of a number
 
 ```ts
 {
-  age: vine.number().withoutDecimals().strict()
+  age: vine
+    .number({ strict: true })
+    .withoutDecimals()
 }
 ```
 

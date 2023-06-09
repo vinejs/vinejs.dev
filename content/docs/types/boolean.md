@@ -1,3 +1,7 @@
+---
+summary: The Boolean data type is used to validate boolean values
+---
+
 # Boolean type
 
 Ensure the field's value is a valid `boolean` or a string representation of a boolean. The following values are converted to `true` or `false`.

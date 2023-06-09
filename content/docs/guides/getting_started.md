@@ -1,3 +1,7 @@
+---
+summary: Get started by installing VineJS inside an existing Node.js project
+---
+
 # Getting started
 
 You may install VineJS inside an existing Node.js project from the npm packages registry.

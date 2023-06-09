@@ -1,3 +1,7 @@
+---
+summary: Learn everything you need to know about schema composition
+---
+
 # Schema 101
 
 The validation schema defines the shape and the format of the data you expect during validation. We have divided the validation schema into three parts, i.e.

@@ -1,3 +1,7 @@
+---
+summary: The Object data type is used to validate an array with known elements and array length
+---
+
 # Tuple type
 
 A tuple type represents an array field of a fixed length, and each element inside the array can have a specific type.

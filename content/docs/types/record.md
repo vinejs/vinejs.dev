@@ -1,3 +1,7 @@
+---
+summary: The Object data type is used to validate an object with unknown properties
+---
+
 # Record type
 
 The record type is similar to the [object type](./object.md). However, you may use it to validate objects with unknown keys.

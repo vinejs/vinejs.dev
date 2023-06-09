@@ -1,3 +1,7 @@
+---
+summary: The Object data type is used to validate an object and its properties
+---
+
 # Object type
 Ensure the value of a field is a valid JavaScript object literal. You may define a collection of properties you want to validate within the object.
 

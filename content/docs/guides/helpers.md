@@ -1,3 +1,7 @@
+---
+summary: A complete reference to available VineJS helpers
+---
+
 # Helpers
 
 Following is the list of helpers used internally by VineJS to perform type-checking or sometimes narrow down the types. You might want to use them inside your custom rules or union conditionals.

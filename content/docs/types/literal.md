@@ -1,3 +1,7 @@
+---
+summary: The Literal data type ensures the field value matches the expected value
+---
+
 # Literal type
 
 Ensure the field's value matches exactly the expected literal value. In certain cases, VineJS will perform the following normalizations on the input value.

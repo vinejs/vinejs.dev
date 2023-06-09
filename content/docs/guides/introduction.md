@@ -142,11 +142,11 @@ Serializing an HTML form to FormData or a ‌JSON object comes with [its own set
 
 VineJS handles all these quirks natively, and you never have to perform manual normalization in your codebase.
 
-## What's next?
+<!-- ## What's next?
 
 - Read the [installation and basic usage](./getting_started.md) guide.
 - Watch [screencasts]().
-- Watch the [introduction live stream]().
+- Watch the [introduction live stream](). -->
 
 ## FAQs
 

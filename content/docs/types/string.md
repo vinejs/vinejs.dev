@@ -1,3 +1,7 @@
+---
+summary: The String data type is used to validate string values including their formatting
+---
+
 # String type
 
 Ensure the field's value is a valid `string`. Empty strings are allowed, and you must handle them using the `convertEmptyStringsToNull` configuration option.

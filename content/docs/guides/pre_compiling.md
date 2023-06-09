@@ -1,3 +1,7 @@
+---
+summary: A complete reference to the VineJS pre-compiler
+---
+
 # Pre-compiling schema
 
 The performance benefits of using VineJS kick in when you pre-compile a schema. During the pre-compile phase, VineJS will convert your schema into an optimized JavaScript function that you can reuse to perform validations.
