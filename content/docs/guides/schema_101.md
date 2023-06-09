@@ -6,7 +6,7 @@ The validation schema defines the shape and the format of the data you expect du
 - **The data type for fields** is defined using the schema methods like `vine.string`, `vine.boolean`, and so on.
 - **Additional validations and mutations** are applied using the rules available on a given schema type.
 
-![](./vine_schema_decoupled.png)
+![](./vine_schema.jpeg)
 
 ## Creating schemas
 
