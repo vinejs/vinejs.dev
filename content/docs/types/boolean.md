@@ -42,6 +42,8 @@ You may define the custom error message using the `boolean` rule name.
 const messages = {
   boolean: 'The value must be a boolean'
 }
+
+vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```
 
 ## Strict mode

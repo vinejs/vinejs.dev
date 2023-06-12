@@ -26,7 +26,7 @@ const data = {
 }
 
 const validate = vine.compile(schema)
-const output = await validate({ data })
+const output = await validate(data)
 ```
 
 Using the following modifiers, you may mark the record as `optional` or `nullable`.
@@ -96,6 +96,8 @@ const messages = {
   'record.maxLength': 'The {{ field }} field must not have more than {{ max }} items',
   'record.fixedLength': 'The {{ field }} field must contain {{ size }} items'
 }
+
+vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```
 
 ## Validations
@@ -144,16 +146,18 @@ The `validateKeys` method allows you to perform custom validation on the object 
 
 ```ts
 {
-  colors: vine.record(
-    vine.string().hexCode()
-  ).validateKeys((keys, ctx) => {
-    if (keys.find((key) => !vine.helpers.isNumber(key))) {
-      ctx.report(
-        'Color scale must be a valid number', // message
-        'record.keys.number', // error id
-        ctx
-      )
-    }
-  })
+  colors: vine
+    .record(vine.string().hexCode())
+    .validateKeys((keys, ctx) => {
+      const nonNumericKey = keys.find((key) => !vine.helpers.isNumber(key))
+
+      if (!!nonNumericKey) {
+        ctx.report(
+          'Color scale must be a valid number', // message
+          'record.keys.number', // error id
+          ctx
+        )
+      }
+    })
 }
 ```

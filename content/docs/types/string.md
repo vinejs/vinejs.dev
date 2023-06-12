@@ -57,11 +57,7 @@ const messages = {
   uuid: 'The {{ field }} field must be a valid UUID',
 }
 
-const validate = vine.compile(schema)
-await validate({
-  data,
-  messages
-})
+vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```
 
 ## Validations
@@ -394,7 +390,7 @@ vine.object({
 })
 ```
 
-You may define a callback function to compute the credit card options at runtime lazily. 
+You may define a callback function to compute the credit card options at runtime. 
 
 ```ts
 vine.object({
@@ -457,7 +453,7 @@ vine.object({
 })
 ```
 
-You may define a callback function to compute the options at runtime lazily. 
+You may define a callback function to compute the options at runtime. 
 
 ```ts
 vine.object({
@@ -494,7 +490,7 @@ vine.object({
 })
 ```
 
-You may define a callback function to compute the options at runtime lazily. 
+You may define a callback function to compute the options at runtime. 
 
 ```ts
 vine.object({
@@ -521,7 +517,7 @@ vine.object({
 })
 ```
 
-You may define a callback function to compute the options at runtime lazily.
+You may define a callback function to compute the options at runtime.
 
 ```ts
 vine.object({

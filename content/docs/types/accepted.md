@@ -53,4 +53,6 @@ You may define the custom error message using the `accepted` rule name.
 const messages = {
   accepted: 'The {{ field }} field must be accepted'
 }
+
+vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```

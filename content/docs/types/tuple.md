@@ -76,7 +76,7 @@ const data = {
 }
 
 const validate = vine.compile(schema)
-const output = await validate({ data })
+const output = await validate(data)
 
 /*
 const data = {
@@ -116,7 +116,7 @@ const data = {
 }
 
 const validate = vine.compile(schema)
-const output = await validate({ data })
+const output = await validate(data)
 
 /*
 const data = {
@@ -143,4 +143,6 @@ You may define the custom error message using the `tuple` rule name.
 const messages = {
   tuple: 'The {{ field }} field must be an array'
 }
+
+vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```

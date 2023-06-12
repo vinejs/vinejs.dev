@@ -47,6 +47,8 @@ const messages = {
   decimal: 'The {{ field }} field must have {{ digits }} decimal places',
   withoutDecimals: 'The {{ field }} field must not have decimal places',
 }
+
+vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```
 
 ## Strict mode

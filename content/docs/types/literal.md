@@ -42,4 +42,6 @@ You may define the custom error message using the `literal` rule name.
 const messages = {
   literal: 'The {{ field }} field must be {{ expectedValue }}'
 }
+
+vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```

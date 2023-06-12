@@ -14,7 +14,7 @@ VineJS is a form data validation library for Node.js. You may use it to validate
 
 - Has first-class support for defining custom error messages and formatting errors.
 
-- Comes with an extensive suite of **52+ validation rules** and **13 schema types**.
+- Comes with an extensive suite of **52+ validation rules** and **12 schema types**.
 
 - Extensible. You can add custom rules and schema types to VineJS. Not only that, we also make it [super easy to test](../extend/custom_rules.md#testing-rules) custom validation rules.
 

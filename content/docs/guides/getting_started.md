@@ -65,11 +65,9 @@ console.log(output)
 - If validation fails, an exception will be raised.
 
 ## Pre-compiling schema
-<!-- The performance benefits of VineJS kick in when you pre-compile your schemas and use the output to perform the validations. Read our dedicated guide on [pre-compiling](./pre_compiling.md) to learn more about the API. -->
-
 The performance benefits of using VineJS kick in when you pre-compile a schema. During the pre-compile phase, VineJS will convert your schema into an optimized JavaScript function that you can reuse to perform validations.
 
-You may pre-compile a schema using the `vine.compile` method. The compile method returns a `validate` function you must use to perform validations. The data to validate, custom error messages, and the validator options are provided directly to the `validate` method.
+You may pre-compile a schema using the `vine.compile` method. The compile method returns a validator object you must use to perform validations.
 
 ```ts
 import vine from '@vinejs/vine'
@@ -92,11 +90,22 @@ const data = {
 }
 
 // highlight-start
-const validate = vine.compile(schema)
-const output = await validate({ data })
+const validator = vine.compile(schema)
+const output = await validator.validate(data)
 // highlight-end
 
 console.log(output)
+```
+
+You may pass a custom messages provider or error reporter as the second argument to the `validator.validate` method.
+
+```ts
+const validator = vine.compile(schema)
+const output = await validator.validate(data, {
+  messagesProvider,
+  errorReporter,
+  meta: {}
+})
 ```
 
 ## Handling errors
@@ -125,24 +134,9 @@ The `error.messages` property is an array of error objects with the following pr
 - `meta?` - Optional meta-data set by the validation rule at the time of reporting the error.
 
 ## Custom error messages
+Error messages workflow in VineJS is managed using messages provider. VineJS ships with a [simple messages provider](https://github.com/vinejs/vine/blob/develop/src/messages_provider/simple_messages_provider.ts) that accepts error messages for validation rules or a `field + rule` combination.
 
-You may define custom error messages when calling the `validate` method. Messages can be defined for rules or a `field + rule` combination.
-
-See also: [Guide on custom error messages](./custom_error_messages.md)
-
-```ts
-const messages = {
-  'required': 'The {{ field }} field is required',
-  'email': 'Enter a valid email address',
-  'password.minLength': 'Password must be 8 characters long'
-}
-
-const validate = vine.compile(schema)
-const output = await validate({
-  data,
-  messages
-})
-```
+[Learn more about custom error messages](./custom_error_messages.md).
 
 ## Formatting errors
 
@@ -179,62 +173,3 @@ type UserRegistration = Infer<typeof schema>
  * }
  */
 ```
-
-## Configuring Vine
-
-You may configure Vine using the `vine.configure` method. The configuration options are applied globally and will impact all the schemas.
-
-```ts
-import vine from '@vinejs/vine'
-
-vine.configure({
-  convertEmptyStringsToNull: true,
-  messagesProvider: (messages) => {
-    return new CustomMessageProvider(messages)
-  },
-  errorReporter: () => {
-    return new CustomErrorReporter()
-  }
-})
-```
-
-<dl>
-
-<dt>
-
-convertEmptyStringsToNull
-
-</dt>
-
-<dd>
-
-When set to `true`, all empty string values will be converted to `null`. You can learn more about when to enable this flag in the [HTML forms and surprises](./html_forms_and_surprises.md) guide.
-
-</dd>
-
-<dt>
-
-messagesProvider
-
-</dt>
-
-<dd>
-
-The messages provider is an object with the `getMessage` method. You may create a messages provider to build a custom workflow around error messages.
-
-</dd>
-
-
-<dt>
-
-errorReporter
-
-</dt>
-
-<dd>
-
-The [error reporter](./error_reporter.md) to use to format the error messages.
-
-</dd>
-
-</dl>

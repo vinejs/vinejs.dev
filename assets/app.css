@@ -9,6 +9,7 @@
   --sidebar-anchor-padding-right: 25px;
   --sidebar-title-padding-left: 25px;
   --sidebar-title-padding-right: 25px;
+  --font-mono: 'Roboto Mono';
 }
 
 :root {
@@ -33,6 +34,19 @@
   --code-highlight-border-color: var(--purple9);
   --code-comment-color: var(--mauve10);
   --sidebar-loading-link-bg-color: hsl(275deg 70.8% 91.8% / 51%);
+  --logo-color: #BD00FF;
+
+  --shiki-color-text: rgb(237 237 237);
+  --shiki-color-background: transparent;
+  --shiki-token-constant: rgb(237 237 237);
+  --shiki-token-string: rgb(98 192 115);
+  --shiki-token-comment: rgb(161 161 161);
+  --shiki-token-keyword: rgb(247 95 143);
+  --shiki-token-parameter: rgb(255 153 10);
+  --shiki-token-function: rgb(82 168 255);
+  --shiki-token-string-expression: rgb(98 192 115);
+  --shiki-token-punctuation: rgb(237 237 237);
+  --shiki-token-link: rgb(98 192 115);
 }
 
 html.dark {
@@ -50,13 +64,14 @@ html.dark {
   --purple12: hsl(279, 75.0%, 95.7%);
 
   --code-text-color: var(--purple11);
-  --sidebar-active-link-bg-color: var(--purple5);
+  --sidebar-active-link-bg-color: var(--purple7);
   --aside-active-link-text-color: var(--purple11);
   --sidebar-active-link-text-color: var(--purple12);
   --pre-tabs-active-border-color: var(--purple10);
   --code-highlight-border-color: var(--purple9);
   --code-comment-color: var(--mauve10);
   --sidebar-loading-link-bg-color: hsl(279deg 43.8% 23.3% / 31%);
+  --logo-color: rgb(202 91 242);
 }
 
 .header_container {
@@ -85,6 +100,11 @@ html.dark {
 
 .markdown pre span[style="color: #546E7A;"] {
   color: var(--code-comment-color) !important;
+}
+
+.codegroup_tabs button {
+  letter-spacing: 0.4px;
+  padding: 0 8px;
 }
 
 .sponsors_list .sponsor_item.sponsor_platinum {

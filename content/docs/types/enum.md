@@ -14,9 +14,7 @@ const schema = vine.object({
 })
 
 const validate = vine.compile(schema)
-const output = await validate({
-  data
-})
+const output = await validate(data)
 
 output.role // 'admin' | 'moderator' | 'owner' | 'user'
 ```
@@ -61,9 +59,7 @@ const schema = vine.object({
 })
 
 const validate = vine.compile(schema)
-const output = await validate({
-  data
-})
+const output = await validate(data)
 
 output.role // Roles
 ```
@@ -94,4 +90,6 @@ You may define the custom error message using the `enum` rule name.
 const messages = {
   enum: 'The selected {{ field }} is invalid'
 }
+
+vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```

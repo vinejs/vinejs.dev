@@ -22,9 +22,7 @@ With VineJS, you can perform this normalization globally using the `convertEmpty
 ```ts
 import vine from '@vinejs/vine'
 
-vine.configure({
-  convertEmptyStringsToNull: true,
-})
+vine.convertEmptyStringsToNull = true
 ```
 
 Continuing with the previous example, you may define the `country` field schema as follows.
@@ -38,8 +36,8 @@ const data = {
   country: ''
 }
 
-const validate = vine.compile(schema)
-const output = await validate({ data })
+const validator = vine.compile(schema)
+const output = await validator.validate(data)
 // { country: null }
 ```
 
@@ -60,8 +58,8 @@ const data = {
   age: '32'
 }
 
-const validate = vine.compile(schema)
-const output = await validate({ data })
+const validator = vine.compile(schema)
+const output = await validator.validate(data)
 // { age: 32 }
 ```
 
@@ -89,8 +87,8 @@ const data = {
   terms: 'on'
 }
 
-const validate = vine.compile(schema)
-const output = await validate({ data })
+const validator = vine.compile(schema)
+const output = await validator.validate(data)
 // { terms: true }
 ```
 

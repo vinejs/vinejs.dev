@@ -140,6 +140,8 @@ const messages = {
   'notEmpty': 'The {{ field }} field must not be empty',
   'distinct': 'The {{ field }} field has duplicate values',
 }
+
+vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```
 
 ## Validations

@@ -13,7 +13,7 @@ Following is the list of available properties.
 ```ts
 type FieldContext = {
   value: unknown
-  data: Record<string, any>
+  data: any
   meta: Record<string, any>
   wildCardPath: string
   isValid: boolean

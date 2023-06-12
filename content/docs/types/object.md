@@ -64,7 +64,7 @@ const data = {
 }
 
 const validate = vine.compile(schema)
-const output = await validate({ data })
+const output = await validate(data)
 /**
 {
   username: 'virk',
@@ -94,7 +94,7 @@ const data = {
 }
 
 const validate = vine.compile(schema)
-const output = await validate({ data })
+const output = await validate(data)
 /**
 {
   username: 'virk',
@@ -275,4 +275,6 @@ You may define the custom error message using the `object` rule name.
 const messages = {
   object: 'The {{ field }} field must be an object'
 }
+
+vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```

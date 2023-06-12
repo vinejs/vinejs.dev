@@ -8,12 +8,35 @@ VineJS uses error reporters to collect errors during the validation lifecycle. A
 
 By default, VineJS uses the [SimpleErrorReporter](https://github.com/vinejs/vine/blob/main/src/reporters/simple_error_reporter.ts) and exposes an API to create and register custom error reporters.
 
-## Creating an error reporter
+## The SimpleErrorReporter
+The `SimpleErrorReporter` reporter is configured as the default error reporter; hence you do not have to configure it manually. The error reporter returns an array of messages with the following properties.
+
+```ts
+import vine, { errors } from '@vinejs/vine'
+
+try {
+  const validate = vine.compile(schema)
+  const output = await validate({ data })
+} catch (error) {
+  if (error instanceof errors.E_VALIDATION_ERROR) {
+    // array created by SimpleErrorReporter
+    console.log(error.messages)
+  }
+}
+```
+
+- `field` - The name of the field under validation. Nested fields are represented with a dot notation. For example: `contact.email`.
+- `message` - Error message.
+- `rule` - The rule that reported the error.
+- `index?` - Array element index for which the validation failed.
+- `meta?` - Optional meta-data set by the validation rule when reporting the error.
+
+## Creating a custom error reporter
 An error reporter is represented as a class and must implement the `ErrorReporterContract` interface.
 
-- The `hasError` flag is used to find if one or more errors have been reported by VineJS validation pipeline. You must set its value to `true` inside the `report` method.
+- The `hasError` flag is used to find if the VineJS validation pipeline has reported one or more errors. You must set its value to `true` inside the `report` method.
 
-- The `report` method is called by VineJS to report an error. The method receives the following arguments.
+- VineJS call the `report` method to report an error. The method receives the following arguments.
   - The validation error message
   - The name of the rule
   - Current [field's context](./field_context.md)
@@ -43,7 +66,7 @@ export class JSONAPIErrorReporter implements ErrorReporterContract {
   errors: any[] = []
 
   /**
-   * The report method is called by VineJS
+   * VineJS call the report method
    */
   report(
     message: string,
@@ -76,26 +99,37 @@ export class JSONAPIErrorReporter implements ErrorReporterContract {
 }
 ```
 
-### Registering the error reporter
+## Registering the error reporter
+The error reporter can be defined globally, at the per-schema level, or when executing the `validate` method. 
 
-You may register the custom error reporter globally using the `vine.configure` method or pass it to the `validate` method.
+Since VineJS creates a fresh instance of `errorReporter` for each validation cycle, you must register a factory function that returns an instance of the error reporter.
 
 ```ts
 // title: Configure globally
-vine.configure({
-  errorReporter: () => new JSONAPIErrorReporter()
-})
+import vine from '@vinejs/vine'
+
+vine.errorReporter = () => new JSONAPIErrorReporter()
 ```
 
 ```ts
-// title: Define during validation
-import { VineOptions } from '@vinejs/vine'
+// title: Per schema level
+import vine from '@vinejs/vine'
 
-const options: Partial<VineOptions> = {
-  errorReporter: () => new JSONAPIErrorReporter()
-}
+const validator = vine.compile(
+  vine.object({})
+)
 
-const validate = vine.compile(schema)
-await validate({ data }, options)
+validator.errorReporter = () => new JSONAPIErrorReporter()
 ```
 
+```ts
+// title: During validation call
+import vine from '@vinejs/vine'
+const validator = vine.compile(
+  vine.object({})
+)
+
+validator.validate(data, {
+  errorReporter: () => new JSONAPIErrorReporter()
+})
+```

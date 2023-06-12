@@ -126,7 +126,27 @@ if (output !== null) {
 ```
 
 ## Validator.js validators
-Alongside the VineJS helpers, you may also use the `vine.helpers` object to access all the validators exported by the [validator.js](https://github.com/validatorjs/validator.js/) library. For example:
+Alongside the VineJS helpers, you may also use the `vine.helpers` object to access the following methods exported by the [validator.js](https://github.com/validatorjs/validator.js/) library.
+
+- `isEmail`
+- `isURL`
+- `isAlpha`
+- `isAlphaNumeric`
+- `isIP`
+- `isUUID`
+- `isAscii`
+- `isCreditCard`
+- `isIBAN`
+- `isJWT`
+- `isLatLong`
+- `isMobilePhone`
+- `isPassportNumber`
+- `isPostalCode`
+- `isSlug`
+- `isDecimal`
+- `mobileLocales`
+- `postalCodeLocales`
+- `isHexColor`
 
 ```ts
 vine.helpers.isEmail('foo@bar.com', {
