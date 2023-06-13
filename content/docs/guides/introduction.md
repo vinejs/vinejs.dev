@@ -69,7 +69,7 @@ const schema = vine
   .object({
     // highlight-start
     health_check: vine.unionOfTypes([
-      vine.literal(false),
+      vine.boolean(),
       vine.string().url().activeUrl()
     ])
     // highlight-end

@@ -364,7 +364,7 @@ vine.object({
 })
 ```
 
-### ccNumber
+### creditCard
 Ensure the field's value is a valid credit card number. Optionally, you can define an array of providers from the following list.
 
 - amex
@@ -379,14 +379,14 @@ Ensure the field's value is a valid credit card number. Optionally, you can defi
 vine.object({
   credit_card: vine
     .string()
-    .ccNumber()
+    .creditCard()
 })
 
 // Only allow mastercard credit cards
 vine.object({
   credit_card: vine
     .string()
-    .ccNumber({ provider: ['mastercard'] })
+    .creditCard({ provider: ['mastercard'] })
 })
 ```
 
@@ -396,7 +396,7 @@ You may define a callback function to compute the credit card options at runtime
 vine.object({
   credit_card: vine
     .string()
-    .ccNumber((ctx) => {
+    .creditCard((ctx) => {
       if (ctx.parent.country_code === 'IN') {
         return { provider: ['mastercard', 'amex', 'visa'] }
       }
@@ -471,20 +471,20 @@ vine.object({
 })
 ```
 
-### passportNumber
+### passport
 Ensure the field's value is formatted as a valid passport number. Optionally, you can define an array of country codes as well.
 
 ```ts
 vine.object({
   passport: vine
     .string()
-    .passportNumber()
+    .passport()
 })
 
 vine.object({
   passport: vine
     .string()
-    .passportNumber({
+    .passport({
       countryCodes: ['IN', 'US', 'GB']
     })
 })
@@ -496,7 +496,7 @@ You may define a callback function to compute the options at runtime.
 vine.object({
   passport: vine
     .string()
-    .passportNumber((ctx) => {
+    .passport((ctx) => {
       if (ctx.parent.country_code) {
         return {
           countryCodes: [ctx.parent.country_code]
