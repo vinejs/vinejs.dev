@@ -112,7 +112,7 @@ export class CustomMessagesProvider implements MessagesProviderContact {
   getMessage(
     defaultMessage: string,
     rule: string,
-    ctx: FieldContext,
+    field: FieldContext,
     meta?: Record<string, any>
   ) {
     // resolve and return error message from some collection

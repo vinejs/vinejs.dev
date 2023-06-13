@@ -195,7 +195,7 @@ Finally, we merge the group with the object using the `object.merge` method. You
 The `vine.group.if` method accepts a callback as the first argument and the schema to use as the second argument. The schema will be used for the validation if the callback returns `true`. Otherwise, the group will move to the next condition.
 
 ```ts
-vine.group.if((data, ctx) => {
+vine.group.if((data, field) => {
   return true
 }, {
 })
@@ -223,11 +223,11 @@ vine.group([
   })
 ])
 // highlight-start
-.otherwise((ctx) => {
-  ctx.report(
+.otherwise((field) => {
+  field.report(
     'You must provide username or email to login',
     'email_or_username',
-    ctx
+    field
   )
 })
 // highlight-end

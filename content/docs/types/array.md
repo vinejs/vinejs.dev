@@ -111,17 +111,17 @@ const contact = vine.union([
   vine.union.if((value) => hasType(value, 'phone'), phoneContact)
 ])
 // highlight-start
-.otherwise((_, ctx) => {
-  ctx.report(
+.otherwise((_, field) => {
+  field.report(
     'Invalid contact. Either provide an email or a phone number',
     'unknown_contact_type',
-    ctx
+    field
   )
 })
 // highlight-end
 ```
 
-The `ctx.report` method marks the field under validation as invalid and reports an error to the error reporter. It accepts the following arguments.
+The `field.report` method marks the field under validation as invalid and reports an error to the error reporter. It accepts the following arguments.
 
 - The default error message.
 - The error code. The code may be used to define custom error messages.

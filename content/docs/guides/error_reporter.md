@@ -71,7 +71,7 @@ export class JSONAPIErrorReporter implements ErrorReporterContract {
   report(
     message: string,
     rule: string,
-    ctx: FieldContext,
+    field: FieldContext,
     meta?: any
   ) {
     this.hasErrors = true
@@ -83,7 +83,7 @@ export class JSONAPIErrorReporter implements ErrorReporterContract {
       code: rule,
       detail: message,
       source: {
-        pointer: ctx.wildCardPath
+        pointer: field.wildCardPath
       },
       ...(meta ? { meta } : {})
     })
@@ -94,7 +94,7 @@ export class JSONAPIErrorReporter implements ErrorReporterContract {
    * ValidationError class
    */
   createError() {
-    return errors.E_VALIDATION_ERROR(this.errors)
+    return new errors.E_VALIDATION_ERROR(this.errors)
   }
 }
 ```

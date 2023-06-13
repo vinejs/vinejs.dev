@@ -299,8 +299,8 @@ vine.object({
   state: vine.string().in(statesList()),
   city: vine
     .string()
-    .in((ctx) => {
-      return citiesList(ctx.parent.state)
+    .in((field) => {
+      return citiesList(field.parent.state)
     })
 })
 ```
@@ -396,8 +396,8 @@ You may define a callback function to compute the credit card options at runtime
 vine.object({
   credit_card: vine
     .string()
-    .creditCard((ctx) => {
-      if (ctx.parent.country_code === 'IN') {
+    .creditCard((field) => {
+      if (field.parent.country_code === 'IN') {
         return { provider: ['mastercard', 'amex', 'visa'] }
       }
     })
@@ -459,8 +459,8 @@ You may define a callback function to compute the options at runtime.
 vine.object({
   contact_number: vine
     .string()
-    .mobile((ctx) => {
-      const countryCode = ctx.parent.country_code
+    .mobile((field) => {
+      const countryCode = field.parent.country_code
       if (vine.helpers.mobileLocales.includes(countryCode)) {
         return {
           locales: [countryCode],
@@ -496,10 +496,10 @@ You may define a callback function to compute the options at runtime.
 vine.object({
   passport: vine
     .string()
-    .passport((ctx) => {
-      if (ctx.parent.country_code) {
+    .passport((field) => {
+      if (field.parent.country_code) {
         return {
-          countryCodes: [ctx.parent.country_code]
+          countryCodes: [field.parent.country_code]
         }
       }
     })
@@ -523,10 +523,10 @@ You may define a callback function to compute the options at runtime.
 vine.object({
   postal_code: vine
     .string()
-    .postalCode((ctx) => {
-      if (ctx.parent.country_code) {
+    .postalCode((field) => {
+      if (field.parent.country_code) {
         return {
-          countryCodes: [ctx.parent.country_code]
+          countryCodes: [field.parent.country_code]
         }
       }
     })

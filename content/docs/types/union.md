@@ -66,11 +66,11 @@ const emailOrPhone = vine.group([
   }),
 ])
 // highlight-start
-.otherwise((_, ctx) => {
-  ctx.report(
+.otherwise((_, field) => {
+  field.report(
     'Enter either the email or the phone number',
     'email_or_phone',
-    ctx
+    field
   )
 })
 // highlight-end
@@ -165,8 +165,8 @@ const contact = vine.union([
     })
   ),
 ])
-.otherwise((_, ctx) => {
-  vine.report('Invalid contact type', 'invalid_contact', ctx)
+.otherwise((_, field) => {
+  vine.report('Invalid contact type', 'invalid_contact', field)
 })
 
 const schema = vine.object({

@@ -146,7 +146,7 @@ See also: [Creating custom rules](../extend/custom_rules.md)
 ```ts
 import vine from '@vinejs/vine'
 
-const myRule = vine.createRule(async (value, options, ctx) => {
+const myRule = vine.createRule(async (value, options, field) => {
   // Implementation goes here
 })
 

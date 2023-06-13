@@ -72,8 +72,8 @@ You may defer computing the enum options by registering a callback with the `enu
 const schema = vine.object({
   creative_device: vine.enum(['mobile', 'desktop']),
 
-  banner_width: vine.enum((ctx) => {
-    if (ctx.parent.creative_device === 'mobile') {
+  banner_width: vine.enum((field) => {
+    if (field.parent.creative_device === 'mobile') {
       return ['320px', '640px'] as const
     }
 

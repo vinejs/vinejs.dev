@@ -148,14 +148,14 @@ The `validateKeys` method allows you to perform custom validation on the object 
 {
   colors: vine
     .record(vine.string().hexCode())
-    .validateKeys((keys, ctx) => {
+    .validateKeys((keys, field) => {
       const nonNumericKey = keys.find((key) => !vine.helpers.isNumber(key))
 
       if (!!nonNumericKey) {
-        ctx.report(
+        field.report(
           'Color scale must be a valid number', // message
           'record.keys.number', // error id
-          ctx
+          field
         )
       }
     })

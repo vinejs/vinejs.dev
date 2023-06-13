@@ -95,8 +95,6 @@ const guideSchema = vine.group([
       is_hiring_guide: vine.literal(true),
       guide_id: vine.string(),
       amount: vine.number(),
-      started_at: vine.date(),
-      ended_at: vine.date(),
     }
   ),
   vine.group.else({

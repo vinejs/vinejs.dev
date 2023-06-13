@@ -32,7 +32,7 @@ type Options = {
 async function unique(
   value: unknown,
   options: Options,
-  ctx: FieldContext
+  field: FieldContext
 ) {
   /**
    * We do not want to deal with non-string
@@ -50,10 +50,10 @@ async function unique(
    .first()
    
   if (row) {
-    ctx.report(
+    field.report(
       'The {{ field }} field is not unique',
       'unique',
-      ctx
+      field
     )
   }
 }
@@ -81,7 +81,7 @@ type Options = {
 async function unique(
   value: unknown,
   options: Options,
-  ctx: FieldContext
+  field: FieldContext
 ) {
   /**
    * We do not want to deal with non-string
@@ -99,10 +99,10 @@ async function unique(
    .first()
    
   if (row) {
-    ctx.report(
+    field.report(
       'The {{ field }} field is not unique',
       'unique',
-      ctx
+      field
     )
   }
 }
@@ -199,20 +199,20 @@ VineJS stops the validations pipeline after a rule reports an error. For example
 
 However, this behavior can be changed by turning off the [bail mode](../guides/schema_101.md#bail-mode). With bail mode disabled, the `unique` rule will be executed, even when the value is not a string.
 
-However, you can find if the field has failed a validation using the `ctx.isValid` property and do not perform the SQL query.
+However, you can find if the field has failed a validation using the `field.isValid` property and do not perform the SQL query.
 
 ```ts
 async function unique(
   value: unknown,
   options: Options,
-  ctx: FieldContext
+  field: FieldContext
 ) {
   if (typeof value !== 'string') {
     return
   }
   
   // highlight-start
-  if (!ctx.isValid) {
+  if (!field.isValid) {
     return
   }
   // highlight-end
@@ -223,10 +223,10 @@ async function unique(
    .first()
    
   if (row) {
-    ctx.report(
+    field.report(
       'The value of {{ field }} field is not unique',
       'unique',
-      ctx
+      field
     )
   }
 }

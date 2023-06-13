@@ -25,7 +25,7 @@ import { dinero } from 'dinero.js'
 import { USD } from '@dinero.js/currencies'
 import { FieldContext } from '@vinejs/vine/types'
 
-const isMoney = vine.createRule((value: unknown, _, ctx: FieldContext) => {
+const isMoney = vine.createRule((value: unknown, _, field: FieldContext) => {
   /**
    * Convert string representation of a number to a JavaScript
    * Number data type.
@@ -36,10 +36,10 @@ const isMoney = vine.createRule((value: unknown, _, ctx: FieldContext) => {
    * Report error, if the value is NaN post-conversion
    */
   if (Number.isNaN(numericValue)) {
-    ctx.report(
+    field.report(
       'The {{ field }} field value must be a number',
       'money',
-      ctx
+      field
     )
     return
   }
@@ -52,7 +52,7 @@ const isMoney = vine.createRule((value: unknown, _, ctx: FieldContext) => {
   /**
    * Mutate the field's value
    */ 
-  ctx.mutate(amount, ctx)
+  field.mutate(amount, field)
 })
 ```
 
