@@ -47,6 +47,7 @@
   --shiki-token-string-expression: rgb(98 192 115);
   --shiki-token-punctuation: rgb(237 237 237);
   --shiki-token-link: rgb(98 192 115);
+  --note-icon-color: var(--purple10);
 }
 
 html.dark {
@@ -72,6 +73,7 @@ html.dark {
   --code-comment-color: var(--mauve10);
   --sidebar-loading-link-bg-color: hsl(279deg 43.8% 23.3% / 31%);
   --logo-color: rgb(202 91 242);
+  --note-icon-color: var(--purple10);
 }
 
 .header_container {
