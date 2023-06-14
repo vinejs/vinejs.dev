@@ -13,6 +13,9 @@
     "https://raw.githubusercontent.com/thetutlage/static/main/sponsorkit/sponsors.json"
   ],
   "search": {
+    "appId": "4EO90892MT",
+    "apiKey": "8b79fa235353b77d6e52727161a5a6ca",
+    "indexName": "vinejs"
   },
   "fileEditBaseUrl": "https://github.com/vinejs/vinejs.dev/blob/main",
   "copyright": "VineJS"
