@@ -111,16 +111,19 @@ html.dark {
 
 .sponsors_list .sponsor_item.sponsor_platinum {
   width: calc(50% - 12px);
-  height: auto;
+  height: 100px;
   margin-right: 12px;
-}
-
-.sponsors_list .sponsor_item.logo_cleavr {
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 24px 0;
 }
 
 .sponsors_list .sponsor_item.logo_cleavr img {
-  max-width: 65%;
+  max-width: 150px;
+  height: auto;
+}
+
+.sponsors_list .sponsor_item.logo_relancer svg {
+  width: 150px;
 }
