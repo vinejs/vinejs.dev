@@ -10,9 +10,9 @@ In this guide, we will look at some real-world examples to better understand dif
 
 ## Login with phone or email
 
-We all got login forms that may accept a phone number or an email address. Before creating the schema for this login form, let's define the expected TypeScript type.
+We all got login forms that may accept a phone number or an email address along with a password. If the user provides an email, we will validate it for the `email` format and validate the phone number for the `mobile` format.
 
-In the following example, we start with a static object and merge a union of two objects. One contains the `email` field, and the other contains the `phone` field.
+Following is the visual representation of the data we want to accept. First is a static object with the `password` field, followed by a union of objects with `email` or the `phone` number.
 
 ```ts
 /**
@@ -36,7 +36,7 @@ const emailOrPhone = vine.group([
     email: vine.string().email()
   }),
   vine.group.if((data) => 'phone' in data, {
-    phone: vine.string().phone()
+    phone: vine.string().mobile()
   }),
 ])
 // highlight-end
@@ -52,9 +52,20 @@ const loginForm = vine.object({
 // highlight-end
 ```
 
-Currently, the validation will pass if the user does not provide both the `email` and the `phone` number fields. So, let's handle this case and report an error.
+Post validation, you can check if the user has provided `email` or the `phone` number and perform a database search accordingly.
 
-The `vine.group` allows you to define a callback using the `otherwise` method. The method is called when none of the group's conditions are `true`.
+```ts
+const validator = vine.compile(loginForm)
+const payload = await validator.validate(data)
+
+if ('email' in payload) {
+  // search using email
+} else {
+  // search using phone number
+}
+```
+
+The validation will fail, if both the `email` and the `phone` number fields are missing. If needed, you can report a custom error by defining an `otherwise` clause.
 
 ```ts
 const emailOrPhone = vine.group([
@@ -99,26 +110,34 @@ type FiscalHost = {
 ```
 
 ```ts
+const stripe = {
+  type: vine.literal('stripe'),
+  account_id: vine.string(),
+}
+
+const paypal = {
+  type: vine.literal('paypal'),
+  email: vine.string().email(),
+}
+
+const oc = {
+  type: vine.literal('open_collective'),
+  project_url: vine.string().url(),
+}
+
 const fiscalHost = vine.group([
-  vine.group.if((data) => data.type === 'stripe', {
-    type: vine.literal('stripe'),
-    account_id: vine.string(),
-  }),
-  vine.group.if((data) => data.type === 'paypal', {
-    type: vine.literal('paypal'),
-    email: vine.string().email(),
-  }),
-  vine.group.if((data) => data.type === 'open_collective', {
-    type: vine.literal('open_collective'),
-    project_url: vine.string().url(),
-  })
+  vine.group.if((data) => data.type === 'stripe', stripe),
+  vine.group.if((data) => data.type === 'paypal', paypal),
+  vine.group.if((data) => data.type === 'open_collective', oc)
 ])
 
 const schema = vine
   .object({
     type: vine.enum(['enum', 'paypal', 'open_collective'])
   })
+  // highlight-start
   .merge(fiscalHost)
+  // highlight-end
 ```
 
 In the above example, we do not need the `otherwise` method because we define an `enum` validation on the `type` property regardless of the union conditions.
@@ -147,22 +166,28 @@ type Contact = string | {
 ```ts
 import vine from '@vinejs/vine'
 
+const emailField = vine.string().email()
+
+const emailSchema = vine.object({
+  email: emailField.clone(),
+})
+
+const phoneSchema = vine.object({
+  phone: vine.string().mobile(),
+})
+
 const contact = vine.union([
   vine.union.if(
     (value) => vine.helpers.isString(value),
-    vine.string().email()
+    emailField
   ),
   vine.union.if(
     (value) => vine.helpers.isObject(value) && 'email' in value,
-    vine.object({
-      email: vine.string().email(),
-    })
+    emailSchema
   ),
   vine.union.if(
     (value) => vine.helpers.isObject(value) && 'phone' in value,
-    vine.object({
-      phone: vine.string().mobile(),
-    })
+    phoneSchema
   ),
 ])
 .otherwise((_, field) => {
@@ -218,6 +243,25 @@ const schema = vine.object({
 ```
 
 - The `unionOfTypes` method accepts an array of distinct types. If you provide two similar types, then it will throw an error.
-- First, we will validate the value type, and if the type matches, we will perform the rest of the validations.
 
-  In the above example, the `url` validation will be performed only when the value is a valid string.
+- First, we will validate the value type, and if the type matches, we will perform the rest of the validations. In the above example, the `url` validation will be performed only when the value is a valid string.
+
+- Following is the list of schema types you can use with the `unionOfTypes` method.
+  - `vine.string`
+  - `vine.boolean`
+  - `vine.number`
+  - `vine.object / vine.record`
+  - `vine.array / vine.tuple`
+
+## Defining error messages
+You can define custom error messages for the following error codes. The error messages are only used when you have not defined the `otherwise` clause.
+
+```ts
+const messages = {
+  'union': 'Invalid value provided for {{ field }} field',
+  'unionGroup': 'Invalid value provided for {{ field }} field',
+  'unionOfTypes': 'Invalid value provided for {{ field }} field',
+}
+
+vine.messagesProvider = new SimpleMessagesProvider(messages)
+```

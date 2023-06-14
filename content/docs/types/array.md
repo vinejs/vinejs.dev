@@ -100,10 +100,10 @@ const schema = vine.object({
 
 In the above example, we have a union with two conditionals. 
 
-- The first one checks for `type === 'email`.
-- And the second one checks for `type === 'phone'`. 
+- The first one checks for `type === 'email` and uses the `emailContact` schema.
+- And the second one checks for `type === 'phone'` and uses the `phoneContact` schema.
 
-However, the validation will pass if the `type` property is missing or has a different value. Therefore, specifying an `otherwise` clause and reporting an error is recommended. For example:
+An error will be raised if the `type` property is missing or has a different value. Also, you can report a custom error by defining an `otherwise` clause.
 
 ```ts
 const contact = vine.union([

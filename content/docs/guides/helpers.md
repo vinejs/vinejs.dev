@@ -145,7 +145,8 @@ Alongside the VineJS helpers, you may also use the `vine.helpers` object to acce
 - `isSlug`
 - `isDecimal`
 - `mobileLocales`
-- `postalCodeLocales`
+- `passportCountryCodes`
+- `postalCountryCodes`
 - `isHexColor`
 
 ```ts

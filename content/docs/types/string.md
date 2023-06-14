@@ -211,8 +211,8 @@ const data = {
   password_confirmation: 'secret'
 }
 
-const validate = vine.compile(schema)
-await validate({ data })
+const validator = vine.compile(schema)
+await validator.validate(data)
 ```
 
 You may modify the confirmation field name as follows.
@@ -331,25 +331,32 @@ vine.object({
 
 ### ipAddress
 
-Validate the field's value to be a valid IP Address. Optionally, you may enforce the IP version as `v4` or `v6`.  Both `ipv4` and `ipv6` values are allowed by default.
+Validate the field's value to be a valid IP Address. Optionally, you may enforce the IP version as `4` or `6`.  Both `ipv4` and `ipv6` values are allowed by default.
 
 ```ts
 vine.object({
   ip: vine
     .string()
-    .ipAddress({ version: 'v4' })
+    .ipAddress({ version: 4 })
 })
 ```
 
 ### uuid
 
-Ensure the field's value to be a valid `uuid`. You may optionally enforce a specific uuid version.
+Ensure the field's value to be a valid `uuid`. You may optionally enforce a specific uuid version (version 1, 2, 3, 4 or 5).
 
 ```ts
 vine.object({
   id: vine
     .string()
-    .uuid({ version: 'v4' })
+    .uuid({ version: 4 })
+})
+
+// Enforce multiple version.
+vine.object({
+  id: vine
+    .string()
+    .uuid({ version: [2, 4, 5] })
 })
 ```
 
@@ -397,8 +404,8 @@ vine.object({
   credit_card: vine
     .string()
     .creditCard((field) => {
-      if (field.parent.country_code === 'IN') {
-        return { provider: ['mastercard', 'amex', 'visa'] }
+      return {
+        provider: ['mastercard', 'amex', 'visa']
       }
     })
 })
@@ -460,12 +467,9 @@ vine.object({
   contact_number: vine
     .string()
     .mobile((field) => {
-      const countryCode = field.parent.country_code
-      if (vine.helpers.mobileLocales.includes(countryCode)) {
-        return {
-          locales: [countryCode],
-          strictMode: true,
-        }
+      return {
+        locale: ['en-IN'],
+        strictMode: true,
       }
     })
 })
@@ -485,7 +489,7 @@ vine.object({
   passport: vine
     .string()
     .passport({
-      countryCodes: ['IN', 'US', 'GB']
+      countryCode: ['IN', 'US', 'GB']
     })
 })
 ```
@@ -497,10 +501,8 @@ vine.object({
   passport: vine
     .string()
     .passport((field) => {
-      if (field.parent.country_code) {
-        return {
-          countryCodes: [field.parent.country_code]
-        }
+      return {
+        countryCode: [field.parent.country_code]
       }
     })
 })
@@ -513,7 +515,7 @@ Ensure the field's value is formatted as a valid postal code. Optionally, you ca
 vine.object({
   postal_code: vine
     .string()
-    .postalCode({ countryCodes: ['IN'] })
+    .postalCode({ countryCode: ['IN'] })
 })
 ```
 
@@ -524,10 +526,8 @@ vine.object({
   postal_code: vine
     .string()
     .postalCode((field) => {
-      if (field.parent.country_code) {
-        return {
-          countryCodes: [field.parent.country_code]
-        }
+      return {
+        countryCode: [field.parent.country_code]
       }
     })
 })
@@ -543,10 +543,7 @@ Trim whitespaces from the value.
 
 ```ts
 vine.object({
-  email: vine
-    .string()
-    .trim()
-    .email()
+  email: vine.string().trim().email()
 })
 ```
 
@@ -583,26 +580,11 @@ vine.object({
 
 ### escape/encode
 
-The `escape` method escapes HTML entities inside the string value. Under the hood, we use the [he](https://www.npmjs.com/package/he) package, and you may go through its README to learn more about the escaping process.
+The `escape` method escapes HTML entities inside the string value.
 
 ```ts
 vine.object({
-  about: vine
-    .string()
-    .escape()
-})
-```
-
-You may use the `encode` method to [encode non-ASCII symbols](https://www.npmjs.com/package/he#heescapetext).
-
-```ts
-vine.object({
-  about: vine
-    .string()
-    .encode({
-      allowUnsafeSymbols: true,
-    })
-    .escape()
+  about: vine.string().escape()
 })
 ```
 
@@ -615,18 +597,6 @@ vine.object({
   role: vine
     .string()
     .toUpperCase()
-})
-```
-
-### toSnakeCase
-
-Convert the field value to snake case.
-
-```ts
-vine.object({
-  role: vine
-    .string()
-    .toSnakeCase()
 })
 ```
 

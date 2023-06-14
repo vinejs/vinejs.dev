@@ -126,7 +126,7 @@ const schema = vine.object({
 
 Object groups allow you to validate additional properties based on a condition. Each group can have multiple conditions, and each condition has an associated schema.
 
-In the following example, we validate a form to issue a monument ticket to a visitor. The visitor may optionally hire a guide, and if they do, we must validate the **guide id**, **started at/ended at dates**, and the **paid amount**.
+In the following example, we validate a form to issue a monument ticket to a visitor. The visitor may optionally hire a guide, and if they do, we must validate the **guide id**, and the **amount** the guide will charge.
 
 Before creating the validation schema, let's visualize the expected type we want for this schema.
 
@@ -142,8 +142,6 @@ type VisitorDetails = {
   is_hiring_guide: true,
   guide_id: string,
   amount: number,
-  started_at: Date,
-  ended_at: Date,
 } | {
   is_hiring_guide: false,
 })
@@ -164,8 +162,6 @@ const guideSchema = vine.group([
       is_hiring_guide: vine.literal(true),
       guide_id: vine.string(),
       amount: vine.number(),
-      started_at: vine.date(),
-      ended_at: vine.date(),
     }
   ),
   vine.group.else({
@@ -243,8 +239,8 @@ It's okay if creating groups and merging them into the object initially feels co
 !-->
 
 
-## Adding properties to the object
-You may add new properties to the object using the [JavaScript spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax).
+## Merging properties
+You may merge properties from an existing object to a new object using the [JavaScript spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax). In the following example, the `author.getProperties()` method returns a cloned copy of properties from the `author` schema.
 
 ```ts
 const author = vine.object({
@@ -254,7 +250,9 @@ const author = vine.object({
 
 const commentSchema = vine
   .object({
+    // highlight-start
     ...author.getProperties(),
+    // highlight-end
     body: vine.string(),
   })
 

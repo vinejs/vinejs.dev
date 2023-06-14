@@ -4,11 +4,9 @@ summary: The Object data type is used to validate an array with known elements a
 
 # Tuple type
 
-A tuple type represents an array field of a fixed length, and each element inside the array can have a specific type.
+A tuple type represents an array field of a fixed length, and each element inside the array can have a specific type. You may create a tuple using the `vine.tuple` method and define the types for individual elements. 
 
-You may create a tuple using the `vine.tuple` method and define the types for individual elements. In the following example, we define a tuple that accepts the starting and the ending date.
-
-The validation will fail if the provided array has less than two properties or if any fields are not valid dates.
+In the following example, we define a tuple that accepts the starting and the ending date. The validation will fail if the provided array has less than two properties or if any fields are not valid dates.
 
 ```ts
 import vine from '@vinejs/vine'
