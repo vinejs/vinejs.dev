@@ -1,5 +1,5 @@
 ---
-summary: VineJS is a form data validation library for Node.js. You may use it to validate the HTTP request body in your backend applications
+summary: VineJS is a form data validation library for Node.js. You may use it to validate the HTTP request body in your backend applications.
 ---
 
 # Introduction
@@ -14,9 +14,9 @@ VineJS is a form data validation library for Node.js. You may use it to validate
 
 - Has first-class support for defining custom error messages and formatting errors.
 
-- Comes with an extensive suite of **52+ validation rules** and **12 schema types**.
+- Comes with an extensive suite of **50+ validation rules** and **12 schema types**.
 
-- Extensible. You can add custom rules and schema types to VineJS. Not only that, we also make it [super easy to test](../extend/custom_rules.md#testing-rules) custom validation rules.
+- Extensible. You can add custom rules and schema types to VineJS. We also make it [super easy to test](../extend/custom_rules.md#testing-rules) custom validation rules.
 
 ---
 
@@ -170,7 +170,7 @@ However, if you use Remix or React server components (aka RSC), you can use Vine
 
 ### Who maintains VineJS?
 
-VineJS is an independent open-source project originally created by [Harminder Virk](http://twitter.com/amanvirk1) and maintained by the AdonisJS core team.
+VineJS is an independent open-source project initially created by [Harminder Virk](http://twitter.com/amanvirk1) and maintained by the AdonisJS core team.
 
 VineJS is an improved version of the existing AdonisJS validator codebase, released as a standalone library to work with any Node.js project.
 

@@ -26,7 +26,7 @@ type FieldContext = {
     args?: Record<string, any>
   ): void
   parent: any
-  fieldName: string | number
+  name: string | number
   isArrayMember: boolean
 }
 ```
@@ -90,7 +90,7 @@ A boolean to know if the field is defined. Fields with `null` or `undefined` val
 
 Reference to the parent object or array (if the field is nested). Otherwise, the `parent` property refers to the `data` object.
 
-## fieldName
+## name
 
 The name of the field under validation. In the case of an array element, it will be the array index.
 

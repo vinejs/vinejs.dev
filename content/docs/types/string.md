@@ -55,6 +55,15 @@ const messages = {
   notIn: 'The selected {{ field }} is invalid',
   ipAddress: 'The {{ field }} field must be a valid IP address',
   uuid: 'The {{ field }} field must be a valid UUID',
+  ascii: 'The {{ field }} field must only contain ASCII characters',
+  creditCard: 'The {{ field }} field must be a valid {{ providersList }} card number',
+  hexCode: 'The {{ field }} field must be a valid hex color code',
+  iban: 'The {{ field }} field must be a valid IBAN number',
+  jwt: 'The {{ field }} field must be a valid JWT token',
+  coordinates: 'The {{ field }} field must contain latitude and longitude coordinates',
+  mobile: 'The {{ field }} field must be a valid mobile phone number',
+  passport: 'The {{ field }} field must be a valid passport number',
+  postalCode: 'The {{ field }} field must be a valid postal code',
 }
 
 vine.messagesProvider = new SimpleMessagesProvider(messages)
@@ -578,7 +587,7 @@ vine.object({
 })
 ```
 
-### escape/encode
+### escape
 
 The `escape` method escapes HTML entities inside the string value.
 

@@ -116,8 +116,8 @@ In case of an error, VineJS will throw a [ValidationError](https://github.com/vi
 import vine, { errors } from '@vinejs/vine'
 
 try {
-  const validate = vine.compile(schema)
-  const output = await validate({ data })
+  const validator = vine.compile(schema)
+  const output = await validator.validate(data)
 } catch (error) {
   if (error instanceof errors.E_VALIDATION_ERROR) {
     console.log(error.messages)
@@ -131,10 +131,10 @@ The `error.messages` property is an array of error objects with the following pr
 - `message` - Error message.
 - `rule` - The rule that reported the error.
 - `index?` - Array element index for which the validation failed.
-- `meta?` - Optional meta-data set by the validation rule at the time of reporting the error.
+- `meta?` - Optional meta-data set by the validation rule when reporting the error.
 
 ## Custom error messages
-Error messages workflow in VineJS is managed using messages provider. VineJS ships with a [simple messages provider](https://github.com/vinejs/vine/blob/develop/src/messages_provider/simple_messages_provider.ts) that accepts error messages for validation rules or a `field + rule` combination.
+Error messages workflow in VineJS is managed using the messages provider. VineJS ships with a [simple messages provider](https://github.com/vinejs/vine/blob/develop/src/messages_provider/simple_messages_provider.ts) that accepts error messages for validation rules or a `field + rule` combination.
 
 [Learn more about custom error messages](./custom_error_messages.md).
 

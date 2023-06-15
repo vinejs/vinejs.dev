@@ -4,7 +4,7 @@ summary: Learn everything you need to know about schema composition
 
 # Schema 101
 
-The validation schema defines the shape and the format of the data you expect during validation. We have divided the validation schema into three parts, i.e.
+The validation schema defines the shape and the format of the data you expect during the validation. We have divided the validation schema into three parts, i.e.
 
 - **The shape of the top-level object** is defined using the `vine.object` method.
 - **The data type for fields** is defined using the schema methods like `vine.string`, `vine.boolean`, and so on.

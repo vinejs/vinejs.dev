@@ -6,15 +6,15 @@ summary: The Object data type is used to validate an array with known elements a
 
 A tuple type represents an array field of a fixed length, and each element inside the array can have a specific type. You may create a tuple using the `vine.tuple` method and define the types for individual elements. 
 
-In the following example, we define a tuple that accepts the starting and the ending date. The validation will fail if the provided array has less than two properties or if any fields are not valid dates.
+In the following example, we define a tuple that accepts the latitude and the longitude pair. The validation will fail if the provided array has less than two properties or if any field is not a number.
 
 ```ts
 import vine from '@vinejs/vine'
 
 const schema = vine.object({
-  date_range: vine.tuple([
-    vine.date().inFuture('days'),
-    vine.date().afterField('date_range.0', { diff: 'days' }),
+  coordinates: vine.tuple([
+    vine.number(),
+    vine.number(),
   ])
 })
 ```
@@ -25,9 +25,9 @@ See also: [Working with `undefined` and `null` values](../guides/schema_101.md#n
 
 ```ts
 {
-  date_range: vine.tuple([
-    vine.date().inFuture('days'),
-    vine.date().afterField('date_range.0', { diff: 'days' }),
+  coordinates: vine.tuple([
+    vine.number(),
+    vine.number(),
   ])
   .nullable()
 }
@@ -35,9 +35,9 @@ See also: [Working with `undefined` and `null` values](../guides/schema_101.md#n
 
 ```ts
 {
-  date_range: vine.tuple([
-    vine.date().inFuture('days'),
-    vine.date().afterField('date_range.0', { diff: 'days' }),
+  coordinates: vine.tuple([
+    vine.number(),
+    vine.number(),
   ])
   .optional()
 }
