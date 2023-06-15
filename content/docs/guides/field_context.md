@@ -96,12 +96,12 @@ The name of the field under validation. In the case of an array element, it will
 
 ## isArrayMember
 
-A boolean to know if the field is an array element. When set to `true`, the value of `fieldName` will be the array index, and the `parent` property will be an array (otherwise object).
+A boolean to know if the field is an array element. When set to `true`, the value of `name` will be the array index, and the `parent` property will be an array (otherwise object).
 
 ```ts
 vine.createRule((value, options, field) => {
   if (field.isArrayMember) {
-    console.log(field.parent[field.fieldName])
+    console.log(field.parent[field.name])
   }
 })
 ```

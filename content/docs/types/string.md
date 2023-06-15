@@ -358,7 +358,7 @@ Ensure the field's value to be a valid `uuid`. You may optionally enforce a spec
 vine.object({
   id: vine
     .string()
-    .uuid({ version: 4 })
+    .uuid({ version: [4] })
 })
 
 // Enforce multiple version.
@@ -485,15 +485,9 @@ vine.object({
 ```
 
 ### passport
-Ensure the field's value is formatted as a valid passport number. Optionally, you can define an array of country codes as well.
+Ensure the field's value is formatted as a valid passport number for a given or multiple country codes.
 
 ```ts
-vine.object({
-  passport: vine
-    .string()
-    .passport()
-})
-
 vine.object({
   passport: vine
     .string()
@@ -503,7 +497,7 @@ vine.object({
 })
 ```
 
-You may define a callback function to compute the options at runtime. 
+You may define a callback function to compute the options at runtime.
 
 ```ts
 vine.object({
