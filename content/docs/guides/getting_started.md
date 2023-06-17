@@ -6,6 +6,12 @@ summary: Get started by installing VineJS inside an existing Node.js project
 
 You may install VineJS inside an existing Node.js project from the npm packages registry.
 
+:::warning
+
+VineJS is an ESM only package and will not work with the CommonJS module system
+
+:::
+
 :::codegroup
 
 ```sh
