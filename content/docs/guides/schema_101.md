@@ -135,6 +135,111 @@ Following is the list of available schema types supported by VineJS. We also sup
 - [Literal](../types/literal.md)
 <!-- - [Date](../types/date.md) (via Luxon package) -->
 
+## Validation metadata
+
+Since VineJS schemas are pre-compiled, you cannot pass runtime options to them. For example, you want the user to enter a credit card number from a specific provider based upon the user's country saved in their profile.
+
+```ts
+const purchaseValidator = vine.compile(
+  vine.object({
+    credit_card: vine
+      .string()
+      .creditCard({
+        // highlight-start
+        provider: [] // SHOULD BE BASED ON USER PROFILE
+        // highlight-end
+      })
+  })
+)
+```
+
+Assuming you use the `purchaseValidator` validator during an HTTP request, you want to fetch the currently logged-in user profile and get the list of credit card providers. In short, you want to define `provider` at the time of validating and not at the time of defining the schema.
+
+This is where the validation metadata can help you. You can pass the `provider` array as follows.
+
+```ts
+const user = req.auth.user
+// Assuming the user model has the "getProviders" method
+const ccProviders = user.getProviders()
+
+await purchaseValidator.validate(req.body, {
+  // highlight-start
+  meta: {
+    ccProviders
+  }
+  // highlight-end
+})
+```
+
+Now, let's go to the schema and access the `meta.ccProviders` value inside the schema. First, we must pass a callback to the `creditCard` validation rule and lazily compute the validation options.
+
+```ts
+const purchaseValidator = vine.compile(
+  vine.object({
+    credit_card: vine
+      .string()
+      // delete-start
+      .creditCard({
+        provider: []
+      })
+      // delete-end
+      // insert-start
+      .creditCard((field) => {
+        return {
+          provider: field.meta.ccProviders
+        }
+      })
+      // insert-end
+  })
+)
+```
+
+### Defining metadata static types
+In our previous example, we cannot know that the `purchaseValidator` needs the `meta.ccProviders` array to be functional. However, we can fix that by defining the static types using the `vine.withMetaData` method.
+
+Once you define the static types for the metadata, the TypeScript compiler will force you to provide the same metadata when using the validator.
+
+```ts
+// insert-start
+import { CreditCardOptions } from '@vinejs/vine/types'
+
+type PurchaseValidatorMetaData = {
+  ccProviders: CreditCardOptions['provider']
+}
+// insert-end
+
+const purchaseValidator = vine
+  // insert-start
+  .withMetaData<PurchaseValidatorMetaData>()
+  // insert-end
+  .compile(
+    vine.object({
+      credit_card: vine
+        .string()
+        .creditCard((field) => {
+          return {
+            provider: field.meta.ccProviders
+          }
+        })
+    })
+  )
+```
+
+```ts
+// ❌ ERROR: Expected 2 arguments, but got 1.ts(2554)
+await purchaseValidator.validate(req.body)
+
+// ❌ ERROR: Property 'meta' is missing in type '{}' but required in type '{ meta: PurchaseValidatorMetaData; }'
+await purchaseValidator.validate(req.body, {})
+
+// ✅
+await purchaseValidator.validate(req.body, {
+  meta: {
+    ccProviders: ['mastercard' as const]
+  }
+})
+```
+
 ## Using functions as validation rules
 
 You are not only limited to validation rules available via the schema API. You can also convert plain JavaScript functions to validation rules and use them with any schema type.
@@ -227,11 +332,11 @@ const schema = vine.object({
 
 ## Converting the output to camelCase
 
-VineJS allows you to transform all field names from `snake_case` or `dash-case` to `camelCase` using the `object.toCamelCase` modifier. 
+VineJS transforms all field names from `snake_case` or `dash-case` to `camelCase` using the `object.toCamelCase` modifier. 
 
 :::note
 
-Considering the complexity around generating accurate static types, we will not add support for other modifiers.
+Considering the complexity of generating accurate static types, we will not add support for other modifiers.
 
 :::
 
