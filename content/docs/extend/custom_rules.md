@@ -140,7 +140,7 @@ As a next step, you may extend the `VineString` class and a `unique` method to i
 import { VineString } from '@vinejs/vine'
 import { uniqueRule, Options } from './rules/unique.js'
 
-VineString.macro('unique', function (options: Options) {
+VineString.macro('unique', function (this: VineString, options: Options) {
   return this.use(uniqueRule(options))
 })
 ```
