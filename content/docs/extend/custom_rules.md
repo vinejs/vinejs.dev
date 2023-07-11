@@ -159,7 +159,7 @@ declare module '@vinejs/vine' {
 }
 // insert-end
 
-VineString.macro('unique', function (options: Options) {
+VineString.macro('unique', function (this: VineString, options: Options) {
   return this.use(uniqueRule(options))
 })
 ```
