@@ -22,7 +22,7 @@ vine.messagesProvider = new SimpleMessagesProvider({
 
   // Error message for the username field
   'username.required': 'Please choose a username for your account',
-})
+}, {})
 ```
 
 ### Targeting nested fields
