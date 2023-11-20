@@ -11,6 +11,7 @@
 
 import 'reflect-metadata'
 import { Ignitor } from '@adonisjs/core'
+import { defineConfig } from '@adonisjs/vite'
 
 /**
  * URL to the application root. AdonisJS need it to resolve
@@ -50,7 +51,7 @@ async function exportHTML() {
 }
 
 const app = new Ignitor(APP_ROOT, { importer: IMPORTER })
-  .tap((app) => {
+  .tap(app => {
     app.initiating(() => {
       app.useConfig({
         appUrl: process.env.APP_URL || '',
@@ -62,13 +63,11 @@ const app = new Ignitor(APP_ROOT, { importer: IMPORTER })
           default: 'app',
           loggers: {
             app: {
-              enabled: true,
+              enabled: true
             },
           },
         },
-        views: {
-          cache: false,
-        },
+        vite: defineConfig({}),
       })
     })
   })

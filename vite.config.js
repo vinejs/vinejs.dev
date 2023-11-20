@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import Adonis from '@adonisjs/vite/plugin'
+import Adonis from '@adonisjs/vite/client'
 
 export default defineConfig({
   plugins: [Adonis({
