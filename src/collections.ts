@@ -17,7 +17,7 @@ const docs = new Collection()
   .useRenderer(renderer)
   .urlPrefix('/docs')
   .tap((entry) => {
-    entry.setMarkdownOptions({ tocDepth: 2 })
+    entry.setMarkdownOptions({ tocDepth: 3 })
   })
 
 await docs.boot()

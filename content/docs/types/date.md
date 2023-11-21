@@ -1,203 +1,217 @@
 # Date type
 
-The date schema type validates the field's value to be a string formatted as a date. The output get's converted to an instance of [Luxon DateTime](https://moment.github.io/luxon/api-docs/index.html#datetime) class.
-
-To use the `vine.date` method, you must install [luxon](https://moment.github.io/luxon/#/install) as your project dependency.
-
-```sh
-npm i luxon
-```
-
-Once installed, you may use the date schema type as follows.
+Ensure the field's value is a string formatted as a date or datetime per the expected formats. The return value is an instance of the [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) class.
 
 ```ts
 import vine from '@vinejs/vine'
 
 const schema = vine.object({
-  dob: vine.date(),
+  published_at: vine.date()
 })
+```
 
-const data = {
-  dob: '1990-05-23'
+By default, the input value should be formatted as a `YYYY-MM-DD` or `YYYY-MM-DD HH:mm:ss` string. However, you may define custom formats as well. In the following example, we expect the input string to be valid per any of the mentioned formats.
+
+:::note
+
+You must check the Day.js documentation to [view the available formatting tokens](https://day.js.org/docs/en/parse/string-format#list-of-all-available-parsing-tokens).
+
+:::
+
+```ts
+import vine from '@vinejs/vine'
+
+const schema = vine.object({
+  published_at: vine.date({
+    formats: ['YYYY/DD/MM', 'x']
+  })
+})
+```
+
+You may mark the field as `optional` or `nullable` using the following modifiers.
+
+See also: [Working with `undefined` and `null` values](../guides/schema_101.md#nullable-and-optional-modifiers)
+
+```ts
+{
+  published_at: vine.date().nullable()
+}
+```
+
+```ts
+{
+  published_at: vine.date().optional()
+}
+```
+
+
+## Defining error message
+You may define custom error messages for the following date-based rules.
+
+```ts
+const messages = {
+  'date': 'The {{ field }} field must be a datetime value',
+  
+  'date.equals': 'The {{ field }} field must be a date equal to {{ expectedValue }}',
+  'date.after': 'The {{ field }} field must be a date after {{ expectedValue }}',
+  'date.before': 'The {{ field }} field must be a date before {{ expectedValue }}',
+  'date.afterOrEqual': 'The {{ field }} field must be a date after or equal to {{ expectedValue }}',
+  'date.beforeOrEqual': 'The {{ field }} field must be a date before or equal to {{ expectedValue }}',
+
+  'date.sameAs': 'The {{ field }} field and {{ otherField }} field must be the same',
+  'date.notSameAs': 'The {{ field }} field and {{ otherField }} field must be different',
+  'date.afterField': 'The {{ field }} field must be a date after {{ otherField }}',
 }
 
-const output = await vine.validate({ schema, data })
-
-output.dob // DateTime
+vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```
 
-## Defining format and zone
+## Comparing dates
+You may use one of the following validation methods to compare the user input against a specific datetime value.
 
-The date values are validated against the `ISO` format by default. However, using the `format` option, you may define a custom format.
+- `equals`: Ensure the input datetime value is the same as the expected datetime value.
 
-```ts
-vine.date({ format: 'iso' })
-vine.date({ format: 'sql' })
-vine.date({ format: 'yyyy-MM-dd HH:mm:ss' })
-```
+- `after`: Ensure the input datetime value is after the expected datetime value.
 
-You may use the following shorthand keywords or use any available [Luxon DateTime tokens](https://moment.github.io/luxon/#/parsing?id=table-of-tokens) to define the format.
+- `afterOrEqual`: Same as the `after` method, but performs a greater than and equal to comparison.
 
-- `iso`
-- `sql`
-- `rfc2822`
-- `http`
+- `before`: Ensure the input datetime value is before the expected datetime value.
 
-Post validation, the DateTime instance is created in the local timezone of your server. However, you may [define an explicit zone](https://moment.github.io/luxon/#/zones?id=creating-datetimes-in-a-zone) using the `zone` property.
+- `beforeOrEqual`: Same as the `before` method, but performs a less than and equal to comparison.
 
 ```ts
-vine.date({
-  zone: 'utc'
-})
-```
-
-## Validations
-
-Following is the list of validation rules you may apply on a date.
-
-### equals
-Ensure the value of date is same as the pre-defined value. The expected value must be an instance of the Luxon DateTime class.
-
-```ts
+// title: Example of equals
 const schema = vine.object({
   enrollment_date: vine
     .date()
-    .equals(DateTime.fromISO('2023-05-25'))
+    .equals('2024-01-28')
 })
 ```
 
-### notEquals
-Ensure the value of date is not same as the pre-defined value. The expected value must be an instance of the Luxon DateTime class.
-
 ```ts
-const schema = vine.object({
-  enrollment_date: vine
-    .date()
-    .notEquals(DateTime.fromISO('2023-05-25'))
-})
-```
-
-### sameAs
-
-### notSameAs
-
-### after / afterOrEqual
-
-Ensure the date is after a given interval. The `after` and `afterOrEqual` methods accepts the interval as the `first` argument and the unit as the `second` argument.
-
-```ts
+// title: Example of after
 const schema = vine.object({
   checkin_date: vine
     .date()
-    .after(2, 'days')
+    .after('today')
+})
+
+const schema = vine.object({
+  checkin_date: vine
+    .date()
+    .after('2024-01-01')
 })
 ```
 
-Following is the list of available units.
+When using dynamic or computed values, you must use a callback function. Otherwise, the initial value will be cached forever with a [precompiled schema](../guides/getting_started.md#pre-compiling-schema).
 
 ```ts
-vine.date().after(2, 'days')
-vine.date().after(1, 'month')
-vine.date().after(3, 'years')
-vine.date().after(30, 'minutes')
-vine.date().after(2, 'quarters')
+// title: Lazily compute the expected value
+const schema = vine.object({
+  enrollment_date: vine
+    .date()
+    // highlight-start
+    .afterOrEqual((field) => {
+      return dayjs().add(2, 'day').format('YYYY-MM-DD')
+    })
+    // highlight-end
+})
 ```
 
-For advanced use cases, you may pass an instance of the Luxon DateTime directly.
+### How is the comparison performed?
+Validation rules use the `compare` unit to compare the two dates. By default, the compare unit is set to `day`, which means the validation will compare the `day`, `month`, and the `year` values.
+
+Similarly, if you set the compare unit to `minutes`, the validation will compare `minutes`, `hours`, `day`, `month` and the `year`.
+
+:::tip
+
+Under the hood, the comparison is performed using the [Days.js query methods](https://day.js.org/docs/en/query/is-before).
+
+:::
 
 ```ts
 vine
   .date()
-  .after(DateTime.utc(), 'days')
+  .equals('2024-01-28', {
+    compare: 'month', // compares month and the year
+  })
 ```
 
-### afterField / afterOrSameAsField
-
-The `afterField` and `afterOrSameAsField` methods enforce the date to be after the date value of the other field.
-
-The `afterField` validation is skipped when the other field's value is not a valid date.
-
-```ts
-const schema = vine.object({
-  checkin_date: vine.date().inFuture({ unit: 'days' }),
-  checkout_date: vine
-    .date()
-    .afterField('checkin_date'),
-})
-```
-
-By default, the diff between two dates is calculated in minutes. However, you may define a custom diff unit via the options object.
-
-```ts
-const schema = vine.object({
-  checkin_date: vine.date().inFuture({ unit: 'days' }),
-  checkout_date: vine
-    .date()
-    .afterField('checkin_date', { unit: 'days' }),
-})
-```
-
-
-### before / beforeOrEqual
-
-Ensure the date is before a given interval. The `before` and `beforeOrEqual` methods accept the interval as the `first` argument and the unit as the `second` argument.
-
-```ts
-const schema = vine.object({
-  dob: vine
-    .date()
-    .before(10, 'years')
-})
-```
-
-Following is the list of available units.
-
-```ts
-vine.date().before(2, 'days')
-vine.date().before(1, 'month')
-vine.date().before(3, 'years')
-vine.date().before(30, 'minutes')
-vine.date().before(2, 'quarters')
-```
-
-For advanced use cases, you may pass an instance of the Luxon DateTime directly.
+### Using a custom format
+Validation rules assume the expected datetime format to be an ISO string. However, you may use the `format` option to specify a custom format.
 
 ```ts
 vine
   .date()
-  .before(DateTime.utc().minus({ days: 1 }))
+  .equals('2024/28/01', {
+    format: 'YYYY/DD/MM',
+  })
 ```
 
-### beforeField / beforeOrSameAsField
+## Comparing against other fields
+Alongside performing [comparison against a fixed datetime value](#comparing-dates), you may also use the following validation methods to compare the input value against the value of another field.
 
-The `beforeField` and `beforeOrSameAsField` methods enforce the date to be before the date value of the other field.
+- `sameAs`: Ensure the input datetime value is the same as the other field's value.
 
-The `beforeField` validation is skipped when the other field's value is not a valid date.
+- `notSameAs`: Ensure the input datetime value is not the same as the other field's value.
+
+- `afterField`: Ensure the input datetime value is after the other field's value.
+
+- `afterOrSameAs`: Same as the `afterField` rule, but performs a greater than and equal to comparison.
+
+- `beforeField`: Ensure the input datetime value is before the other field's value.
+
+- `beforeOrSameAs`:  Same as the `beforeField` rule, but performs a less than and equal to comparison.
 
 ```ts
+// title: Example of sameAs
 const schema = vine.object({
-  checkin_date: vine.date(),
-  documents_approved_at: vine
-    .date()
-    .beforeField('checkin_date')
+  entry_date: vine.date(),
+  exit_date: vine.date().sameAs('entry_date')
 })
 ```
 
-By default, the diff between two dates is calculated in minutes. However, you may define a custom diff unit via the options object.
-
 ```ts
+// title: Example of afterField
 const schema = vine.object({
   checkin_date: vine.date(),
-  documents_approved_at: vine
-    .date()
-    .beforeField('checkin_date', { unit: 'days' })
+  checkout_date: vine.date().afterField('checkin_date')
 })
 ```
 
-### inFuture
+You may specify the comparison unit and the format of the other field using the options object.
 
-### inPast
+See also: [How is the comparison performed?](#how-is-the-comparison-performed)
 
-### weekday
+```ts
+const schema = vine.object({
+  checkin_date: vine.date({
+    formats: ['YYYY/MM/DD']
+  }),
+  checkout_date: vine.date().afterField('checkin_date', {
+    compare: 'day',
+    format: ['YYYY/MM/DD']
+  })
+})
+```
+
+## Other validation rules
+Following is the list of other (non-comparison) validation rules.
 
 ### weekend
+Ensure the date is a weekend.
+
+```ts
+const schema = vine.object({
+  checkin_date: vine.date().weekend()
+})
+```
+
+### weekday
+Ensure the date is a weekday.
+
+```ts
+const schema = vine.object({
+  event_date: vine.date().weekday()
+})
+```
