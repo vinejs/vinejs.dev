@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@adonisjs/core": "^6.1.5-31",
-    "@adonisjs/static": "^1.0.2",
+    "@adonisjs/static": "^1.0.3",
     "@radix-ui/colors": "^3.0.0",
     "edge.js": "^6.0.0-10"
   }
