@@ -35,7 +35,7 @@
 }
 
 :root {
-  --logo-color: #BD00FF;
+  --logo-color: #bd00ff;
 
   --accent-1: var(--purple-1);
   --accent-2: var(--purple-2);
@@ -113,14 +113,15 @@ html.dark {
   gap: 0;
 }
 
-.header_nav_items .link_github, .header_nav_items .theme_switcher {
+.header_nav_items .link_github,
+.header_nav_items .theme_switcher {
   padding: 20px 18px;
   display: flex;
   align-items: center;
   border-left: 1px solid var(--header-border-color);
 }
 
-.markdown pre span[style="color: #546E7A;"] {
+.markdown pre span[style='color: #546E7A;'] {
   color: var(--code-comment-color) !important;
 }
 
