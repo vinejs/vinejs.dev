@@ -64,6 +64,7 @@
   --accent-a12: var(--purple-a12);
 
   --sidebar-active-link-text-color: var(--purple-12);
+  --pre-tabs-active-border-color: var(--accent-9);
 }
 
 html.dark {
