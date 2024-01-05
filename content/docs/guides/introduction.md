@@ -125,7 +125,7 @@ VineJS is one of the fastest validation libraries in the Node.js ecosystem. Here
 
 Following is the complete list of various benchmarks on Github, along with their source code and results.
 
-- [Benchmarking against a flat object](https://github.com/vinejs/vine/blob/develop/benchmarks.md#benchmarking-against-flat-object)
+- [Benchmarking against a flat object](https://github.com/vinejs/vine/blob/develop/benchmarks.md#benchmarking-against-a-flat-object)
 - [Benchmarking against a nested object](https://github.com/vinejs/vine/blob/develop/benchmarks.md#benchmarking-against-a-nested-object)
 - [Benchmarking arrays](https://github.com/vinejs/vine/blob/develop/benchmarks.md#benchmarking-arrays)
 - [Benchmarking unions](https://github.com/vinejs/vine/blob/develop/benchmarks.md#benchmarking-unions)
