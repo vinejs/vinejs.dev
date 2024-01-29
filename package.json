@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@adonisjs/core": "^6.1.5-38",
-    "@adonisjs/static": "^1.0.4",
+    "@adonisjs/static": "^1.1.0",
     "@adonisjs/vite": "^2.0.2-0",
     "@dimerapp/content": "^5.0.0",
     "@dimerapp/docs-theme": "^4.0.1",
