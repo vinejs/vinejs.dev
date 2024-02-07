@@ -267,7 +267,7 @@ const schema = vine.object({
 
 ## Bail mode
 
-VineJS stops the validation chain when any validation fails for a given field. We call this behavior the `bail` mode.
+VineJS stops the validation chain when any validation fails for a given field. We call this behavior the `bail` mode. In other libraries, this feature is usually called **abort early**.
 
 In the following example, if the field's value is not a `string`, VineJS will not perform the `email` and the `unique` validations. This is the behavior you would want most of the time.
 
