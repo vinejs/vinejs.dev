@@ -93,8 +93,8 @@ async function unique(
   }
   
   const row = await db
-   .select(options.column)
    .from(options.table)
+   .select(options.column)
    .where(options.column, value)
    .first()
    
