@@ -91,8 +91,8 @@ vine.object({
 })
 ```
 
-## requiredIfExistsAny
-The `requiredIfExistsAny` method marks the field as required when any of the expected fields are present with a value other than `undefined` or `null`.
+## requiredIfAnyExists
+The `requiredIfAnyExists` method marks the field as required when any of the expected fields are present with a value other than `undefined` or `null`.
 
 ```ts
 vine.object({
@@ -100,7 +100,7 @@ vine.object({
     .string()
     .optional()
     // highlight-start
-    .requiredIfExistsAny(['email', 'username'])
+    .requiredIfAnyExists(['email', 'username'])
     // highlight-end
 })
 ```
@@ -120,8 +120,8 @@ vine.object({
 })
 ```
 
-## requiredIfMissingAny
-The `requiredIfMissingAny` method marks the field as required when any of the expected fields are missing.
+## requiredIfAnyMissing
+The `requiredIfAnyMissing` method marks the field as required when any of the expected fields are missing.
 
 ```ts
 vine.object({
@@ -131,7 +131,7 @@ vine.object({
     .string()
     .optional()
     // highlight-start
-    .requiredIfMissingAny(['email', 'username'])
+    .requiredIfAnyMissing(['email', 'username'])
     // highlight-end
 })
 ```
