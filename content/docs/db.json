@@ -24,6 +24,12 @@
     "category": "Guides"
   },
   {
+    "permalink": "conditional_validation",
+    "title": "Conditional validation",
+    "contentPath": "./guides/conditional_validation.md",
+    "category": "Guides"
+  },
+  {
     "permalink": "field_context",
     "title": "Field context",
     "contentPath": "./guides/field_context.md",
