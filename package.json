@@ -45,7 +45,7 @@
     "vite": "^5.1.5"
   },
   "dependencies": {
-    "@adonisjs/core": "^6.2.3",
+    "@adonisjs/core": "^6.3.0",
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^2.0.2",
     "@dimerapp/content": "^5.0.0",
