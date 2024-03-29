@@ -57,7 +57,7 @@ const isMoney = vine.createRule((value: unknown, _, field: FieldContext) => {
 ```
 
 ## Step 2. Creating VineMoney schema class
-Schema data types are represented as classes and must extend the [BaseLiteralType](https://github.com/vinejs/vine/blob/develop/src/schema/base/literal.ts#L185) class.
+Schema data types are represented as classes and must extend the [BaseLiteralType](https://github.com/vinejs/vine/blob/develop/src/schema/base/literal.ts#L379) class.
 
 ```ts
 import { dinero, Dinero } from 'dinero.js'
@@ -65,7 +65,7 @@ import vine, { BaseLiteralType } from '@vinejs/vine'
 
 type Money = Dinero<number>
 
-export class VineMoney extends BaseLiteralType<Money, Money> {
+export class VineMoney extends BaseLiteralType<string, Money, Money> {
   constructor(options?: FieldOptions, validations?: Validation<any>[]) {
     super(options, validations || [isMoney()])
   }
@@ -79,7 +79,10 @@ export class VineMoney extends BaseLiteralType<Money, Money> {
 }
 ```
 
-- The `BaseLiteralType` class accepts the static types the schema class will output post-validation. The second generic value represents the types after applying the [camelCase modifier](../guides/schema_101.md#converting-the-output-to-camelcase). However, in this example, the types with and without the modifier will be the same.
+- The `BaseLiteralType` class accepts the static types the schema class will accept and output post-validation.
+  - The first generic value is the input value.
+  - The second generic value is the output type.
+  - And the third generic value is the output type after applying the [camelCase modifier](../guides/schema_101.md#converting-the-output-to-camelcase). However, in this example, the types with and without the modifier will be the same.
 
 - The class constructor accepts the initial options and an array of initial validation rules to apply.
 

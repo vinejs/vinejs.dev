@@ -133,7 +133,7 @@ Following is the list of available schema types supported by VineJS. We also sup
 - [Accepted](../types/accepted.md)
 - [Any](../types/any.md)
 - [Literal](../types/literal.md)
-<!-- - [Date](../types/date.md) (via Luxon package) -->
+- [Date](../types/date.md)
 
 ## Validation metadata
 

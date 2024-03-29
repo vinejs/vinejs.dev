@@ -18,6 +18,7 @@ type FieldContext = {
   wildCardPath: string
   isValid: boolean
   isDefined: boolean
+  getFieldPath(): string
   mutate(newValue: any, field: FieldContext): void
   report(
     message: string,
@@ -45,16 +46,42 @@ The `meta` object is a shared property across all the fields. You may use this p
 
 ## wildCardPath
 
-The nested path to the field is under validation. The value is represented using dot notation. For example: `profile.social.twitter`. In the case of an array, the `*` symbol is used for children elements.
+The nested path to the field under validation. The value is represented using dot notation. For example: `profile.social.twitter`. In the case of an array, the `*` symbol is used for children elements.
 
-## mutate
+## getFieldPath()
+Returns the nested path to a field. This method is different from the `wildCardPath` property since, in the case of arrays, the `getFieldPath` method will return a complete path with the runtime value of the current index. For example:
+
+```ts
+// Given the following schema
+const schema = vine.object({
+  contacts: vine.array(
+    vine.object({
+      email: vine.string()
+    })
+  )
+})
+
+/**
+ * The return value of "getFieldPath" will be
+ * - "contacts.0.email"
+ * - "contacts.1.email"
+ * - and so on
+ */
+
+/**
+ * The value of "wildCardPath" will be
+ * - "contacts.*.email"
+ */
+```
+
+## mutate()
 
 A function to `mutate` the value of the field. This function must be used by validation rules, not union conditionals or the `transform` method.
 
 ```ts
 vine.createRule((value, options, field) => {
   /**
-   * Mutate output value. Next validation rule will receive
+   * Mutate output value. The next validation rule will receive
    * the updated value
    */
   field.mutate(value.toUpperCase(), field)
@@ -80,7 +107,7 @@ vine.createRule((value, options, field) => {
 
 ## isValid
 
-A boolean to know if the field is valid. It will be considered invalid if the field has failed one or more validations.
+A boolean to determine if the field is valid. It will be considered invalid if it has failed one or more validations.
 
 ## isDefined
 

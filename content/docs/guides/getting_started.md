@@ -179,3 +179,32 @@ type UserRegistration = Infer<typeof schema>
  * }
  */
 ```
+
+### Infer input types
+
+You can infer the input data accepted by your schema using the `InferInput` type helper.
+
+```ts
+import vine from '@vinejs/vine'
+import { InferInput } from '@vinejs/vine/types'
+
+const schema = vine.object({
+  username: vine.string(),
+  email: vine.string().email(),
+  is_admin: vine.boolean(),
+  password: vine
+    .string()
+    .minLength(8)
+    .maxLength(32)
+})
+
+type UserRegistrationInput = InferInput<typeof schema>
+/**
+ * {
+ *   username: string
+ *   email: string
+ *   is_admin: boolean | string | number
+ *   password: string
+ * }
+ */
+```

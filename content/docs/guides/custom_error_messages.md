@@ -4,12 +4,12 @@ summary: Learn how you can define custom error messages
 
 # Custom error messages
 
-The workflow for defining custom error messages in VineJS is managed using a messages provider. You can use the default messages provider or create a custom provider that works great for your team and project.
+A messages provider manages the workflow for defining custom error messages in VineJS. You can use the default messages provider or create a custom provider that works great for your team and project.
 
 In this guide, we will cover the API of the [simple messages provider](https://github.com/vinejs/vine/blob/develop/src/messages_provider/simple_messages_provider.ts) (shipped with VineJS) and also create a custom messages provider.
 
 ## Using the SimpleMessagesProvider
-The error messages given to the **simple messages provider** are defined as an object of key-value pair. The key can be the rule name or the `field + rule` combination; the value is the error message.
+The error messages given to the **simple messages provider** are defined as an object of a key-value pair. The key can be the rule name or the `field + rule` combination; the value is the error message.
 
 ```ts
 import vine, { SimpleMessagesProvider } from '@vinejs/vine'
@@ -42,7 +42,9 @@ const messages = {
 }
 ```
 
-For fields inside arrays, you must use the wildcard `(*)` expression to target array children elements.
+### Targeting array elements
+
+For fields inside arrays, you can either use the wildcard `(*)` expression to target all array elements or define the error message for a specific index.
 
 ```ts
 const schema = vine.object({
@@ -52,6 +54,7 @@ const schema = vine.object({
 })
 
 const messages = {
+  'contacts.0.email.required': 'The primary email of the contact is required',
   'contacts.*.email.required': 'Contact email is required'
 }
 ```
@@ -99,7 +102,7 @@ As discussed earlier, the messages provider allows you to build a custom workflo
 Using a custom messages provider will disable the default messages provider. Hence, everything we covered in this guide will no longer be relevant.
 :::
 
-A custom messages provider must implement the `MessagesProviderContact` interface. The `getMessage` method will be called by VineJS to resolve an error message for a given rule and field.
+A custom messages provider must implement the `MessagesProviderContact` interface. VineJS will call the `getMessage` method to resolve an error message for a given rule and field.
 
 ```ts
 import vine from '@vinejs/vine'
