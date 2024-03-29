@@ -25,6 +25,24 @@
         copyright: siteConfig.copyright
       })
         @!component('docs::doc_errors', { messages: file.messages })
+
+        <div class="notification_banner" x-data="notification('2')" x-show="isVisible" style="display: none;">
+          <div class="notification_banner_content">
+            <p>
+              We have tagged a major release of VineJS as version 2.0. Make sure to read the release notes and upgrade.
+            </p>
+            <div class="notification_banner_content_cta">
+              <a
+                href="https://github.com/vinejs/vine/releases/tag/v2.0.0"
+                target="_blank"
+              > Learn more </a>
+            </div>
+          </div>
+          <div class="notification_banner_action">
+            <button @click.prevent="hide"> x </button>
+          </div>
+        </div>
+
         @!component('dimer_contents', { nodes: file.ast.children, pipeline })~
       @end
 

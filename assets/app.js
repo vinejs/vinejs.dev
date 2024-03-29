@@ -78,4 +78,20 @@ Alpine.data('barChart', function (data) {
   }
 })
 
+Alpine.data('notification', function (version) {
+  return {
+    isVisible: false,
+    init() {
+      const notificationKey = localStorage.getItem('_x_notificationKey')
+      if (!notificationKey || notificationKey !== version) {
+        this.isVisible = true
+      }
+    },
+    hide() {
+      localStorage.setItem('_x_notificationKey', version)
+      this.isVisible = false
+    }
+  }
+})
+
 Alpine.start()

@@ -130,3 +130,46 @@ html.dark {
   letter-spacing: 0.4px;
   padding: 0 8px;
 }
+
+.notification_banner {
+  display: flex;
+  background: var(--accent-3);
+  color: var(--accent-12);
+  border: 2px solid var(--accent-8);
+  border-radius: var(--rounded-md);
+  padding: 15px 25px 20px 25px;
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.notification_banner_content {
+  padding-right: 40px;
+  line-height: 1.4;
+  font-size: 15px;
+}
+
+.notification_banner_content a {
+  background: var(--accent-10);
+  text-decoration: none;
+  color: var(--accent-1);
+  border-radius: var(--rounded-sm);
+  padding: 5px 12px;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.notification_banner_content_cta {
+  margin-top: 18px;
+}
+
+.notification_banner_action {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+.notification_banner_action button {
+  font-weight: 600;
+  color: var(--accent-9);
+  font-size: 18px;
+}
