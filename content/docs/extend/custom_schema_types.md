@@ -62,7 +62,7 @@ Schema data types are represented as classes and must extend the [BaseLiteralTyp
 ```ts
 import { dinero, Dinero } from 'dinero.js'
 import vine, { BaseLiteralType } from '@vinejs/vine'
-import { FieldOptions, Validation } from '@vinejs/vine/types'
+import type { FieldOptions, Validation } from '@vinejs/vine/types'
 
 type Money = Dinero<number>
 
