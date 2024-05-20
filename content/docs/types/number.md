@@ -152,3 +152,13 @@ vine.object({
   age: vine.number().withoutDecimals()
 })
 ```
+
+### in
+
+Enforce the value to be one of the pre-defined values. You can pass an array of values to the `in` method.
+
+```ts
+vine.object({
+  price: vine.number().in([1, 2, 4, 8])
+})
+```
