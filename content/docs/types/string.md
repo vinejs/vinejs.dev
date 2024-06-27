@@ -55,6 +55,7 @@ const messages = {
   notIn: 'The selected {{ field }} is invalid',
   ipAddress: 'The {{ field }} field must be a valid IP address',
   uuid: 'The {{ field }} field must be a valid UUID',
+  ulid: 'The {{ field }} field must be a valid ULID',
   ascii: 'The {{ field }} field must only contain ASCII characters',
   creditCard: 'The {{ field }} field must be a valid {{ providersList }} card number',
   hexCode: 'The {{ field }} field must be a valid hex color code',
@@ -366,6 +367,18 @@ vine.object({
   id: vine
     .string()
     .uuid({ version: [2, 4, 5] })
+})
+```
+
+### ulid
+
+Ensure the field's value to be a valid `ulid` according to the [canonical specs](https://github.com/ulid/spec).
+
+```ts
+vine.object({
+  id: vine
+    .string()
+    .ulid()
 })
 ```
 
