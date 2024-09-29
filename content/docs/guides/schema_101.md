@@ -322,13 +322,35 @@ You may use the `transform` method on available schema types to mutate the outpu
 
 The `transform` method receives the `value` as the first argument and the [field context](./field_context.md) as the second argument. You may return a completely different data type from the `transform` method.
 
+You can also use async functions in the `transform` method.
+Just remember to pass the `shouldAwaitTransformers` option when calling the `validate` method if you want the awaited value.
+
+:::codegroup
 ```ts
+// title: Synchronous transform
 const schema = vine.object({
   amount: vine.number().decimal([2, 4]).transform((value) => {
     return new Amount(value)
   })
 })
 ```
+
+```ts
+// title: Asynchronous transform
+const schema = vine.object({
+  amount: vine.number().decimal([2, 4]).transform(async (value) => {
+    return await new Amount(value)
+  })
+})
+
+// When calling the validate method 
+// pass the shouldAwaitTransformers option to get the awaited value
+await vine.validate({ schema, data, shouldAwaitTransformers: true })
+
+```
+
+
+:::
 
 ## Converting the output to camelCase
 
