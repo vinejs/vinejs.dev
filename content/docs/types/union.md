@@ -133,7 +133,7 @@ const fiscalHost = vine.group([
 
 const schema = vine
   .object({
-    type: vine.enum(['enum', 'paypal', 'open_collective'])
+    type: vine.enum(['stripe', 'paypal', 'open_collective'])
   })
   // highlight-start
   .merge(fiscalHost)
