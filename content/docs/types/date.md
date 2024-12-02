@@ -28,6 +28,18 @@ const schema = vine.object({
 })
 ```
 
+To allow dates with [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) format, you may specify `iso8601` as a formats value.
+
+```ts
+import vine from '@vinejs/vine'
+
+const schema = vine.object({
+  published_at: vine.date({
+    formats: ['iso8601']
+  })
+})
+```
+
 You may mark the field as `optional` or `nullable` using the following modifiers.
 
 See also: [Working with `undefined` and `null` values](../guides/schema_101.md#nullable-and-optional-modifiers)
