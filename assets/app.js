@@ -24,7 +24,7 @@ Alpine.data('barChart', function (data) {
   return {
     init() {
       highcharts.chart(this.$root, {
-        colors: ['#b335dd', '#9231ef', '#6f6dff'],
+        colors: ['#ca5bf2', '#408aff', '#6f6dff', '#334155', '#ed7d31'],
         title: {
           text: '',
         },
@@ -35,7 +35,7 @@ Alpine.data('barChart', function (data) {
           type: 'bar',
         },
         xAxis: {
-          categories: ['Yup', 'Zod', 'VineJS'],
+          categories: ['VineJS', 'Zod', 'Yup', 'Valibot', 'Joi'],
           gridLineWidth: 1,
           lineWidth: 0,
         },
@@ -90,7 +90,7 @@ Alpine.data('notification', function (version) {
     hide() {
       localStorage.setItem('_x_notificationKey', version)
       this.isVisible = false
-    }
+    },
   }
 })
 
