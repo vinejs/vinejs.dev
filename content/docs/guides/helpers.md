@@ -84,15 +84,15 @@ vine.helpers.isNumeric('121.09') // true
 vine.helpers.isNumeric('49.00') // true
 ```
 
-## hasDecimals
+## isDecimal
 
-Check if a number value has a fixed or a range of decimal places. The `hasDecimals` method accepts a `number` data type for the value input.
+Check if a number value has a fixed or a range of decimal places. The `isDecimal` method accepts a `number` data type for the value input.
 
 ```ts
-vine.helpers.hasDecimals(32.12, [0, 2]) // true
-vine.helpers.hasDecimals(32, [0, 2]) // true
-vine.helpers.hasDecimals(32, [2]) // false
-vine.helpers.hasDecimals(32.101, [2]) // false
+vine.helpers.isDecimal('32.12', { decimal_digits: '0,2' }) // true
+vine.helpers.isDecimal('32', { decimal_digits: '0,2' }) // true
+vine.helpers.isDecimal('32', { decimal_digits: '2' }) // false
+vine.helpers.isDecimal('32.101', { decimal_digits: '2' }) // false
 ```
 
 ## asNumber
