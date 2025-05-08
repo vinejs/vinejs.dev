@@ -53,6 +53,7 @@ You may use a callback with the `requiredWhen` rule to express complex scenarios
 vine.object({
   address: vine
     .string()
+    .optional()
     // highlight-start
     .requiredWhen((field) => {
       if (field.parent.country !== 'USA') {
