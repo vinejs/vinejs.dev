@@ -53,7 +53,7 @@
     "@dimerapp/edge": "^5.0.0",
     "@radix-ui/colors": "^3.0.0",
     "edge-uikit": "^1.0.0-1",
-    "edge.js": "^6.0.2"
+    "edge.js": "^6.2.1"
   },
   "prettier": "@adonisjs/prettier-config",
   "eslintConfig": {
