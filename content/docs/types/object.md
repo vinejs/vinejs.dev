@@ -219,7 +219,7 @@ vine.group([
   })
 ])
 // highlight-start
-.otherwise((field) => {
+.otherwise((_, field) => {
   field.report(
     'You must provide username or email to login',
     'email_or_username',
