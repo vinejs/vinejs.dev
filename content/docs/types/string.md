@@ -353,7 +353,7 @@ vine.object({
 
 ### uuid
 
-Ensure the field's value to be a valid `uuid`. You may optionally enforce a specific uuid version (version 1, 2, 3, 4 or 5).
+Ensure the field's value to be a valid `uuid`. You may optionally enforce a specific uuid version (1 through 8).
 
 ```ts
 vine.object({
@@ -366,7 +366,7 @@ vine.object({
 vine.object({
   id: vine
     .string()
-    .uuid({ version: [2, 4, 5] })
+    .uuid({ version: [2, 4, 5, 7] })
 })
 ```
 
