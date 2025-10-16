@@ -22,9 +22,115 @@ Alpine.plugin(initZoomComponent(mediumZoom))
 
 Alpine.data('barChart', function (data) {
   return {
-    init() {
-      highcharts.chart(this.$root, {
-        colors: ['#ca5bf2', '#408aff', '#6f6dff', '#334155', '#ed7d31'],
+    activeIndex: 0,
+    benchmarks: [
+      {
+        title: 'Flat object',
+        categories: [
+          {
+            name: 'VineJS',
+            color: '#ca5bf2',
+          },
+          {
+            name: 'Zod',
+            color: '#408aff',
+          },
+          {
+            name: 'Yup',
+            color: '#6f6dff',
+          },
+          {
+            name: 'Valibot',
+            color: '#334155',
+          },
+          {
+            name: 'Joi',
+            color: '#ed7d31',
+          },
+        ],
+        numbers: [13_072_620, 7_420_116, 746_769, 6_558_725, 2_252_419],
+      },
+      {
+        title: 'Nested objects',
+        categories: [
+          {
+            name: 'VineJS',
+            color: '#ca5bf2',
+          },
+          {
+            name: 'Zod',
+            color: '#408aff',
+          },
+          {
+            name: 'Yup',
+            color: '#6f6dff',
+          },
+          {
+            name: 'Valibot',
+            color: '#334155',
+          },
+          {
+            name: 'Joi',
+            color: '#ed7d31',
+          },
+        ],
+        numbers: [9_445_152, 3_628_979, 344_506, 3_363_940, 1_137_401],
+      },
+      {
+        title: 'Arrays',
+        categories: [
+          {
+            name: 'VineJS',
+            color: '#ca5bf2',
+          },
+          {
+            name: 'Zod',
+            color: '#408aff',
+          },
+          {
+            name: 'Yup',
+            color: '#6f6dff',
+          },
+          {
+            name: 'Valibot',
+            color: '#334155',
+          },
+          {
+            name: 'Joi',
+            color: '#ed7d31',
+          },
+        ],
+        numbers: [6_810_515, 3_254_923, 202_143, 3_064_924, 795_110],
+      },
+      {
+        title: 'Unions',
+        categories: [
+          {
+            name: 'VineJS',
+            color: '#ca5bf2',
+          },
+          {
+            name: 'Zod',
+            color: '#408aff',
+          },
+          {
+            name: 'Valibot',
+            color: '#334155',
+          },
+          {
+            name: 'Joi',
+            color: '#ed7d31',
+          },
+        ],
+        numbers: [9_949_804, 2_106_060, 1_124_721, 957_252],
+      },
+    ],
+
+    render(index) {
+      this.activeIndex = index
+      const benchmark = this.benchmarks[index]
+      highcharts.chart(this.$refs.chart, {
+        colors: benchmark.categories.map((c) => c.color),
         title: {
           text: '',
         },
@@ -35,7 +141,7 @@ Alpine.data('barChart', function (data) {
           type: 'bar',
         },
         xAxis: {
-          categories: ['VineJS', 'Zod', 'Yup', 'Valibot', 'Joi'],
+          categories: benchmark.categories.map((c) => c.name),
           gridLineWidth: 1,
           lineWidth: 0,
         },
@@ -65,7 +171,7 @@ Alpine.data('barChart', function (data) {
         },
         series: [
           {
-            data: data,
+            data: benchmark.numbers,
             dataLabels: {
               formatter: function () {
                 return humanFormat(this.y)
@@ -74,6 +180,10 @@ Alpine.data('barChart', function (data) {
           },
         ],
       })
+    },
+
+    init() {
+      this.render(0)
     },
   }
 })
