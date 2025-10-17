@@ -46,7 +46,7 @@ const messages = {
   minLength: 'The {{ field }} field must have at least {{ min }} characters',
   maxLength: 'The {{ field }} field must not be greater than {{ max }} characters',
   fixedLength: 'The {{ field }} field must be {{ size }} characters long',
-  confirmed: 'The {{ field }} field and {{ otherField }} field must be the same',
+  confirmed: 'The {{ originalField }} field and {{ otherField }} field must be the same',
   endsWith: 'The {{ field }} field must end with {{ substring }}',
   startsWith: 'The {{ field }} field must start with {{ substring }}',
   sameAs: 'The {{ field }} field and {{ otherField }} field must be the same',
@@ -232,7 +232,7 @@ const schema = vine.object({
   password: vine
     .string()
     .confirmed({
-      confirmationField: 'passwordConfirmation'
+      as: 'passwordConfirmation'
     })
 })
 ```

@@ -44,6 +44,8 @@ const messages = {
   range: 'The {{ field }} field must be between {{ min }} and {{ max }}',
   positive: 'The {{ field }} field must be positive',
   negative: 'The {{ field }} field must be negative',
+  nonNegative: 'The {{ field }} field must be positive or zero',
+  nonPositive: 'The {{ field }} field must be negative or zero',
   decimal: 'The {{ field }} field must have {{ digits }} decimal places',
   withoutDecimals: 'The {{ field }} field must not have decimal places',
 }
@@ -104,7 +106,9 @@ vine.object({
 
 ### positive
 
-Enforce the value to be a positive number.
+Enforce the value is a positive number. Zero is considered a neutral number and will fail the positive validation. 
+
+Use [nonNegative](#non-negative) validation, if you want to allow zero among positive numbers.
 
 ```ts
 vine.object({
@@ -116,13 +120,39 @@ vine.object({
 
 ### negative
 
-Enforce the value to be a negative number.
+Enforce the value is a negative number. Zero is considered a neutral number and will fail the negative validation.
+
+Use [nonPositive](#non-positive) validation, if you want to allow zero among positive numbers.
 
 ```ts
 vine.object({
   freezing_tempature: vine
     .number()
     .negative()
+})
+```
+
+### nonNegative
+
+Enforce the value is either positive or zero.
+
+```ts
+vine.object({
+  marks: vine
+    .number()
+    .nonNegative()
+})
+```
+
+### nonPositive
+
+Enforce the value is either negative or zero.
+
+```ts
+vine.object({
+  marks: vine
+    .number()
+    .nonPositive()
 })
 ```
 

@@ -181,25 +181,30 @@ const schema = vine.object({
 
 Like `VineString`, you may add macros to the following classes.
 
-- [VineBoolean](https://github.com/vinejs/vine/blob/main/src/schema/boolean/main.ts)
-- [VineNumber](https://github.com/vinejs/vine/blob/main/src/schema/number/main.ts)
-- [VineAccepted](https://github.com/vinejs/vine/blob/main/src/schema/accepted/main.ts)
-- [VineEnum](https://github.com/vinejs/vine/blob/main/src/schema/enum/main.ts)
-- [VineObject](https://github.com/vinejs/vine/blob/main/src/schema/object/main.ts)
-- [VineArray](https://github.com/vinejs/vine/blob/main/src/schema/array/main.ts)
-- [VineRecord](https://github.com/vinejs/vine/blob/main/src/schema/record/main.ts)
-- [VineTuple](https://github.com/vinejs/vine/blob/main/src/schema/tuple/main.ts)
-- [VineDate](https://github.com/vinejs/vine/blob/main/src/schema/date/main.ts)
-- [VineAny](https://github.com/vinejs/vine/blob/main/src/schema/any/main.ts)
-- [VineLiteral](https://github.com/vinejs/vine/blob/main/src/schema/literal/main.ts)
+- [VineBoolean](https://github.com/vinejs/vine/blob/4.x/src/schema/boolean/main.ts)
+- [VineNumber](https://github.com/vinejs/vine/blob/4.x/src/schema/number/main.ts)
+- [VineAccepted](https://github.com/vinejs/vine/blob/4.x/src/schema/accepted/main.ts)
+- [VineEnum](https://github.com/vinejs/vine/blob/4.x/src/schema/enum/main.ts)
+- [VineObject](https://github.com/vinejs/vine/blob/4.x/src/schema/object/main.ts)
+- [VineArray](https://github.com/vinejs/vine/blob/4.x/src/schema/array/main.ts)
+- [VineRecord](https://github.com/vinejs/vine/blob/4.x/src/schema/record/main.ts)
+- [VineTuple](https://github.com/vinejs/vine/blob/4.x/src/schema/tuple/main.ts)
+- [VineDate](https://github.com/vinejs/vine/blob/4.x/src/schema/date/main.ts)
+- [VineAny](https://github.com/vinejs/vine/blob/4.x/src/schema/any/main.ts)
+- [VineLiteral](https://github.com/vinejs/vine/blob/4.x/src/schema/literal/main.ts)
+- [VineNativeFile](https://github.com/vinejs/vine/blob/4.x/src/schema/native_file/main.ts)
 
 ## Guarding against invalid values
 
-VineJS stops the validations pipeline after a rule reports an error. For example, if a field fails the `string` validation rule, VineJS will not run the `unique` validation rule.
+VineJS stops the validations pipeline after a rule reports an error. For example, if a field fails the `email` validation rule, VineJS will not run the `unique` validation rule.
 
-However, this behavior can be changed by turning off the [bail mode](../guides/schema_101.md#bail-mode). With bail mode disabled, the `unique` rule will be executed, even when the value is not a string.
+However, this behavior can be changed by turning off the [bail mode](../guides/schema_101.md#bail-mode). With bail mode disabled, the `unique` rule will be executed, even when the `email` validation has failed.
 
 However, you can find if the field has failed a validation using the `field.isValid` property and do not perform the SQL query.
+
+:::note
+Disabling `bail` mode has no impact if a field has failed the data-type validation. For example, if the value of a field is not a `string`, then none of the validations will run.
+:::
 
 ```ts
 async function unique(
@@ -252,7 +257,6 @@ Therefore, if you are creating an async function without the `async` keyword, ma
 
 ```ts
 export const uniqueRule = vine.createRule(unique, {
-  implicit: true,
   async: true,
 })
 ```
