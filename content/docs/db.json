@@ -132,6 +132,12 @@
     "category": "Schema types"
   },
   {
+    "permalink": "types/file",
+    "title": "File",
+    "contentPath": "./types/file.md",
+    "category": "Schema types"
+  },
+  {
     "permalink": "extend/custom_rules",
     "title": "Creating custom rules",
     "contentPath": "./extend/custom_rules.md",
