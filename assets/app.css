@@ -173,3 +173,26 @@ html.dark {
   color: var(--accent-9);
   font-size: 18px;
 }
+
+.benchmark-tabs {
+  display: flex;
+  gap: 14px;
+  margin-top: 40px;
+}
+
+.benchmark-tabs button {
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--neutral-gray-11);
+  border-bottom: 2px solid transparent;
+  padding: 3px 12px;
+}
+
+.benchmark-tabs button.active {
+  border-color: var(--accent-a10);
+}
+
+.benchmarks-chart {
+  border: 1px solid var(--dropdown-border-color);
+  padding: 20px;
+}

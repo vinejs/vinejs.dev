@@ -252,6 +252,8 @@ const schema = vine.object({
   - `vine.number`
   - `vine.object / vine.record`
   - `vine.array / vine.tuple`
+  - `vine.literal`
+  - `vine.nativeFile`
 
 ## Defining error messages
 You can define custom error messages for the following error codes. The error messages are only used when you have not defined the `otherwise` clause.

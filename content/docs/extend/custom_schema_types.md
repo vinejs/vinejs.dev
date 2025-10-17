@@ -13,6 +13,8 @@ The schema input and output values can be different. For example, you may accept
 ## Step 1. Creating a validation rule 
 The first step is to create a validation rule to perform the runtime validation for the data type we want to add. In our example, we want to validate the field's value as a number and then convert it to a [dinero amount object](https://v2.dinerojs.com/docs/core-concepts/amount).
 
+Since, this validation rule will be used as the data-type validator for the schema. Make sure to return a boolean value representing the validation state.
+
 :::note
 
 If you follow this guide, install the `dinero.js` and `@dinero.js/currencies` packages from the npm registry.
@@ -25,7 +27,7 @@ import { dinero } from 'dinero.js'
 import { USD } from '@dinero.js/currencies'
 import { FieldContext } from '@vinejs/vine/types'
 
-const isMoney = vine.createRule((value: unknown, _, field: FieldContext) => {
+const isMoneyRule = vine.createRule(function isMoney(value: unknown, _, field: FieldContext) => {
   /**
    * Convert string representation of a number to a JavaScript
    * Number data type.
@@ -41,7 +43,7 @@ const isMoney = vine.createRule((value: unknown, _, field: FieldContext) => {
       'money',
       field
     )
-    return
+    return false
   }
 
   /**
@@ -53,11 +55,13 @@ const isMoney = vine.createRule((value: unknown, _, field: FieldContext) => {
    * Mutate the field's value
    */ 
   field.mutate(amount, field)
+
+  return true
 })
 ```
 
 ## Step 2. Creating VineMoney schema class
-Schema data types are represented as classes and must extend the [BaseLiteralType](https://github.com/vinejs/vine/blob/develop/src/schema/base/literal.ts#L379) class.
+Schema data types are represented as classes and must extend the [BaseLiteralType](https://github.com/vinejs/vine/blob/4.x/src/schema/base/literal.ts#L349) class.
 
 ```ts
 import { dinero, Dinero } from 'dinero.js'
@@ -68,7 +72,8 @@ type Money = Dinero<number>
 
 export class VineMoney extends BaseLiteralType<string, Money, Money> {
   constructor(options?: FieldOptions, validations?: Validation<any>[]) {
-    super(options, validations || [isMoney()])
+    super(options, validations || [])
+    this.dataTypeValidator = isMoney()
   }
 
   clone() {

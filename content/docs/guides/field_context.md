@@ -16,6 +16,7 @@ type FieldContext = {
   data: any
   meta: Record<string, any>
   wildCardPath: string
+  isValidDataType: boolean
   isValid: boolean
   isDefined: boolean
   getFieldPath(): string
@@ -108,6 +109,13 @@ vine.createRule((value, options, field) => {
 ## isValid
 
 A boolean to determine if the field is valid. It will be considered invalid if it has failed one or more validations.
+
+## isValidDataType
+A boolean that indicates whether the field's data type is valid.
+
+For example:
+- If a `string()` rule passes, `isValidDataType = true`
+- If an `email()` rule fails, `isValid = false` but `isValidDataType = true`
 
 ## isDefined
 

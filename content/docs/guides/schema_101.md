@@ -63,6 +63,45 @@ const postSchema = vine.object({
 })
 ```
 
+### Picking and omitting properties
+You can create a new object schema by picking specific properties or omitting certain properties from an existing object schema using the `object.pick` and `object.omit` methods.
+
+Both `pick` and `omit` methods clone the selected properties and returns them as a new JavaScript object (not a vine object).
+
+```ts
+// title: Pick example
+const userSchema = vine.object({
+  id: vine.number(),
+  username: vine.string(),
+  email: vine.string().email(),
+  password: vine.string(),
+  role: vine.string()
+})
+
+const publicUserSchema = vine.object({
+  // highlight-start
+  ...userSchema.pick(['id', 'username', 'email']),
+  // highlight-end
+})
+```
+
+```ts
+// title: Omit example
+const userSchema = vine.object({
+  id: vine.number(),
+  username: vine.string(),
+  email: vine.string().email(),
+  password: vine.string(),
+  role: vine.string()
+})
+
+const publicUserSchema = vine.object({
+  // highlight-start
+  ...userSchema.omit(['password', 'role'])
+  // highlight-end
+})
+```
+
 ## Nullable and optional modifiers
 
 See also: [HTML forms and surprises](./html_forms_and_surprises.md)
@@ -387,3 +426,23 @@ const {
 ```
 
 :::
+
+## Standard schema
+VineJS validators created using `vine.compile` are compatible with the [Standard Schema specification](https://standardschema.dev/) and can be used with any framework/library that supports Standard Schema. Following is an example of usage with Hono.
+
+```ts
+import vine from '@vinejs/vine'
+import { sValidator } from '@hono/standard-validator'
+
+const validator = vine.compile(
+  vine.object({
+    name: vine.string(),
+    age: vine.number(),
+  })
+)
+
+app.post('/', sValidator('json', validator), (c) => {
+  const data = c.req.valid('json')
+  return data
+})
+```
