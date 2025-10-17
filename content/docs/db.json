@@ -132,9 +132,9 @@
     "category": "Schema types"
   },
   {
-    "permalink": "types/file",
-    "title": "File",
-    "contentPath": "./types/file.md",
+    "permalink": "types/native_file",
+    "title": "Native File",
+    "contentPath": "./types/native_file.md",
     "category": "Schema types"
   },
   {

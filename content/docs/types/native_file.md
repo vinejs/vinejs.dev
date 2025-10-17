@@ -2,15 +2,15 @@
 summary: Defines file upload validation rules, such as type, size, and required status.
 ---
 
-# File Type
+# Native File Type
 
-The `file` schema type in VineJS enables you to validate uploaded files, whether they come from browser-based form submissions (`FormData`) or are handled as files on the server using Node.js. This type ensures that files meet specific criteria such as type, size, and presence, providing robust validation for both client and server environments.
+The `nativeFile` schema type in VineJS enables you to validate uploaded files, whether they come from browser-based form submissions (`FormData`) or are handled as files on the server using Node.js. This type ensures that files meet specific criteria such as type, size, and presence, providing robust validation for both client and server environments.
 
 ```ts
 import vine from '@vinejs/vine'
 
 const schema = vine.object({
-  avatar: vine.file()
+  avatar: vine.nativeFile()
 })
 ```
 
@@ -20,13 +20,13 @@ See also: [Working with `undefined` and `null` values](../guides/schema_101.md#n
 
 ```ts
 {
-  avatar: vine.file().nullable()
+  avatar: vine.nativeFile().nullable()
 }
 ```
 
 ```ts
 {
-  avatar: vine.file().optional()
+  avatar: vine.nativeFile().optional()
 }
 ```
 
@@ -36,10 +36,10 @@ You may define custom error messages for the following file-based rules.
 
 ```ts
 const messages = {
-    file: 'The {{ field }} field must be a valid file',
-  'file.minSize': 'The {{ field }} field must be at least {{ min }} bytes in size',
-  'file.maxSize': 'The {{ field }} field must not exceed {{ max }} bytes in size',
-  'file.mimeTypes': 'The {{ field }} field must be one of the following mime types: {{ mimeTypes }}',
+  'nativeFile': 'The {{ field }} field must be a valid file',
+  'nativeFile.minSize': 'The {{ field }} field must be at least {{ min }} bytes in size',
+  'nativeFile.maxSize': 'The {{ field }} field must not exceed {{ max }} bytes in size',
+  'nativeFile.mimeTypes': 'The {{ field }} field must be one of the following mime types: {{ mimeTypes }}',
 }
 
 vine.messagesProvider = new SimpleMessagesProvider(messages)
@@ -56,7 +56,7 @@ Enforces that the uploaded file must have a size greater than or equal to the sp
 import vine from '@vinejs/vine'
 
 const schema = vine.object({
-    avatar: vine.file().minSize(1024) // Minimum size: 1 KB
+    avatar: vine.nativeFile().minSize(1024) // Minimum size: 1 KB
 })
 ```
 
@@ -67,7 +67,7 @@ Enforces that the uploaded file must not exceed the specified maximum size (in b
 import vine from '@vinejs/vine'
 
 const schema = vine.object({
-    avatar: vine.file().maxSize(1024 * 1024) // Maximum size: 1 MB
+    avatar: vine.nativeFile().maxSize(1024 * 1024) // Maximum size: 1 MB
 })
 ```
 
@@ -78,7 +78,7 @@ Restricts the uploaded file to specific MIME types. The `mimeTypes` method accep
 import vine from '@vinejs/vine'
 
 const schema = vine.object({
-    avatar: vine.file().mimeTypes(['image/png', 'image/jpeg'])
+    avatar: vine.nativeFile().mimeTypes(['image/png', 'image/jpeg'])
 })
 ```
 
