@@ -102,6 +102,45 @@ const publicUserSchema = vine.object({
 })
 ```
 
+### Converting properties to optional
+You can convert all the properties of an existing object schema to optional using the `object.asOptional` method. The `asOptional` method clones existing properties and returns them as a new object.
+
+```ts
+// title: toOptional example
+const userSchema = vine.object({
+  id: vine.number(),
+  username: vine.string(),
+  email: vine.string().email(),
+  password: vine.string(),
+  role: vine.string()
+})
+
+export const createUserValidator = vine.compile(userSchema)
+
+export const updateUserValidator = vine.compile(
+  // returns a new object with all properties marked as optional:
+  // vine.object({ id: vine.number().optional(), ... })
+  userSchema.toOptional()
+)
+```
+
+It possible to make only specific properties optional by providing an array of property names to the `asOptional` method as first argument.
+
+```ts
+// title: toOptional example
+const userSchema = vine.object({
+  id: vine.number(),
+  username: vine.string(),
+  email: vine.string().email(),
+  password: vine.string(),
+  role: vine.string()
+})
+
+export const updateUserValidator = vine.compile(
+  userSchema.toOptional(['email', 'password'])
+)
+```
+
 ## Nullable and optional modifiers
 
 See also: [HTML forms and surprises](./html_forms_and_surprises.md)

@@ -125,6 +125,21 @@ if (output !== null) {
 }
 ```
 
+## optional
+Clones raw object with vine fields and marks all fields as optional.
+
+```ts
+vine.helpers.optional({
+  name: vine.string(),
+  age: vine.number(),
+})
+// is equivalent to
+// {
+//   name: vine.string().optional(),
+//   age: vine.number().optional(),
+// }
+```
+
 ## Validator.js validators
 Alongside the VineJS helpers, you may also use the `vine.helpers` object to access the following methods exported by the [validator.js](https://github.com/validatorjs/validator.js/) library.
 
