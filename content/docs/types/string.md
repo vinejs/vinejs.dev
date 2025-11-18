@@ -497,6 +497,18 @@ vine.object({
 })
 ```
 
+To validate international phone numbers, including landlines and mobiles, simply install the [@julienbenac/vine-plugin-phone](https://github.com/julienbenac/vine-plugin-phone) plugin. This rule is provided as a separate plugin to keep the VineJS core lightweight and fast.
+
+See the example below, and refer to the plugin documentation for more details.
+
+```ts
+vine.object({
+  contact_number: vine
+    .string()
+    .phone({ countryCode: 'IN' })
+})
+```
+
 ### passport
 Ensure the field's value is formatted as a valid passport number for a given or multiple country codes.
 
