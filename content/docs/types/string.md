@@ -65,6 +65,7 @@ const messages = {
   mobile: 'The {{ field }} field must be a valid mobile phone number',
   passport: 'The {{ field }} field must be a valid passport number',
   postalCode: 'The {{ field }} field must be a valid postal code',
+  vat: 'The {{ field }} field must be a valid VAT number',
 }
 
 vine.messagesProvider = new SimpleMessagesProvider(messages)
@@ -554,6 +555,31 @@ vine.object({
   postal_code: vine
     .string()
     .postalCode((field) => {
+      return {
+        countryCode: [field.parent.country_code]
+      }
+    })
+})
+```
+
+### vat
+Ensure the field's value is formatted as a valid VAT number for a given or multiple country codes.
+
+```ts
+vine.object({
+  vat_number: vine
+    .string()
+    .vat({ countryCode: ['IN'] })
+})
+```
+
+You may define a callback function to compute the options at runtime.
+
+```ts
+vine.object({
+  vat_number: vine
+    .string()
+    .vat((field) => {
       return {
         countryCode: [field.parent.country_code]
       }
