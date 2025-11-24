@@ -65,6 +65,7 @@ const messages = {
   mobile: 'The {{ field }} field must be a valid mobile phone number',
   passport: 'The {{ field }} field must be a valid passport number',
   postalCode: 'The {{ field }} field must be a valid postal code',
+  strongPassword: 'The {{ field }} field must be a strong password',
 }
 
 vine.messagesProvider = new SimpleMessagesProvider(messages)
@@ -557,6 +558,23 @@ vine.object({
       return {
         countryCode: [field.parent.country_code]
       }
+    })
+})
+```
+
+### strongPassword
+Ensure the field's value meets strong password requirements, including minimum length, lowercase letters, uppercase letters, numbers and symbols.
+
+```ts
+vine.object({
+  new_password: vine
+    .string()
+    .strongPassword({
+      minLength: 12,
+      minLowercase: 2,
+      minUppercase: 2,
+      minNumbers: 2,
+      minSymbols: 1
     })
 })
 ```

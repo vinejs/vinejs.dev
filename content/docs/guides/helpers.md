@@ -154,6 +154,7 @@ Alongside the VineJS helpers, you may also use the `vine.helpers` object to acce
 - `isIBAN`
 - `isJWT`
 - `isLatLong`
+- `isStrongPassword`
 - `isMobilePhone`
 - `isPassportNumber`
 - `isPostalCode`
