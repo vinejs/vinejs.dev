@@ -78,6 +78,55 @@ const messages = {
 vine.messagesProvider = new SimpleMessagesProvider(messages)
 ```
 
+## Transforming date objects globally
+
+When working with date fields in your schemas, you often need to transform validated JavaScript `Date` objects into more useful formats. For example, if you use Luxon's `DateTime` throughout your application, you would need to manually transform every date field in every schema.
+
+Without global transformations, you must repeat the same transformation logic across all your schemas:
+```ts
+import vine from '@vinejs/vine'
+import { DateTime } from 'luxon'
+
+const schema = vine.object({
+  checkinDate: vine.date().transform((value) => DateTime.fromJSDate(value)),
+  checkoutDate: vine.date().transform((value) => DateTime.fromJSDate(value)),
+  bookingDate: vine.date().transform((value) => DateTime.fromJSDate(value))
+})
+```
+
+VineJS allows you to define a global transformation for all date fields. You write the transformation logic once in a common file that loads before you perform any validations, and then all `vine.date()` fields automatically use that transformation.
+
+```ts
+import { DateTime } from 'luxon'
+import { VineDate } from '@vinejs/vine'
+
+declare module '@vinejs/vine/types' {
+  interface VineGlobalTransforms {
+    date: DateTime
+  }
+}
+
+VineDate.transform((value) => {
+  return DateTime.fromJSDate(value)
+})
+```
+
+The `VineGlobalTransforms` interface declaration tells TypeScript that all date fields will now be `DateTime` instances instead of JavaScript `Date` objects. This ensures type safety throughout your application.
+
+After setting up the global transformation, all schemas using `vine.date()` will automatically receive `DateTime` instances without any additional configuration:
+
+```ts
+import vine from '@vinejs/vine'
+
+const schema = vine.object({
+  checkinDate: vine.date(),
+  checkoutDate: vine.date(),
+  bookingDate: vine.date()
+})
+
+// All date fields are now DateTime instances automatically
+```
+
 ## Comparing dates
 You may use one of the following validation methods to compare the user input against a specific datetime value.
 

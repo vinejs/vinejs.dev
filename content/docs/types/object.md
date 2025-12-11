@@ -63,8 +63,8 @@ const data = {
   trackLogin: true,
 }
 
-const validate = vine.compile(schema)
-const output = await validate(data)
+const validator = vine.create(schema)
+const output = await validator.validate(data)
 /**
 {
   username: 'virk',
@@ -93,8 +93,8 @@ const data = {
   trackLogin: true,
 }
 
-const validate = vine.compile(schema)
-const output = await validate(data)
+const validator = vine.create(schema)
+const output = await validator.validate(data)
 /**
 {
   username: 'virk',

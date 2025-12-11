@@ -15,7 +15,7 @@ The `SimpleErrorReporter` reporter is configured as the default error reporter; 
 import vine, { errors } from '@vinejs/vine'
 
 try {
-  const validate = vine.compile(schema)
+  const validate = vine.create({})
   const output = await validate({ data })
 } catch (error) {
   if (error instanceof errors.E_VALIDATION_ERROR) {
@@ -115,19 +115,14 @@ vine.errorReporter = () => new JSONAPIErrorReporter()
 // title: Per schema level
 import vine from '@vinejs/vine'
 
-const validator = vine.compile(
-  vine.object({})
-)
-
+const validator = vine.create({})
 validator.errorReporter = () => new JSONAPIErrorReporter()
 ```
 
 ```ts
 // title: During validation call
 import vine from '@vinejs/vine'
-const validator = vine.compile(
-  vine.object({})
-)
+const validator = vine.create({})
 
 validator.validate(data, {
   errorReporter: () => new JSONAPIErrorReporter()

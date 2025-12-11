@@ -137,9 +137,7 @@ vine.messagesProvider = new CustomMessageProvider()
 // title: Per schema level
 import vine from '@vinejs/vine'
 
-const validator = vine.compile(
-  vine.object({})
-)
+const validator = vine.create({})
 
 validator.messagesProvider = new CustomMessageProvider()
 ```
@@ -147,9 +145,7 @@ validator.messagesProvider = new CustomMessageProvider()
 ```ts
 // title: During validation call
 import vine from '@vinejs/vine'
-const validator = vine.compile(
-  vine.object({})
-)
+const validator = vine..create({})
 
 validator.validate(data, {
   messagesProvider: new CustomMessageProvider()

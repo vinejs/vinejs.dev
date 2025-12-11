@@ -210,18 +210,16 @@ Ensure the field under validation is confirmed by having another field with the 
 For example, You may use this rule to ensure the user confirms their password by typing it twice. If the field name is `password`, the confirmation field name must be `password_confirmation`.
 
 ```ts
-const schema = vine.object({
-  password: vine
-    .string()
-    .confirmed()
-})
-
 const data = {
   password: 'secret',
   password_confirmation: 'secret'
 }
 
-const validator = vine.compile(schema)
+const validator = vine.create({
+  password: vine
+    .string()
+    .confirmed()
+})
 await validator.validate(data)
 ```
 

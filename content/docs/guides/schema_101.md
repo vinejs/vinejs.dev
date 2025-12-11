@@ -103,11 +103,12 @@ const publicUserSchema = vine.object({
 ```
 
 ### Converting properties to optional
-You can convert all the properties of an existing object schema to optional using the `object.asOptional` method. The `asOptional` method clones existing properties and returns them as a new object.
+You can convert all the properties of an existing object schema to optional using the `object.partial` method. The `partial` method clones existing properties and returns them as a new object.
+
+In the following example, we access the underlying object schema via the `createUserValidator.schema` property.
 
 ```ts
-// title: toOptional example
-const userSchema = vine.object({
+export const createUserValidator = vine.create({
   id: vine.number(),
   username: vine.string(),
   email: vine.string().email(),
@@ -115,20 +116,15 @@ const userSchema = vine.object({
   role: vine.string()
 })
 
-export const createUserValidator = vine.compile(userSchema)
-
-export const updateUserValidator = vine.compile(
-  // returns a new object with all properties marked as optional:
-  // vine.object({ id: vine.number().optional(), ... })
-  userSchema.toOptional()
+export const updateUserValidator = vine.create(
+  createUserValidator.schema.partial()
 )
 ```
 
-It possible to make only specific properties optional by providing an array of property names to the `asOptional` method as first argument.
+It possible to make only specific properties optional by providing an array of property names to the `partial` method as first argument.
 
 ```ts
-// title: toOptional example
-const userSchema = vine.object({
+export const createUserValidator = vine.create({
   id: vine.number(),
   username: vine.string(),
   email: vine.string().email(),
@@ -136,8 +132,27 @@ const userSchema = vine.object({
   role: vine.string()
 })
 
-export const updateUserValidator = vine.compile(
-  userSchema.toOptional(['email', 'password'])
+export const updateUserValidator = vine.create(
+  createUserValidator.schema.partial(['email', 'username'])
+)
+```
+
+You may also combine `partial` and `omit` methods to create a new schema.
+
+```ts
+export const createUserValidator = vine.create({
+  id: vine.number(),
+  username: vine.string(),
+  email: vine.string().email(),
+  password: vine.string(),
+  role: vine.string()
+})
+
+export const updateUserValidator = vine.create(
+  createUserValidator
+    .schema
+    .partial(['email', 'username'])
+    .omit(['password'])
 )
 ```
 
@@ -219,17 +234,15 @@ Following is the list of available schema types supported by VineJS. We also sup
 Since VineJS schemas are pre-compiled, you cannot pass runtime options to them. For example, you want the user to enter a credit card number from a specific provider based upon the user's country saved in their profile.
 
 ```ts
-const purchaseValidator = vine.compile(
-  vine.object({
-    credit_card: vine
-      .string()
-      .creditCard({
-        // highlight-start
-        provider: [] // SHOULD BE BASED ON USER PROFILE
-        // highlight-end
-      })
-  })
-)
+const purchaseValidator = vine.create({
+  credit_card: vine
+    .string()
+    .creditCard({
+      // highlight-start
+      provider: [] // SHOULD BE BASED ON USER PROFILE
+      // highlight-end
+    })
+})
 ```
 
 Assuming you use the `purchaseValidator` validator during an HTTP request, you want to fetch the currently logged-in user profile and get the list of credit card providers. In short, you want to define `provider` at the time of validating and not at the time of defining the schema.
@@ -253,24 +266,22 @@ await purchaseValidator.validate(req.body, {
 Now, let's go to the schema and access the `meta.ccProviders` value inside the schema. First, we must pass a callback to the `creditCard` validation rule and lazily compute the validation options.
 
 ```ts
-const purchaseValidator = vine.compile(
-  vine.object({
-    credit_card: vine
-      .string()
-      // delete-start
-      .creditCard({
-        provider: []
-      })
-      // delete-end
-      // insert-start
-      .creditCard((field) => {
-        return {
-          provider: field.meta.ccProviders
-        }
-      })
-      // insert-end
-  })
-)
+const purchaseValidator = vine.create({
+  credit_card: vine
+    .string()
+    // delete-start
+    .creditCard({
+      provider: []
+    })
+    // delete-end
+    // insert-start
+    .creditCard((field) => {
+      return {
+        provider: field.meta.ccProviders
+      }
+    })
+    // insert-end
+})
 ```
 
 ### Defining metadata static types
@@ -291,17 +302,15 @@ const purchaseValidator = vine
   // insert-start
   .withMetaData<PurchaseValidatorMetaData>()
   // insert-end
-  .compile(
-    vine.object({
-      credit_card: vine
-        .string()
-        .creditCard((field) => {
-          return {
-            provider: field.meta.ccProviders
-          }
-        })
-    })
-  )
+  .create({
+    credit_card: vine
+      .string()
+      .creditCard((field) => {
+        return {
+          provider: field.meta.ccProviders
+        }
+      })
+  })
 ```
 
 ```ts
@@ -429,7 +438,7 @@ const schema = vine.object({
   referral_code: vine.string().optional()
 })
 
-const validate = vine.compile(schema)
+const validate = vine.create(schema)
 
 const {
  first_name,
@@ -449,7 +458,7 @@ const schema = vine.object({
 .toCamelCase()
 // insert-end
 
-const validate = vine.compile(schema)
+const validate = vine.create(schema)
 
 const {
  // delete-start
@@ -468,18 +477,16 @@ const {
 :::
 
 ## Standard schema
-VineJS validators created using `vine.compile` are compatible with the [Standard Schema specification](https://standardschema.dev/) and can be used with any framework/library that supports Standard Schema. Following is an example of usage with Hono.
+VineJS validators created using `vine.create` are compatible with the [Standard Schema specification](https://standardschema.dev/) and can be used with any framework/library that supports Standard Schema. Following is an example of usage with Hono.
 
 ```ts
 import vine from '@vinejs/vine'
 import { sValidator } from '@hono/standard-validator'
 
-const validator = vine.compile(
-  vine.object({
-    name: vine.string(),
-    age: vine.number(),
-  })
-)
+const validator = vine.create({
+  name: vine.string(),
+  age: vine.number(),
+})
 
 app.post('/', sValidator('json', validator), (c) => {
   const data = c.req.valid('json')

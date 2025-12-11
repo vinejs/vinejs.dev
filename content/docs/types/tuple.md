@@ -55,14 +55,6 @@ By default, the tuple keeps only the validated properties in the output, and the
 // title: Without unknown properties
 import vine from '@vinejs/vine'
 
-const schema = vine.object({
-  top_scores: vine.tuple([
-    vine.number(),
-    vine.number(),
-    vine.number(),
-  ])
-})
-
 const data = {
   top_scores: [
     98,
@@ -73,8 +65,14 @@ const data = {
   ]
 }
 
-const validate = vine.compile(schema)
-const output = await validate(data)
+const validator = vine.create({
+  top_scores: vine.tuple([
+    vine.number(),
+    vine.number(),
+    vine.number(),
+  ])
+})
+const output = await validator.validate(data)
 
 /*
 const data = {
@@ -92,17 +90,6 @@ const data = {
 // title: Allow unknown properties
 import vine from '@vinejs/vine'
 
-const schema = vine.object({
-  top_scores: vine.tuple([
-    vine.number(),
-    vine.number(),
-    vine.number(),
-  ])
-  // insert-start
-  .allowUnknownProperties()
-  // insert-end
-})
-
 const data = {
   top_scores: [
     98,
@@ -113,8 +100,17 @@ const data = {
   ]
 }
 
-const validate = vine.compile(schema)
-const output = await validate(data)
+const validator = vine.create({
+  top_scores: vine.tuple([
+    vine.number(),
+    vine.number(),
+    vine.number(),
+  ])
+  // insert-start
+  .allowUnknownProperties()
+  // insert-end
+})
+const output = await validator.validate(data)
 
 /*
 const data = {

@@ -28,15 +28,13 @@ vine.convertEmptyStringsToNull = true
 Continuing with the previous example, you may define the `country` field schema as follows.
 
 ```ts
-const schema = vine.object({
-  country: vine.string().nullable()
-})
-
 const data = {
   country: ''
 }
 
-const validator = vine.compile(schema)
+const validator = vine.create({
+  country: vine.string().nullable()
+})
 const output = await validator.validate(data)
 // { country: null }
 ```
@@ -50,15 +48,13 @@ Therefore, you will have to normalize the HTML form fields and work with specifi
 VineJS performs this normalization alongside validations. For example, the `string.number` type will attempt to convert the string-based numeric values to a JavaScript number data type before performing additional validations.
 
 ```ts
-const schema = vine.object({
-  age: vine.number().min(18)
-})
-
 const data = {
   age: '32'
 }
 
-const validator = vine.compile(schema)
+const validator = vine.create({
+  age: vine.number().min(18)
+})
 const output = await validator.validate(data)
 // { age: 32 }
 ```
@@ -79,15 +75,13 @@ In VineJS, we have a dedicated schema type called `schema.accepted`, which ensur
 If validation passes, the value will be normalized to `true`.
 
 ```ts
-const schema = vine.object({
-  terms: vine.accepted()
-})
-
 const data = {
   terms: 'on'
 }
 
-const validator = vine.compile(schema)
+const validator = vine.create({
+  terms: vine.accepted()
+})
 const output = await validator.validate(data)
 // { terms: true }
 ```

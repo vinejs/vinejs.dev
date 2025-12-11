@@ -55,7 +55,7 @@ const loginForm = vine.object({
 Post validation, you can check if the user has provided `email` or the `phone` number and perform a database search accordingly.
 
 ```ts
-const validator = vine.compile(loginForm)
+const validator = vine.create(loginForm)
 const payload = await validator.validate(data)
 
 if ('email' in payload) {

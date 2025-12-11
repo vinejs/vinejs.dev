@@ -9,12 +9,10 @@ The `enum` data type ensures the value of a field is from the pre-defined list. 
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.object({
+const validator = vine.create({
   role: vine.enum(['admin', 'moderator', 'owner', 'user'])
 })
-
-const validate = vine.compile(schema)
-const output = await validate(data)
+const output = await validator.validate(data)
 
 output.role // 'admin' | 'moderator' | 'owner' | 'user'
 ```
@@ -54,12 +52,10 @@ enum Roles {
   USER = 'user'
 }
 
-const schema = vine.object({
+const validator = vine.create({
   role: vine.enum(Roles)
 })
-
-const validate = vine.compile(schema)
-const output = await validate(data)
+const output = await validator.validate(data)
 
 output.role // Roles
 ```

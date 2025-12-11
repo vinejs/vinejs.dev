@@ -73,7 +73,7 @@ console.log(output)
 ## Pre-compiling schema
 The performance benefits of using VineJS kick in when you pre-compile a schema. During the pre-compile phase, VineJS will convert your schema into an optimized JavaScript function that you can reuse to perform validations.
 
-You may pre-compile a schema using the `vine.compile` method. The compile method returns a validator object you must use to perform validations.
+You may pre-compile a schema and create a validator using the `vine.create` method.
 
 ```ts
 import vine from '@vinejs/vine'
@@ -96,21 +96,24 @@ const data = {
 }
 
 // highlight-start
-const validator = vine.compile(schema)
+const validator = vine.create(schema)
 const output = await validator.validate(data)
 // highlight-end
 
 console.log(output)
 ```
 
-You may pass a custom messages provider or error reporter as the second argument to the `validator.validate` method.
+The `vine.create` method also works with a top-level object. It eliminates the need of nested calls `vine.create(vine.object())` and create a validator as follows.
 
 ```ts
-const validator = vine.compile(schema)
-const output = await validator.validate(data, {
-  messagesProvider,
-  errorReporter,
-  meta: {}
+const validator = vine.create({
+  username: vine.string(),
+  email: vine.string().email(),
+  password: vine
+    .string()
+    .minLength(8)
+    .maxLength(32)
+    .confirmed()
 })
 ```
 
@@ -122,7 +125,7 @@ In case of an error, VineJS will throw a [ValidationError](https://github.com/vi
 import vine, { errors } from '@vinejs/vine'
 
 try {
-  const validator = vine.compile(schema)
+  const validator = vine.create({})
   const output = await validator.validate(data)
 } catch (error) {
   if (error instanceof errors.E_VALIDATION_ERROR) {

@@ -11,12 +11,6 @@ In the following example, we want to accept an object of colors. The object keys
 ```ts
 import vine from '@vinejs/vine'
 
-const schema = vine.object({
-  colors: vine.record(
-    vine.string().hexCode()
-  )
-})
-
 const data = {
   colors: {
     white: '#ffffff',
@@ -25,8 +19,12 @@ const data = {
   }
 }
 
-const validate = vine.compile(schema)
-const output = await validate(data)
+const validator = vine.create({
+  colors: vine.record(
+    vine.string().hexCode()
+  )
+})
+const output = await validator.validate(data)
 ```
 
 Using the following modifiers, you may mark the record as `optional` or `nullable`.
