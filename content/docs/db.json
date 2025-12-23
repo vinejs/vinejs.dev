@@ -54,6 +54,12 @@
     "category": "Guides"
   },
   {
+    "permalink": "json_schema",
+    "title": "JSON Schema",
+    "contentPath": "./guides/json_schema.md",
+    "category": "Guides"
+  },
+  {
     "permalink": "types/string",
     "title": "String",
     "contentPath": "./types/string.md",
