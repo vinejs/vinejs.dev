@@ -54,6 +54,12 @@
     "category": "Guides"
   },
   {
+    "permalink": "json-schema-generation",
+    "title": "JSON schema generation",
+    "contentPath": "./guides/json_schema_generation.md",
+    "category": "Guides"
+  },
+  {
     "permalink": "types/string",
     "title": "String",
     "contentPath": "./types/string.md",
