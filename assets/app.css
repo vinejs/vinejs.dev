@@ -36,6 +36,7 @@
 
 :root {
   --logo-color: #bd00ff;
+  --aside-width: 300px;
 
   --accent-1: var(--purple-1);
   --accent-2: var(--purple-2);
@@ -211,4 +212,9 @@ html.dark {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 1rem;
+}
+
+.header_nav_menu_item_separator {
+  background: none;
+  padding: 0 4px;
 }

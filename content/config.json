@@ -9,6 +9,12 @@
       "href": "https://github.com/vinejs/vine"
     }
   },
+  "menu": [
+    {
+      "title": "API docs",
+      "href": "https://vinejs.dev/api"
+    }
+  ],
   "sponsors_sources": [
     "https://raw.githubusercontent.com/thetutlage/static/main/sponsorkit/sponsors.json"
   ],
