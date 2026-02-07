@@ -52,7 +52,7 @@
     "@dimerapp/edge": "^5.0.0",
     "@radix-ui/colors": "^3.0.0",
     "edge-uikit": "^1.0.0-1",
-    "edge.js": "^6.3.0"
+    "edge.js": "^6.4.0"
   },
   "license": "UNLICENSED",
   "eslintConfig": {
