@@ -9,7 +9,7 @@
   "scripts": {
     "export": "vite build && npm run download:sponsors && node --loader=ts-node/esm bin/build.ts",
     "build": "npm run export",
-    "postexport": "copyfiles -u 1 public/* public/**/* dist",
+    "postexport": "cpy public dist --base=pattern",
     "download:sponsors": "node --loader=ts-node/esm bin/download_sponsors.ts",
     "start": "node bin/test.js",
     "serve": "node --loader=ts-node/esm bin/serve.ts",
@@ -29,7 +29,7 @@
     "alpinejs": "^3.15.0",
     "collect.js": "^4.36.1",
     "concurrently": "^9.2.1",
-    "copyfiles": "^2.4.1",
+    "cpy-cli": "^7.0.0",
     "eslint": "^9.37.0",
     "highcharts": "^12.4.0",
     "human-format": "^1.2.1",
