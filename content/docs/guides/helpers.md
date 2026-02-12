@@ -156,6 +156,7 @@ Alongside the VineJS helpers, you may also use the `vine.helpers` object to acce
 - `isLatLong`
 - `isMobilePhone`
 - `isPassportNumber`
+- `isVAT`
 - `isPostalCode`
 - `isSlug`
 - `isDecimal`
