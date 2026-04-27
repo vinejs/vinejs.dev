@@ -38,9 +38,12 @@ const schema = vine.object({
 })
 
 const messages = {
+   // use validator name at the end to override the full error message
   'profile.social.twitter.required': 'Twitter handle is required.'
 }
 ```
+
+To override just the field name see [field names substitution](#field-names-substitution)
 
 ### Targeting array elements
 
@@ -89,11 +92,22 @@ const messages = {
 const fields = {
   first_name: 'first name',
   last_name: 'last name',
+
+  // Specific path: has the highest priority
+  'auth.profile.link': 'The profile link',
+
+  // Generic name: matches any field named 'link' if no specific path is defined
+  link: 'some link'
 }
 // highlight-end
 
 vine.messagesProvider = new SimpleMessagesProvider(messages, fields)
 ```
+
+Field name resolution order:
+1. **Full path match**: A specific path (e.g., `auth.profile.link`) always takes priority.
+2. **Generic name match**: If no full path is found, it looks for a match by the field name itself. This is useful for shared keys across different objects (e.g., using `link` for both `auth.profile.link` and `message.link`).
+3. **Original name**: Falls back to the raw field name if no alias is provided in the `fields` object.
 
 ## Creating a messages provider
 As discussed earlier, the messages provider allows you to build a custom workflow for defining validation error messages. For example, if you have a multi-lingual web app, you should create a message provider that integrates with your translation workflow.
