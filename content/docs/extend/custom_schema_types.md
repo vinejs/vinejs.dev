@@ -28,6 +28,14 @@ import { USD } from '@dinero.js/currencies'
 import { FieldContext } from '@vinejs/vine/types'
 
 const isMoneyRule = vine.createRule(function isMoney(value: unknown, _, field: FieldContext) => {
+
+  /**
+   * Ignore optional
+   */
+  if(!field.isDefined){
+    return false
+  }
+
   /**
    * Convert string representation of a number to a JavaScript
    * Number data type.
