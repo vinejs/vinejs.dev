@@ -261,7 +261,7 @@ const categories = [1, 8, null, 12, null, 2]
 ```
 
 #### Treatment of objects with missing keys
-Similarly, in the case of an array of objects, the object item will be skipped if it does contain all the fields required for the uniqueness check. For example, the following array will pass the `distinct` validation.
+Similarly, in the case of an array of objects, an object item will be skipped if it does not contain all the fields required for the uniqueness check, or if one or more of those fields have a `null` or `undefined` value.
 
 ```ts
 const fields = ['email', 'company_id']
@@ -274,6 +274,32 @@ const users = [
   },
   /**
    * Skipped because the object is missing the company_id
+   */
+  {
+    email: 'foo@bar.com',
+  },
+]
+```
+
+Likewise, the following array will also pass the `distinct` validation because objects with `null` or `undefined` values for the uniqueness field are skipped.
+
+```ts
+const field = 'email'
+const users = [
+  /**
+   * Skipped because email is null
+   */
+  {
+    email: null,
+  },
+  /**
+   * Skipped because email is undefined
+   */
+  {
+    email: undefined,
+  },
+  /**
+   * Checked for uniqueness
    */
   {
     email: 'foo@bar.com',
