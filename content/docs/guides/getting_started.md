@@ -117,6 +117,60 @@ const validator = vine.create({
 })
 ```
 
+## Synchronous validation
+
+Use `validateSync` when your code needs a result without returning or awaiting a Promise. It returns the validated output directly, typed as `Infer<Schema>`, and throws validation errors immediately. This API is for synchronous code paths, not a performance optimization.
+
+```ts
+import vine from '@vinejs/vine'
+
+const validator = vine.create({
+  email: vine.string().email(),
+  age: vine.number(),
+})
+
+const data = { email: 'virk@example.com', age: '32' }
+const output = validator.validateSync(data)
+// { email: 'virk@example.com', age: 32 }
+```
+
+To receive validation errors as a return value, use `tryValidateSync`. It returns `[ValidationError, null]` on failure or `[null, Infer<Schema>]` on success, without a Promise.
+
+```ts
+const [error, output] = validator.tryValidateSync(data)
+
+if (error) {
+  console.log(error.messages)
+} else {
+  console.log(output.email)
+}
+```
+
+`tryValidateSync` catches only `ValidationError`. Other errors, including incompatible async rules, still throw.
+
+Both methods accept the same options as their async counterparts, including [metadata](./schema_101.md#validation-metadata), [`messagesProvider`](./custom_error_messages.md#registering-messages-provider), and [`errorReporter`](./error_reporter.md#registering-the-error-reporter). Metadata declared with `vine.withMetaData` remains required.
+
+The `vine` instance also provides shortcuts that accept the schema, data, and validation options in one object.
+
+```ts
+const schema = vine.object({
+  email: vine.string().email(),
+})
+
+const output = vine.validateSync({ schema, data })
+const [error, result] = vine.tryValidateSync({ schema, data })
+```
+
+A validator compiles its synchronous validation function on the first sync call and caches it for later calls. Reuse a validator when validating repeatedly instead of using the shortcuts.
+
+### Compatible schemas
+
+The entire schema must be synchronous, including rules inside nested objects, arrays, unions, and conditional branches, even branches that the current input does not use. For example, [`activeUrl()`](../types/string.md#activeurl) performs an async DNS lookup and cannot be used with synchronous validation.
+
+The first sync call rejects a schema containing any async rule. You can still create that validator and use its async methods. A custom rule declared synchronous that returns a Promise or thenable is rejected at runtime.
+
+The existing `validate`, `tryValidate`, and Standard Schema `~standard.validate` methods remain asynchronous and unchanged.
+
 ## Handling errors
 
 In case of an error, VineJS will throw a [ValidationError](https://github.com/vinejs/vine/blob/main/src/errors/validation_error.ts) exception. You may access the detailed error messages using the `error.messages` property.
