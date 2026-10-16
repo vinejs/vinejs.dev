@@ -261,6 +261,8 @@ export const uniqueRule = vine.createRule(unique, {
 })
 ```
 
+With the [synchronous validation APIs](../guides/getting_started.md#synchronous-validation), schemas containing async rules are rejected on the first sync call. Declaring a rule synchronous does not make it compatible if it returns a Promise or thenable. Sync validation rejects such a return value at runtime.
+
 ## Testing rules
 You may use the `validator` test factory to write unit tests for your custom validation rules. 
 

@@ -126,6 +126,8 @@ vine.object({
 
 Ensure the URL value of a field has valid `A` or `AAAA` DNS records. The DNS lookup is performed using the [dnsPromises.resolve](https://nodejs.org/api/dns.html#dnspromisesresolvehostname-rrtype) method.
 
+This rule is asynchronous and cannot be used with the [`validateSync` or `tryValidateSync` APIs](../guides/getting_started.md#synchronous-validation). Use `validate` or `tryValidate` for schemas containing this rule.
+
 ```ts
 vine.object({
   health_checks_url: vine
